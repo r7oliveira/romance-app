@@ -70,28 +70,31 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .pts-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.07);}
 .pts-card::after{content:'';position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
 .pts-card-top{margin-bottom:18px;}
-.pts-greeting{font-size:13px;opacity:.75;margin-bottom:2px;font-weight:400;letter-spacing:.3px;}
-.pts-nome{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;line-height:1.05;letter-spacing:-.5px;}
+.pts-greeting{font-size:13px;opacity:.75;margin-bottom:4px;font-weight:400;letter-spacing:.3px;}
+.pts-nome{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;letter-spacing:-.5px;color:#FFD700;text-shadow:0 2px 12px rgba(0,0,0,0.18);}
 .pts-divider{height:1px;background:rgba(255,255,255,0.2);margin-bottom:18px;}
-.pts-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.pts-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
 .pts-col{}
 .pts-label-sm{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600;}
 .pts-row{display:flex;align-items:flex-end;gap:5px;}
 .pts-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1;}
 .pts-unit{font-size:15px;opacity:.8;padding-bottom:8px;font-weight:500;}
 .pts-col-right{text-align:right;}
-.pts-meta-badge{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:5px 14px;font-size:13px;font-weight:700;margin-bottom:6px;display:inline-block;}
-.pts-meta-sub{font-size:13px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;opacity:.9;margin-top:5px;}
+.pts-meta-sub{font-size:13px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;opacity:.85;}
 
 /* NÍVEL */
-.nivel-wrap{margin-bottom:14px;}
+.nivel-wrap{margin-bottom:16px;}
 .nivel-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
 .nivel-stars{display:flex;gap:6px;margin-bottom:6px;}
 .nivel-star{width:28px;height:28px;transition:all .4s;}
-.nivel-frase{font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;opacity:.9;}
+.nivel-frase{font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;opacity:.9;margin-bottom:14px;}
 
-.bar-bg{background:rgba(255,255,255,0.2);border-radius:99px;height:6px;overflow:hidden;}
-.bar-fill{height:100%;background:linear-gradient(90deg,rgba(255,255,255,0.6),white);border-radius:99px;transition:width 1.2s ease;}
+/* BARRA PROGRESSO ESTILO PLACAR */
+.prox-premio-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
+.bar-container{background:rgba(0,0,0,0.25);border-radius:6px;height:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.15);margin-bottom:6px;}
+.bar-fill{height:100%;background:linear-gradient(90deg,#FFD700,#fff176);border-radius:5px;transition:width 1.2s ease;position:relative;}
+.bar-fill::after{content:'';position:absolute;top:3px;left:6px;right:6px;height:4px;background:rgba(255,255,255,0.4);border-radius:99px;}
+.bar-info{display:flex;justify-content:space-between;font-size:11px;opacity:.75;}
 
 /* BOTAO WHATSAPP */
 .secao-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;}
@@ -284,8 +287,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           </div>
         </div>
         <div class="pts-col-right">
-          <div class="pts-meta-badge" id="disp-meta-badge">Faltam 50 pts</div>
-          <div class="pts-meta-sub">para o seu presente especial Romance</div>
+          <div class="pts-meta-sub" id="disp-meta-sub">para o seu presente especial Romance</div>
         </div>
       </div>
 
@@ -300,7 +302,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="nivel-frase" id="nivel-frase">Comece indicando sua primeira amiga!</div>
       </div>
 
-      <div class="bar-bg"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+      <!-- BARRA PRÓXIMO PRÊMIO -->
+      <div class="prox-premio-label" id="prox-label">Próximo prêmio: Sanduicheira</div>
+      <div class="bar-container">
+        <div class="bar-fill" id="bar-fill" style="width:0%"></div>
+      </div>
+      <div class="bar-info">
+        <span id="bar-pts-txt">0 pts</span>
+        <span id="bar-meta-txt">50 pts</span>
+      </div>
     </div>
 
     <!-- BOTÃO WHATSAPP -->
@@ -780,9 +790,46 @@ function atualizarUI() {
   document.getElementById('disp-pts').textContent = p;
   document.getElementById('pts-topbar').textContent = p + ' pts';
   document.getElementById('bar-fill').style.width = Math.min(100,(p/META)*100) + '%';
-  const faltam = Math.max(0, META - p);
-  if (document.getElementById('disp-meta-badge')) {
-    document.getElementById('disp-meta-badge').textContent = faltam > 0 ? 'Faltam ' + faltam + ' pts' : 'Meta atingida!';
+  // ESTRELAS E FRASE MOTIVACIONAL
+  const star1 = document.getElementById('star1');
+  const star2 = document.getElementById('star2');
+  const star3 = document.getElementById('star3');
+  const frase = document.getElementById('nivel-frase');
+  const badge = document.getElementById('disp-meta-badge');
+
+  const OURO = '#FFD700';
+  const VAZIO = 'rgba(255,255,255,0.2)';
+
+  if (p === 0) {
+    if(star1) star1.querySelector('path').setAttribute('fill', VAZIO);
+    if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
+    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
+    if(frase) frase.textContent = 'Comece indicando sua primeira amiga!';
+    if(badge) badge.textContent = 'Faltam 50 pts';
+  } else if (p < 50) {
+    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
+    if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
+    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
+    if(frase) frase.textContent = 'Falta pouco para resgatar seu presente!';
+    if(badge) badge.textContent = 'Faltam ' + (50 - p) + ' pts';
+  } else if (p < 100) {
+    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
+    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
+    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
+    if(frase) frase.textContent = 'Incrível! Você já pode resgatar a Sanduicheira!';
+    if(badge) badge.textContent = 'Faltam ' + (100 - p) + ' pts';
+  } else if (p < 150) {
+    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
+    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
+    if(star3) star3.querySelector('path').setAttribute('fill', OURO);
+    if(frase) frase.textContent = 'Você está arrasando! Falta pouco para a Air Fryer!';
+    if(badge) badge.textContent = 'Faltam ' + (150 - p) + ' pts';
+  } else {
+    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
+    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
+    if(star3) star3.querySelector('path').setAttribute('fill', OURO);
+    if(frase) frase.textContent = 'Parabéns! Você conquistou todos os prêmios!';
+    if(badge) badge.textContent = 'Meta atingida!';
   }
 
   // Progressão visual dos prêmios
