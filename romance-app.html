@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romance - Indique e Ganhe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:#D91A7A; --pink-deep:#a8115e; --pink-soft:#f7d6eb;
+  --pink-pale:#fdf0f8; --black:#0f0f0f; --gray:#6a6a6a;
+  --white:#fff; --green:#16a34a; --green-bg:#dcfce7;
+  --amber:#d97706; --amber-bg:#fef3cd;
+  --radius:20px; --radius-sm:12px; --shadow:0 2px 18px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-height:100vh;max-width:430px;margin:0 auto;}
+.screen{display:none;} .screen.active{display:block;}
+
+/* LOGIN */
+#screen-login{min-height:100vh;background:var(--white);}
+.login-hero{background:linear-gradient(160deg,#1a0a10 0%,var(--pink-deep) 60%,var(--pink) 100%);padding:60px 28px 48px;position:relative;overflow:hidden;}
+.login-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.brand-mark{display:flex;align-items:center;gap:10px;margin-bottom:32px;}
+.heart-logo{width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.heart-logo svg{width:22px;height:22px;}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:white;}
+.login-headline{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;color:white;line-height:1.1;margin-bottom:14px;}
+.login-sub{font-size:15px;color:rgba(255,255,255,0.75);line-height:1.6;}
+.login-body{padding:32px 24px 48px;}
+.fl{display:block;font-size:13px;font-weight:600;color:var(--black);margin-bottom:7px;}
+.fi{width:100%;padding:15px 16px;border:1.5px solid #e5e5e5;border-radius:var(--radius-sm);font-size:15px;font-family:'Outfit',sans-serif;color:var(--black);outline:none;transition:border .2s;margin-bottom:15px;background:white;-webkit-appearance:none;}
+.fi:focus{border-color:var(--pink);}
+.fi::placeholder{color:#c5c5c5;}
+.btn-main{width:100%;background:var(--pink);color:white;border:none;border-radius:var(--radius-sm);padding:17px;font-size:16px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s;}
+.btn-main:active{transform:scale(.98);background:var(--pink-deep);}
+.btn-main:disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed;}
+.btn-outline{width:100%;background:transparent;color:var(--pink);border:1.5px solid var(--pink);border-radius:var(--radius-sm);padding:15px;font-size:15px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;margin-top:10px;}
+
+/* CADASTRO */
+#screen-cadastro{min-height:100vh;background:var(--white);}
+.cad-top{background:linear-gradient(135deg,#0d0d0d 0%,var(--pink-deep) 100%);padding:48px 28px 36px;position:relative;overflow:hidden;}
+.cad-top::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(217,26,122,0.2);}
+.quem-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:7px 14px;margin-bottom:20px;}
+.quem-tag span{font-size:13px;color:white;font-weight:500;}
+.quem-tag strong{color:var(--pink-soft);}
+.cad-h{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:white;line-height:1.1;margin-bottom:10px;}
+.cad-sub{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.55;}
+.cad-body{padding:28px 24px 60px;}
+.beneficios{background:var(--pink-pale);border:1.5px solid var(--pink-soft);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:22px;}
+.bene-title{font-size:13px;font-weight:700;color:var(--pink);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.bene-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.bene-item:last-child{margin-bottom:0;}
+.bene-dot{width:7px;height:7px;min-width:7px;background:var(--pink);border-radius:50%;margin-top:5px;}
+.bene-txt{font-size:13px;color:#7a0f49;line-height:1.5;}
+
+/* APP */
+#screen-app{min-height:100vh;}
+.topbar{background:var(--white);padding:16px 20px 14px;border-bottom:1px solid #efefef;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.05);}
+.tb-brand{display:flex;align-items:center;gap:9px;}
+.tb-icon{width:32px;height:32px;background:var(--pink);border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.tb-icon svg{width:18px;height:18px;}
+.tb-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--black);}
+.tb-pts{background:var(--pink-soft);color:var(--pink);font-size:13px;font-weight:700;padding:5px 12px;border-radius:99px;}
+.page{display:none;padding:20px 16px 100px;}
+.page.active{display:block;}
+
+/* PONTOS */
+.pts-card{background:linear-gradient(135deg,var(--pink) 0%,var(--pink-deep) 100%);border-radius:var(--radius);padding:28px 24px 22px;color:white;margin-bottom:20px;position:relative;overflow:hidden;}
+.pts-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.pts-card::after{content:'';position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
+.pts-card-top{margin-bottom:18px;}
+.pts-greeting{font-size:13px;opacity:.75;margin-bottom:2px;font-weight:400;letter-spacing:.3px;}
+.pts-nome{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;line-height:1.05;letter-spacing:-.5px;}
+.pts-divider{height:1px;background:rgba(255,255,255,0.2);margin-bottom:18px;}
+.pts-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.pts-col{}
+.pts-label-sm{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600;}
+.pts-row{display:flex;align-items:flex-end;gap:5px;}
+.pts-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1;}
+.pts-unit{font-size:15px;opacity:.8;padding-bottom:8px;font-weight:500;}
+.pts-col-right{text-align:right;}
+.pts-meta-badge{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:5px 14px;font-size:13px;font-weight:700;margin-bottom:6px;display:inline-block;}
+.pts-meta-sub{font-size:13px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;opacity:.9;margin-top:5px;}
+
+/* NÍVEL */
+.nivel-wrap{margin-bottom:14px;}
+.nivel-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
+.nivel-stars{display:flex;gap:6px;margin-bottom:6px;}
+.nivel-star{width:28px;height:28px;transition:all .4s;}
+.nivel-frase{font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;opacity:.9;}
+
+.bar-bg{background:rgba(255,255,255,0.2);border-radius:99px;height:6px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,rgba(255,255,255,0.6),white);border-radius:99px;transition:width 1.2s ease;}
+
+/* BOTAO WHATSAPP */
+.secao-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;}
+.btn-whats-link{width:100%;background:linear-gradient(135deg,#075e54 0%,#128c7e 100%);color:white;border:none;border-radius:16px;padding:20px;font-family:'Outfit',sans-serif;cursor:pointer;display:flex;align-items:center;gap:14px;margin-bottom:20px;box-shadow:0 6px 24px rgba(7,94,84,0.28);transition:all .2s;position:relative;overflow:hidden;}
+.btn-whats-link::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.btn-whats-link:active{transform:scale(.98);}
+.wico{width:28px;height:28px;min-width:28px;}
+.wbtn-texts{text-align:left;}
+.wbtn-titulo{font-size:15px;font-weight:700;line-height:1.2;display:block;}
+.wbtn-sub{font-size:12px;opacity:.8;margin-top:3px;display:block;font-weight:400;}
+
+/* CARDS */
+.card{background:var(--white);border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:14px;}
+.passo{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;}
+.passo:last-child{margin-bottom:0;}
+.passo-num{width:38px;height:38px;min-width:38px;background:var(--pink-soft);color:var(--pink);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;}
+.passo-texto strong{display:block;font-size:15px;font-weight:600;margin-bottom:3px;}
+.passo-texto p{font-size:13px;color:var(--gray);line-height:1.55;}
+.destaque-box{background:var(--pink-pale);border:1.5px solid var(--pink-soft);border-radius:var(--radius-sm);padding:15px 16px;font-size:14px;color:#7a0f49;line-height:1.6;margin-bottom:16px;}
+.destaque-box strong{color:var(--pink);}
+
+/* HISTÓRICO */
+.hist-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f5f5f5;}
+.hist-row:last-child{border-bottom:none;}
+.hist-av{width:42px;height:42px;min-width:42px;background:var(--pink-soft);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--pink);margin-right:12px;}
+.hist-info{flex:1;}
+.hist-nome{font-size:15px;font-weight:600;margin-bottom:3px;}
+.hist-data{font-size:12px;color:var(--gray);margin-bottom:5px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.badge-ok{background:var(--green-bg);color:var(--green);}
+.badge-pend{background:var(--amber-bg);color:var(--amber);}
+.hist-pts{font-size:16px;font-weight:700;color:var(--pink);white-space:nowrap;}
+.hist-pts-gray{color:#ccc;}
+.empty-state{text-align:center;padding:32px 16px;color:#bbb;font-size:14px;line-height:1.6;}
+
+/* PRÊMIOS NOVO */
+.premio-progresso{background:var(--white);border-radius:var(--radius);padding:20px 20px 14px;margin-bottom:16px;box-shadow:var(--shadow);}
+.prog-item{display:flex;align-items:center;margin-bottom:10px;}
+.prog-bolinha{width:36px;height:36px;min-width:36px;border-radius:50%;background:#e8e8e8;color:#aaa;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .4s;}
+.prog-bolinha.ativo{background:var(--pink);color:white;box-shadow:0 0 0 4px var(--pink-soft);}
+.prog-bolinha.alcancado{background:var(--green);color:white;}
+.prog-linha{flex:1;height:4px;background:#e8e8e8;margin:0 4px;border-radius:99px;transition:all .4s;}
+.prog-linha.ativo{background:var(--pink);}
+.prog-linha.alcancado{background:var(--green);}
+.prog-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);font-weight:600;}
+
+.premio-card-novo{background:var(--white);border-radius:var(--radius);margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;transition:all .3s;}
+.premio-card-novo.bloqueado{opacity:.55;filter:grayscale(.4);}
+.premio-card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;}
+.premio-pts-tag{background:var(--pink-soft);color:var(--pink);font-size:12px;font-weight:700;padding:5px 14px;border-radius:99px;}
+.premio-lock-txt{font-size:12px;color:#bbb;font-weight:600;}
+.premio-img-real{width:100%;height:180px;object-fit:contain;padding:16px 24px;background:#fafafa;}
+.premio-img-fallback{width:100%;height:180px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
+.premio-card-info{padding:14px 16px 18px;}
+.premio-nome{font-size:17px;font-weight:700;margin-bottom:4px;}
+.premio-desc{font-size:13px;color:var(--gray);line-height:1.5;margin-bottom:14px;}
+.btn-resgatar{width:100%;background:var(--pink);color:white;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .18s;}
+.btn-resgatar:disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed;}
+
+/* RANKING */
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5;}
+.rank-item:last-child{border-bottom:none;}
+.rank-pos{width:28px;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#ccc;text-align:center;}
+.rank-pos.t1{color:#f59e0b;}.rank-pos.t2{color:#9ca3af;}.rank-pos.t3{color:#b45309;}
+.rank-av{width:40px;height:40px;min-width:40px;background:var(--pink-soft);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--pink);}
+.rank-nome{flex:1;font-size:15px;font-weight:600;}
+.rank-pts{font-size:14px;font-weight:700;color:var(--pink);}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:white;border-top:1px solid #efefef;display:flex;padding:10px 0 max(env(safe-area-inset-bottom),10px);z-index:200;box-shadow:0 -4px 24px rgba(0,0,0,0.06);}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 8px;}
+.bnav-lbl{font-size:10px;font-weight:600;color:#bbb;white-space:nowrap;}
+.bnav-item.active .bnav-lbl{color:var(--pink);}
+
+/* MODAIS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;align-items:flex-end;justify-content:center;}
+.overlay.show{display:flex;}
+.modal{background:white;border-radius:24px 24px 0 0;padding:32px 24px max(env(safe-area-inset-bottom,0px) + 24px,40px);width:100%;max-width:430px;text-align:center;animation:up .28s ease;}
+@keyframes up{from{transform:translateY(80px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-circle{width:68px;height:68px;border-radius:50%;background:var(--pink-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.modal-h{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;margin-bottom:10px;}
+.modal-p{font-size:14px;color:var(--gray);line-height:1.6;margin-bottom:22px;}
+.modal-hl{display:inline-block;background:var(--pink-soft);color:var(--pink);font-weight:700;font-size:18px;padding:10px 24px;border-radius:12px;margin-bottom:20px;}
+
+/* LOADING */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.loading-overlay.show{display:flex;}
+.spinner{width:40px;height:40px;border:3px solid var(--pink-soft);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-size:14px;font-weight:600;color:var(--gray);}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-txt" id="loading-txt">Carregando...</div>
+</div>
+
+<!-- LOGIN -->
+<div id="screen-login" class="screen active">
+  <div class="login-hero">
+    <div class="brand-mark">
+      <div class="heart-logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 21C12 21 3 15 3 9C3 6.23858 5.23858 4 8 4C9.65685 4 11.1765 4.83165 12 6.10156C12.8235 4.83165 14.3431 4 16 4C18.7614 4 21 6.23858 21 9C21 15 12 21 12 21Z" fill="#D91A7A"/>
+        </svg>
+      </div>
+      <span class="brand-name">Romance</span>
+    </div>
+    <div class="login-headline">Indique.<br>Cadastre.<br>Ganhe.</div>
+    <p class="login-sub">O programa exclusivo para consultoras Romance que indicam novas revendedoras.</p>
+
+  </div>
+  <div class="login-body">
+    <label class="fl">Seu nome completo</label>
+    <input class="fi" type="text" id="login-nome" placeholder="Ex: Maria da Silva" />
+    <label class="fl">Seu telefone (WhatsApp)</label>
+    <input class="fi" type="tel" id="login-tel" placeholder="(00) 00000-0000" />
+    <button class="btn-main" id="btn-entrar" onclick="entrar()">Entrar no programa</button>
+  </div>
+</div>
+
+<!-- CADASTRO NOVA CONSULTORA -->
+<div id="screen-cadastro" class="screen">
+  <div class="cad-top">
+    <div class="quem-tag">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M12 21C12 21 3 15 3 9C3 6.23858 5.23858 4 8 4C9.65685 4 11.1765 4.83165 12 6.10156C12.8235 4.83165 14.3431 4 16 4C18.7614 4 21 6.23858 21 9C21 15 12 21 12 21Z" fill="#f7d6eb"/>
+      </svg>
+      <span>Indicada por <strong id="cad-indicou">uma consultora</strong></span>
+    </div>
+    <div class="cad-h">Seja uma<br>consultora<br>Romance.</div>
+    <p class="cad-sub">Preencha seus dados. É rápido, gratuito e sem compromisso.</p>
+  </div>
+  <div class="cad-body">
+    <div class="beneficios">
+      <div class="bene-title">O que você ganha sendo consultora</div>
+      <div class="bene-item"><div class="bene-dot"></div><div class="bene-txt">Renda extra vendendo produtos Romance</div></div>
+      <div class="bene-item"><div class="bene-dot"></div><div class="bene-txt">Suporte da representante para começar</div></div>
+      <div class="bene-item"><div class="bene-dot"></div><div class="bene-txt">Descontos exclusivos na linha Romance</div></div>
+      <div class="bene-item"><div class="bene-dot"></div><div class="bene-txt">Você vende do seu jeito e no seu horário</div></div>
+    </div>
+    <label class="fl">Seu nome completo</label>
+    <input class="fi" type="text" id="cad-nome" placeholder="Nome completo" />
+    <label class="fl">Seu telefone (WhatsApp)</label>
+    <input class="fi" type="tel" id="cad-tel" placeholder="(00) 00000-0000" oninput="mascaraTel(this)" />
+    <label class="fl">Sua cidade</label>
+    <input class="fi" type="text" id="cad-cidade" placeholder="Ex: Sao Paulo - SP" />
+    <label class="fl">Seu CPF</label>
+    <input class="fi" type="text" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)" />
+    <label class="fl">Sua data de nascimento</label>
+    <input class="fi" type="text" id="cad-nascimento" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this)" />
+    <button class="btn-main" id="btn-cad" onclick="confirmarCadastro()" style="margin-top:4px">Quero ser consultora</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="screen-app" class="screen">
+  <div class="topbar">
+    <div class="tb-brand">
+      <div class="tb-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 21C12 21 3 15 3 9C3 6.23858 5.23858 4 8 4C9.65685 4 11.1765 4.83165 12 6.10156C12.8235 4.83165 14.3431 4 16 4C18.7614 4 21 6.23858 21 9C21 15 12 21 12 21Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="tb-name">Romance</span>
+    </div>
+    <span class="tb-pts" id="pts-topbar">0 pts</span>
+  </div>
+
+  <!-- INICIO -->
+  <div class="page active" id="page-inicio">
+
+    <!-- HERO NOME + PONTOS -->
+    <div class="pts-card">
+      <div class="pts-card-top">
+        <div class="pts-greeting">Olá,</div>
+        <div class="pts-nome" id="disp-nome">Consultora</div>
+      </div>
+      <div class="pts-divider"></div>
+      <div class="pts-bottom">
+        <div class="pts-col">
+          <div class="pts-label-sm">Seus pontos</div>
+          <div class="pts-row">
+            <div class="pts-num" id="disp-pts">0</div>
+            <div class="pts-unit">pts</div>
+          </div>
+        </div>
+        <div class="pts-col-right">
+          <div class="pts-meta-badge" id="disp-meta-badge">Faltam 50 pts</div>
+          <div class="pts-meta-sub">para o seu presente especial Romance</div>
+        </div>
+      </div>
+
+      <!-- NÍVEL COM ESTRELAS -->
+      <div class="nivel-wrap">
+        <div class="nivel-label">Seu nível</div>
+        <div class="nivel-stars">
+          <svg class="nivel-star" id="star1" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
+          <svg class="nivel-star" id="star2" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
+          <svg class="nivel-star" id="star3" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
+        </div>
+        <div class="nivel-frase" id="nivel-frase">Comece indicando sua primeira amiga!</div>
+      </div>
+
+      <div class="bar-bg"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- BOTÃO WHATSAPP -->
+    <div class="secao-label">Sua próxima indicação</div>
+    <button class="btn-whats-link" onclick="enviarLink()">
+      <svg class="wico" viewBox="0 0 32 32" fill="none">
+        <path d="M16 3C8.832 3 3 8.832 3 16C3 18.624 3.752 21.072 5.056 23.136L3 29L9.072 26.976C11.072 28.192 13.456 28.9 16 28.9C23.168 28.9 29 23.068 29 15.9C29 8.832 23.168 3 16 3Z" fill="white"/>
+        <path d="M22 19.4C21.76 20.12 20.68 20.72 19.92 20.84C19.224 20.948 18.336 20.988 17.376 20.68C16.8 20.496 16.064 20.248 15.12 19.824C11.76 18.28 9.584 14.92 9.424 14.708C9.264 14.496 8.16 13.032 8.16 11.52C8.16 10.008 8.96 9.268 9.264 8.952C9.568 8.636 9.92 8.552 10.144 8.552C10.368 8.552 10.592 8.552 10.784 8.568C10.988 8.58 11.264 8.488 11.54 9.148L12.612 11.7C12.716 11.94 12.744 12.192 12.636 12.432C12.528 12.672 12.384 12.828 12.252 12.996L11.388 13.876C11.252 14.012 11.24 14.196 11.328 14.364C11.716 15.04 12.628 16.18 13.648 17.08C14.904 18.2 15.944 18.56 16.288 18.692C16.48 18.76 16.68 18.732 16.816 18.584L17.66 17.624C17.816 17.44 18.072 17.296 18.352 17.396L20.76 18.44C21.056 18.54 21.272 18.72 21.328 18.988C21.4 19.16 22 19.4 22 19.4Z" fill="#075e54"/>
+      </svg>
+      <div class="wbtn-texts">
+        <span class="wbtn-titulo">Enviar link de cadastro pelo WhatsApp</span>
+        <span class="wbtn-sub">A amiga clica no link e preenche os dados dela mesma</span>
+      </div>
+    </button>
+
+    <!-- COMO FUNCIONA -->
+    <div class="card">
+      <div class="card-title">Como funciona</div>
+      <div class="passo">
+        <div class="passo-num">1</div>
+        <div class="passo-texto">
+          <strong>Você envia o link</strong>
+          <p>Clica no botão verde acima. O WhatsApp abre com a mensagem pronta. Você só manda para a amiga.</p>
+        </div>
+      </div>
+      <div class="passo">
+        <div class="passo-num">2</div>
+        <div class="passo-texto">
+          <strong>A amiga preenche o cadastro</strong>
+          <p>Ela clica no link, abre o formulário e preenche os dados dela mesma. Rápido e simples.</p>
+        </div>
+      </div>
+      <div class="passo">
+        <div class="passo-num">3</div>
+        <div class="passo-texto">
+          <strong>Você ganha 10 pontos na hora</strong>
+          <p>Assim que ela finalizar o cadastro, os pontos aparecem na sua conta automaticamente.</p>
+        </div>
+      </div>
+    </div>
+    <div class="destaque-box"><strong>Simples assim:</strong> indique amigas, acumule pontos e troque por prêmios — começando pela Sanduicheira com 50 pontos!</div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="page" id="page-historico">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:4px;">Minhas indicações</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:18px;line-height:1.55;">Veja quem se cadastrou pelo seu link e os pontos que você ganhou.</p>
+    <div class="card" id="lista-historico"><div class="empty-state">Carregando...</div></div>
+  </div>
+
+  <!-- PRÊMIOS -->
+  <div class="page" id="page-premios">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:4px;">Prêmios</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:6px;line-height:1.55;">Quanto mais você indica, mais você ganha. Veja os prêmios disponíveis:</p>
+    <p style="font-size:12px;color:#bbb;margin-bottom:20px;">Imagens ilustrativas.</p>
+
+    <!-- PROGRESSO VISUAL -->
+    <div class="premio-progresso" id="premio-progresso">
+      <div class="prog-item" id="prog-1">
+        <div class="prog-bolinha">50</div>
+        <div class="prog-linha" id="prog-linha-1"></div>
+        <div class="prog-bolinha" id="prog-b2">100</div>
+        <div class="prog-linha" id="prog-linha-2"></div>
+        <div class="prog-bolinha" id="prog-b3">150</div>
+      </div>
+      <div class="prog-labels">
+        <span>Sanduicheira</span>
+        <span>Batedeira</span>
+        <span>Air Fryer</span>
+      </div>
+    </div>
+
+    <!-- CARD 1: SANDUICHEIRA -->
+    <div class="premio-card-novo" id="card-premio-1">
+      <div class="premio-card-header">
+        <div class="premio-pts-tag">50 pontos</div>
+        <div class="premio-lock" id="lock-1"></div>
+      </div>
+      <img src="https://m.media-amazon.com/images/I/51yVqR6XnQL._AC_SX679_.jpg"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+           class="premio-img-real" alt="Sanduicheira" />
+      <div class="premio-img-fallback" style="display:none">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#D91A7A" stroke-width="1.5"/><path d="M3 10h18M3 14h18" stroke="#D91A7A" stroke-width="1.5"/></svg>
+      </div>
+      <div class="premio-card-info">
+        <div class="premio-nome">Sanduicheira</div>
+        <div class="premio-desc">Sanduicheira elétrica para o dia a dia. Prática e fácil de usar.</div>
+        <button class="btn-resgatar" id="btn-sand" onclick="resgatar('Sanduicheira',50)">Resgatar</button>
+      </div>
+    </div>
+
+    <!-- CARD 2: BATEDEIRA -->
+    <div class="premio-card-novo" id="card-premio-2">
+      <div class="premio-card-header">
+        <div class="premio-pts-tag" style="background:#f0e6ff;color:#7c3aed;">100 pontos</div>
+        <div class="premio-lock" id="lock-2"></div>
+      </div>
+      <img src="https://m.media-amazon.com/images/I/61n+XaOJrUL._AC_SX679_.jpg"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+           class="premio-img-real" alt="Batedeira" />
+      <div class="premio-img-fallback" style="display:none">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M12 3v4M8 5l2 3M16 5l-2 3" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="14" r="5" stroke="#7c3aed" stroke-width="1.5"/></svg>
+      </div>
+      <div class="premio-card-info">
+        <div class="premio-nome">Batedeira</div>
+        <div class="premio-desc">Batedeira completa para facilitar sua cozinha no dia a dia.</div>
+        <button class="btn-resgatar" id="btn-bat" onclick="resgatar('Batedeira',100)" style="background:#7c3aed">Resgatar</button>
+      </div>
+    </div>
+
+    <!-- CARD 3: AIR FRYER -->
+    <div class="premio-card-novo" id="card-premio-3">
+      <div class="premio-card-header">
+        <div class="premio-pts-tag" style="background:#fff3e0;color:#e65100;">150 pontos</div>
+        <div class="premio-lock" id="lock-3"></div>
+      </div>
+      <img src="https://m.media-amazon.com/images/I/61eQmVi6EAL._AC_SX679_.jpg"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+           class="premio-img-real" alt="Air Fryer" />
+      <div class="premio-img-fallback" style="display:none">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="5" y="7" width="14" height="14" rx="3" stroke="#e65100" stroke-width="1.5"/><path d="M9 7V5a3 3 0 0 1 6 0v2" stroke="#e65100" stroke-width="1.5"/></svg>
+      </div>
+      <div class="premio-card-info">
+        <div class="premio-nome">Air Fryer</div>
+        <div class="premio-desc">Air Fryer para fritar sem óleo com praticidade e economia.</div>
+        <button class="btn-resgatar" id="btn-air" onclick="resgatar('Air Fryer',150)" style="background:#e65100">Resgatar</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RANKING -->
+  <div class="page" id="page-ranking">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:4px;">Ranking do mês</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:18px;line-height:1.55;">As consultoras que mais indicaram novas revendedoras este mês.</p>
+    <div class="card" id="lista-ranking"><div class="empty-state">Carregando...</div></div>
+    <div class="destaque-box"><strong>Desafio do mês:</strong> as 3 consultoras com mais cadastros confirmados ganham um brinde surpresa da representante.</div>
+  </div>
+
+  <nav class="bnav">
+    <div class="bnav-item active" onclick="goPage('inicio',this,0)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.5523 20.5523 21 20 21H15V16H9V21H4C3.44772 21 3 20.5523 3 20V12Z" fill="#bbb" id="ni0"/></svg>
+      <span class="bnav-lbl">Início</span>
+    </div>
+    <div class="bnav-item" onclick="goPage('historico',this,1)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" fill="#bbb" id="ni1"/><path d="M7 9H17M7 13H13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="bnav-lbl">Histórico</span>
+    </div>
+    <div class="bnav-item" onclick="goPage('premios',this,2)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#bbb" id="ni2"/></svg>
+      <span class="bnav-lbl">Prêmios</span>
+    </div>
+    <div class="bnav-item" onclick="goPage('ranking',this,3)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="14" width="5" height="7" rx="1" fill="#bbb" id="ni3a"/><rect x="9.5" y="9" width="5" height="12" rx="1" fill="#bbb" id="ni3b"/><rect x="17" y="4" width="5" height="17" rx="1" fill="#bbb" id="ni3c"/></svg>
+      <span class="bnav-lbl">Ranking</span>
+    </div>
+  </nav>
+</div>
+
+<!-- MODAIS -->
+<div class="overlay" id="m-link">
+  <div class="modal">
+    <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="#D91A7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="modal-h">Link enviado</div>
+    <p class="modal-p">O WhatsApp já vai abrir com a mensagem pronta. Assim que sua amiga preencher o cadastro, você recebe os pontos automaticamente.</p>
+    <div class="modal-hl">+ 10 pontos ao cadastrar</div>
+    <button class="btn-main" onclick="closeModal('m-link')">Entendi</button>
+  </div>
+</div>
+
+<div class="overlay" id="m-cad-ok">
+  <div class="modal">
+    <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="#D91A7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="modal-h">Cadastro enviado</div>
+    <p class="modal-p">Seu cadastro foi enviado para a representante. Em breve ela vai entrar em contato pelo WhatsApp para dar os próximos passos.</p>
+    <button class="btn-main" onclick="closeModal('m-cad-ok')">Fechar</button>
+  </div>
+</div>
+
+<div class="overlay" id="m-resgate">
+  <div class="modal">
+    <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#D91A7A"/></svg></div>
+    <div class="modal-h">Pedido enviado</div>
+    <p class="modal-p" id="m-resgate-txt">Seu resgate foi solicitado. A representante vai entrar em contato pelo WhatsApp.</p>
+    <button class="btn-main" onclick="closeModal('m-resgate')">Fechar</button>
+  </div>
+</div>
+
+<div class="overlay" id="m-sem-pts">
+  <div class="modal">
+    <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D91A7A" stroke-width="2"/><path d="M12 8V12M12 16H12.01" stroke="#D91A7A" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+    <div class="modal-h">Pontos insuficientes</div>
+    <p class="modal-p" id="m-sem-txt">Você ainda não tem pontos suficientes. Envie o link para mais amigas.</p>
+    <button class="btn-main" onclick="closeModal('m-sem-pts');goPageDirect(0)">Enviar link agora</button>
+  </div>
+</div>
+
+<!-- FIREBASE SDK COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD7FjlCtIZNL7YT6DU7P5FBM2AI7Qx2z1o",
+  authDomain: "romance-indicacoes.firebaseapp.com",
+  projectId: "romance-indicacoes",
+  storageBucket: "romance-indicacoes.firebasestorage.app",
+  messagingSenderId: "1000995187899",
+  appId: "1:1000995187899:web:af4c97957e8f10bb42cd9e"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Atalhos compat
+const collection = (d, c) => d.collection(c);
+const doc        = (d, c, id) => d.collection(c).doc(id);
+const addDoc     = (ref, data) => ref.add(data);
+const getDocs    = (q) => q.get();
+const getDoc     = (ref) => ref.get();
+const updateDoc  = (ref, data) => ref.update(data);
+const query      = (ref, ...constraints) => { let q = ref; constraints.forEach(c => { q = c(q); }); return q; };
+const where      = (f, op, v) => q => q.where(f, op, v);
+const orderBy    = (f, dir='asc') => q => q.orderBy(f, dir);
+const onSnapshot = (q, cb) => q.onSnapshot(cb);
+const serverTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
+const increment  = (n) => firebase.firestore.FieldValue.increment(n);
+
+// ========== ESTADO ==========
+let user = { id:'', nome:'', tel:'', pontos:0 };
+let refIndicador = '';
+let refIndicadorId = '';
+const META = 150;
+
+// ========== UTILS ==========
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function loading(show, txt='Carregando...') {
+  document.getElementById('loading-txt').textContent = txt;
+  document.getElementById('loading').classList.toggle('show', show);
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+window.closeModal = closeModal;
+
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('show'); });
+});
+
+// ========== VERIFICAR LINK DE INDICAÇÃO ==========
+function verificarRef() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref');
+  const refId = params.get('refId');
+  if (ref && refId) {
+    refIndicador = decodeURIComponent(ref);
+    refIndicadorId = refId;
+    document.getElementById('cad-indicou').textContent = refIndicador;
+    showScreen('screen-cadastro');
+  }
+}
+
+// ========== LOGIN ==========
+window.entrar = async function() {
+  const nome = document.getElementById('login-nome').value.trim();
+  const tel  = document.getElementById('login-tel').value.trim().replace(/\D/g,'');
+  if (!nome || !tel) { alert('Preencha seu nome e telefone.'); return; }
+
+  loading(true, 'Entrando...');
+  document.getElementById('btn-entrar').disabled = true;
+
+  try {
+    const docRef = db.collection('consultoras').doc(tel);
+    const docSnap = await docRef.get();
+
+    if (docSnap.exists) {
+      user = { id: tel, ...docSnap.data() };
+    } else {
+      await docRef.set({
+        nome: nome,
+        tel: tel,
+        pontos: 0,
+        indicacoes: 0,
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      user = { id: tel, nome: nome, tel: tel, pontos: 0, indicacoes: 0 };
+    }
+
+    atualizarUI();
+    ouvirIndicacoes();
+    ouvirRanking();
+    showScreen('screen-app');
+    resetNav(); colorNav(0);
+
+  } catch(e) {
+    alert('Erro: ' + (e.message || e.code || JSON.stringify(e)));
+    console.error('ERRO LOGIN:', e);
+  } finally {
+    loading(false);
+    document.getElementById('btn-entrar').disabled = false;
+  }
+}
+
+// ========== CADASTRO NOVA CONSULTORA (veio pelo link) ==========
+window.confirmarCadastro = async function() {
+  const nome       = document.getElementById('cad-nome').value.trim();
+  const tel        = document.getElementById('cad-tel').value.trim();
+  const cidade     = document.getElementById('cad-cidade').value.trim();
+  const cpf        = document.getElementById('cad-cpf').value.trim();
+  const nascimento = document.getElementById('cad-nascimento').value.trim();
+  if (!nome || !tel || !cidade || !cpf || !nascimento) { alert('Preencha todos os campos.'); return; }
+
+  loading(true, 'Enviando cadastro...');
+  document.getElementById('btn-cad').disabled = true;
+
+  try {
+    // Salva nova consultora no Firestore
+    const novaRef = await addDoc(collection(db,'consultoras'), {
+      nome, tel, cidade, cpf, nascimento,
+      pontos: 0, indicacoes: 0,
+      criadoEm: serverTimestamp()
+    });
+
+    // Salva a indicação vinculando ao indicador
+    await addDoc(collection(db,'indicacoes'), {
+      indicadorId: refIndicadorId,
+      indicadorNome: refIndicador,
+      indicadaId: novaRef.id,
+      indicadaNome: nome,
+      indicadaTel: tel,
+      indicadaCidade: cidade,
+      status: 'cadastrada',
+      criadoEm: serverTimestamp()
+    });
+
+    // Adiciona 10 pontos para quem indicou
+    await updateDoc(doc(db,'consultoras', refIndicadorId), {
+      pontos: increment(10),
+      indicacoes: increment(1)
+    });
+
+    document.getElementById('m-cad-ok').classList.add('show');
+    document.getElementById('cad-nome').value = '';
+    document.getElementById('cad-tel').value = '';
+    document.getElementById('cad-cidade').value = '';
+    document.getElementById('cad-cpf').value = '';
+    document.getElementById('cad-nascimento').value = '';
+  } catch(e) {
+    alert('Erro ao enviar cadastro. Verifique sua conexão.');
+    console.error(e);
+  } finally {
+    loading(false);
+    document.getElementById('btn-cad').disabled = false;
+  }
+}
+
+// ========== ENVIAR LINK WHATSAPP ==========
+window.enviarLink = function() {
+  const base = window.location.href.split('?')[0];
+  const link = base + '?ref=' + encodeURIComponent(user.nome) + '&refId=' + user.id;
+  const msg = encodeURIComponent(
+    'Oi! Te convido para ser consultora da marca Romance.\n\n' +
+    'Você pode ter uma renda extra vendendo produtos Romance do seu jeito e no seu horário.\n\n' +
+    'Para se cadastrar, clica no link:\n' + link
+  );
+  window.open('https://wa.me/?text=' + msg, '_blank');
+  document.getElementById('m-link').classList.add('show');
+}
+
+// ========== OUVIR INDICAÇÕES EM TEMPO REAL ==========
+function ouvirIndicacoes() {
+  // Busca só por indicadorId, sem orderBy — evita precisar de índice composto
+  db.collection('indicacoes')
+    .where('indicadorId','==', user.id)
+    .onSnapshot((snap) => {
+      // Atualiza pontos
+      db.collection('consultoras').doc(user.id).get().then(d => {
+        if(d.exists) { user.pontos = d.data().pontos || 0; atualizarUI(); }
+      });
+
+      const lista = document.getElementById('lista-historico');
+      if(snap.empty) {
+        lista.innerHTML = '<div class="empty-state">Nenhuma indicação ainda.<br>Clique no botão verde e mande o link para a primeira amiga.</div>';
+        return;
+      }
+
+      // Ordena no cliente por data
+      const docs = snap.docs.sort((a,b) => {
+        const ta = a.data().criadoEm?.toMillis() || 0;
+        const tb = b.data().criadoEm?.toMillis() || 0;
+        return tb - ta;
+      });
+
+      lista.innerHTML = docs.map(d => {
+        const i = d.data();
+        const ini = (i.indicadaNome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+        const ok = i.status === 'cadastrada';
+        const data = i.criadoEm?.toDate().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) || 'Agora';
+        return `<div class="hist-row">
+          <div class="hist-av">${ini}</div>
+          <div class="hist-info">
+            <div class="hist-nome">${i.indicadaNome}</div>
+            <div class="hist-data">${data}${i.indicadaCidade ? ' · ' + i.indicadaCidade : ''}</div>
+            <span class="badge ${ok?'badge-ok':'badge-pend'}">${ok?'Cadastrada':'Aguardando'}</span>
+          </div>
+          <div class="hist-pts ${ok?'':'hist-pts-gray'}">+10 pts</div>
+        </div>`;
+      }).join('');
+    });
+}
+
+// ========== RANKING EM TEMPO REAL ==========
+function ouvirRanking() {
+  db.collection('consultoras').onSnapshot((snap) => {
+    const posClasses = ['t1','t2','t3'];
+    const lista = document.getElementById('lista-ranking');
+    if(snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma consultora ainda.</div>'; return; }
+
+    // Ordena no cliente
+    const docs = snap.docs.sort((a,b) => (b.data().pontos||0) - (a.data().pontos||0));
+
+    lista.innerHTML = docs.slice(0,10).map((d,i) => {
+      const c = d.data();
+      const ini = (c.nome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+      const isEu = d.id === user.id;
+      return `<div class="rank-item">
+        <div class="rank-pos ${posClasses[i]||''}">${i+1}</div>
+        <div class="rank-av" style="${isEu?'background:var(--pink);color:white':''}">${ini}</div>
+        <div class="rank-nome" style="${isEu?'color:var(--pink);font-weight:700':''}">${c.nome}${isEu?' (você)':''}</div>
+        <div class="rank-pts">${c.pontos||0} pts</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+// ========== RESGATE ==========
+window.resgatar = async function(nome, custo) {
+  if (user.pontos < custo) {
+    const faltam = custo - user.pontos;
+    document.getElementById('m-sem-txt').textContent =
+      'Você precisa de mais ' + faltam + ' pontos para resgatar ' + nome + '. Envie o link para mais amigas.';
+    document.getElementById('m-sem-pts').classList.add('show');
+    return;
+  }
+
+  loading(true, 'Solicitando resgate...');
+  try {
+    await addDoc(collection(db,'resgates'), {
+      consultorId: user.id,
+      consultorNome: user.nome,
+      consultorTel: user.tel,
+      produto: nome,
+      pontos: custo,
+      status: 'pendente',
+      criadoEm: serverTimestamp()
+    });
+    await updateDoc(doc(db,'consultoras', user.id), { pontos: increment(-custo) });
+    user.pontos -= custo;
+    atualizarUI();
+    document.getElementById('m-resgate-txt').textContent =
+      'Você resgatou: ' + nome + '. A representante vai entrar em contato pelo WhatsApp para combinar a entrega.';
+    document.getElementById('m-resgate').classList.add('show');
+  } catch(e) {
+    alert('Erro ao solicitar resgate. Tente novamente.');
+  } finally {
+    loading(false);
+  }
+}
+
+// ========== UI ==========
+function atualizarUI() {
+  const p = user.pontos || 0;
+  const nome = user.nome.split(' ')[0];
+  document.getElementById('disp-nome').textContent = nome;
+  document.getElementById('disp-pts').textContent = p;
+  document.getElementById('pts-topbar').textContent = p + ' pts';
+  document.getElementById('bar-fill').style.width = Math.min(100,(p/META)*100) + '%';
+  const faltam = Math.max(0, META - p);
+  if (document.getElementById('disp-meta-badge')) {
+    document.getElementById('disp-meta-badge').textContent = faltam > 0 ? 'Faltam ' + faltam + ' pts' : 'Meta atingida!';
+  }
+
+  // Progressão visual dos prêmios
+  const b1 = document.getElementById('prog-b1');
+  const b2 = document.getElementById('prog-b2');
+  const b3 = document.getElementById('prog-b3');
+  const l1 = document.getElementById('prog-linha-1');
+  const l2 = document.getElementById('prog-linha-2');
+
+  // Bolinha 1 (50pts)
+  const bolinhas = document.querySelectorAll('.prog-bolinha');
+  if(bolinhas[0]) { bolinhas[0].classList.toggle('ativo', p > 0 && p < 50); bolinhas[0].classList.toggle('alcancado', p >= 50); }
+  if(b2) { b2.classList.toggle('ativo', p >= 50 && p < 100); b2.classList.toggle('alcancado', p >= 100); }
+  if(b3) { b3.classList.toggle('ativo', p >= 100 && p < 150); b3.classList.toggle('alcancado', p >= 150); }
+  if(l1) { l1.classList.toggle('ativo', p >= 50 && p < 100); l1.classList.toggle('alcancado', p >= 100); }
+  if(l2) { l2.classList.toggle('ativo', p >= 100 && p < 150); l2.classList.toggle('alcancado', p >= 150); }
+
+  // Bloqueio dos cards
+  const c1 = document.getElementById('card-premio-1');
+  const c2 = document.getElementById('card-premio-2');
+  const c3 = document.getElementById('card-premio-3');
+  const lk1 = document.getElementById('lock-1');
+  const lk2 = document.getElementById('lock-2');
+  const lk3 = document.getElementById('lock-3');
+
+  if(c1) c1.classList.toggle('bloqueado', p < 50);
+  if(c2) c2.classList.toggle('bloqueado', p < 100);
+  if(c3) c3.classList.toggle('bloqueado', p < 150);
+  if(lk1) lk1.innerHTML = p < 50 ? '<span class="premio-lock-txt">Faltam '+(50-p)+' pts</span>' : '';
+  if(lk2) lk2.innerHTML = p < 100 ? '<span class="premio-lock-txt">Faltam '+(100-p)+' pts</span>' : '';
+  if(lk3) lk3.innerHTML = p < 150 ? '<span class="premio-lock-txt">Faltam '+(150-p)+' pts</span>' : '';
+
+  const btnSand = document.getElementById('btn-sand');
+  const btnBat  = document.getElementById('btn-bat');
+  const btnAir  = document.getElementById('btn-air');
+  if(btnSand) btnSand.disabled = p < 50;
+  if(btnBat)  btnBat.disabled  = p < 100;
+  if(btnAir)  btnAir.disabled  = p < 150;
+}
+
+// ========== NAV ==========
+const PAGES = ['inicio','historico','premios','ranking'];
+const ICONS = [['ni0'],['ni1'],['ni2'],['ni3a','ni3b','ni3c']];
+
+window.goPage = function(id, el, idx) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  resetNav(); colorNav(idx);
+}
+
+window.goPageDirect = function(idx) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+PAGES[idx]).classList.add('active');
+  document.querySelectorAll('.bnav-item')[idx].classList.add('active');
+  resetNav(); colorNav(idx);
+}
+
+function resetNav() {
+  ICONS.flat().forEach(id=>{ const e=document.getElementById(id); if(e) e.setAttribute('fill','#bbb'); });
+}
+
+function colorNav(idx) {
+  ICONS[idx].forEach(id=>{ const e=document.getElementById(id); if(e) e.setAttribute('fill','#D91A7A'); });
+}
+
+window.resetNav = resetNav;
+window.colorNav = colorNav;
+
+// ========== INIT ==========
+resetNav(); colorNav(0);
+verificarRef();
+
+// ========== MÁSCARAS ==========
+window.mascaraTel = function(el) {
+  let v = el.value.replace(/\D/g,'');
+  if(v.length > 11) v = v.slice(0,11);
+  if(v.length > 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+  else if(v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+  else if(v.length > 0) v = '(' + v;
+  el.value = v;
+}
+
+window.mascaraCPF = function(el) {
+  let v = el.value.replace(/\D/g,'');
+  if(v.length > 11) v = v.slice(0,11);
+  if(v.length > 9) v = v.slice(0,3) + '.' + v.slice(3,6) + '.' + v.slice(6,9) + '-' + v.slice(9);
+  else if(v.length > 6) v = v.slice(0,3) + '.' + v.slice(3,6) + '.' + v.slice(6);
+  else if(v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
+  el.value = v;
+}
+
+window.mascaraData = function(el) {
+  let v = el.value.replace(/\D/g,'');
+  if(v.length > 8) v = v.slice(0,8);
+  if(v.length > 4) v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4);
+  else if(v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
+  el.value = v;
+}
+</script>
+</body>
+</html>
