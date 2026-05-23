@@ -135,7 +135,9 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .hist-nome{font-size:15px;font-weight:600;margin-bottom:3px;}
 .hist-data{font-size:12px;color:var(--gray);margin-bottom:5px;}
 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
-.badge-ok{background:var(--green-bg);color:var(--green);}
+.ind-counter{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:10px;margin-bottom:4px;}
+.badge-rep{background:#fee2e2;color:#dc2626;}
+.rank-eu{background:var(--pink-pale);border-radius:var(--radius-sm);}
 .badge-pend{background:var(--amber-bg);color:var(--amber);}
 .hist-pts{font-size:16px;font-weight:700;color:var(--pink);white-space:nowrap;}
 .hist-pts-gray{color:#ccc;}
@@ -285,6 +287,13 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="pts-unit">pts</div>
       </div>
       <div class="nivel-frase" id="nivel-frase">Comece indicando sua primeira amiga!</div>
+
+      <!-- CONTADOR DE INDICAÇÕES -->
+      <div class="ind-counter">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="4" fill="rgba(255,255,255,0.7)"/><path d="M3 21V19C3 16.7909 4.79086 15 7 15H11C13.2091 15 15 16.7909 15 19V21" fill="rgba(255,255,255,0.7)"/><path d="M19 8V14M16 11H22" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"/></svg>
+        <span id="disp-indicacoes">0</span> indicações feitas
+      </div>
+
       <div style="margin-top:16px;">
         <div class="prox-premio-label" id="prox-label">Próximo prêmio: Sanduicheira</div>
         <div class="bar-container">
@@ -588,6 +597,7 @@ window.entrar = async function() {
     atualizarUI();
     ouvirIndicacoes();
     ouvirRanking();
+    ouvirNotificacaoPontos();
     showScreen('screen-app');
     resetNav(); colorNav(0);
 
@@ -693,16 +703,17 @@ function ouvirIndicacoes() {
       lista.innerHTML = docs.map(d => {
         const i = d.data();
         const ini = (i.indicadaNome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-        const ok = i.status === 'cadastrada';
+        const ok  = i.status === 'aprovada' || i.status === 'cadastrada';
+        const rep = i.status === 'reprovada';
         const data = i.criadoEm?.toDate().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) || 'Agora';
         return `<div class="hist-row">
           <div class="hist-av">${ini}</div>
           <div class="hist-info">
             <div class="hist-nome">${i.indicadaNome}</div>
             <div class="hist-data">${data}${i.indicadaCidade ? ' · ' + i.indicadaCidade : ''}</div>
-            <span class="badge ${ok?'badge-ok':'badge-pend'}">${ok?'Cadastrada':'Aguardando'}</span>
+            <span class="badge ${ok?'badge-ok':rep?'badge-rep':'badge-pend'}">${ok?'✓ Aprovada':rep?'✗ Reprovada':'⏳ Aguardando'}</span>
           </div>
-          <div class="hist-pts ${ok?'':'hist-pts-gray'}">+10 pts</div>
+          <div class="hist-pts ${ok?'':'hist-pts-gray'}">${ok?'+10 pts':'0 pts'}</div>
         </div>`;
       }).join('');
     });
@@ -711,28 +722,51 @@ function ouvirIndicacoes() {
 // ========== RANKING EM TEMPO REAL ==========
 function ouvirRanking() {
   db.collection('consultoras').onSnapshot((snap) => {
-    const posClasses = ['t1','t2','t3'];
     const lista = document.getElementById('lista-ranking');
     if(snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma consultora ainda.</div>'; return; }
 
-    // Ordena no cliente
-    const docs = snap.docs.sort((a,b) => (b.data().pontos||0) - (a.data().pontos||0));
+    const docs = snap.docs
+      .map(d => ({id: d.id, ...d.data()}))
+      .filter(c => (c.pontos || 0) > 0)
+      .sort((a,b) => (b.pontos||0) - (a.pontos||0));
 
-    lista.innerHTML = docs.slice(0,10).map((d,i) => {
-      const c = d.data();
+    if (!docs.length) {
+      lista.innerHTML = '<div class="empty-state">Nenhuma consultora com pontos ainda.<br>Seja a primeira! 🏆</div>';
+      return;
+    }
+
+    const medalhas = ['🥇','🥈','🥉'];
+    lista.innerHTML = docs.slice(0,10).map((c,i) => {
       const ini = (c.nome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-      const isEu = d.id === user.id;
-      return `<div class="rank-item">
-        <div class="rank-pos ${posClasses[i]||''}">${i+1}</div>
+      const isEu = c.id === user.id;
+      const medal = medalhas[i] || (i+1);
+      return `<div class="rank-item ${isEu?'rank-eu':''}">
+        <div class="rank-pos">${medal}</div>
         <div class="rank-av" style="${isEu?'background:var(--pink);color:white':''}">${ini}</div>
-        <div class="rank-nome" style="${isEu?'color:var(--pink);font-weight:700':''}">${c.nome}${isEu?' (você)':''}</div>
+        <div style="flex:1">
+          <div class="rank-nome">${c.nome}${isEu?' <span style="color:var(--pink);font-size:11px;font-weight:700">(você)</span>':''}</div>
+          <div style="font-size:11px;color:#aaa;">${c.indicacoes||0} indicações</div>
+        </div>
         <div class="rank-pts">${c.pontos||0} pts</div>
       </div>`;
     }).join('');
   });
 }
 
-// ========== RESGATE ==========
+// ========== NOTIFICAÇÃO DE PONTOS APROVADOS ==========
+let pontosAntes = null;
+function ouvirNotificacaoPontos() {
+  db.collection('consultoras').doc(user.id).onSnapshot(doc => {
+    const novoPts = doc.data()?.pontos || 0;
+    if (pontosAntes !== null && novoPts > pontosAntes) {
+      const ganhou = novoPts - pontosAntes;
+      const el = document.getElementById('notif-pts-txt');
+      if (el) el.textContent = 'Você ganhou +' + ganhou + ' pts! Uma indicação sua foi aprovada. 🎉';
+      document.getElementById('m-notif-pts').classList.add('show');
+    }
+    pontosAntes = novoPts;
+  });
+}
 window.resgatar = async function(nome, custo) {
   if (user.pontos < custo) {
     const faltam = custo - user.pontos;
@@ -773,6 +807,10 @@ function atualizarUI() {
   document.getElementById('disp-nome').textContent = nome;
   document.getElementById('disp-pts').textContent = p;
   document.getElementById('pts-topbar').textContent = p + ' pts';
+
+  // Contador de indicações
+  const dispInd = document.getElementById('disp-indicacoes');
+  if (dispInd) dispInd.textContent = user.indicacoes || 0;
 
   const OURO = '#FFD700';
   const VAZIO = 'rgba(255,255,255,0.2)';
