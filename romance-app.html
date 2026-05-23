@@ -70,24 +70,21 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .pts-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.07);}
 .pts-card::after{content:'';position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
 .pts-card-top{margin-bottom:18px;}
-.pts-greeting{font-size:13px;opacity:.75;margin-bottom:4px;font-weight:400;letter-spacing:.3px;}
-.pts-nome{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;line-height:1;letter-spacing:-.5px;color:#FFD700;text-shadow:0 2px 12px rgba(0,0,0,0.18);}
+.pts-greeting{font-size:14px;opacity:.75;margin-bottom:4px;font-weight:500;letter-spacing:.3px;}
+.pts-nome{font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:800;line-height:1;letter-spacing:-.5px;color:#FFD700;text-shadow:0 2px 12px rgba(0,0,0,0.18);}
 .pts-divider{height:1px;background:rgba(255,255,255,0.2);margin-bottom:18px;}
 .pts-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
 .pts-col{}
-.pts-label-sm{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:600;}
+.pts-label-sm{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:700;}
 .pts-row{display:flex;align-items:flex-end;gap:5px;}
-.pts-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1;}
-.pts-unit{font-size:15px;opacity:.8;padding-bottom:8px;font-weight:500;}
+.pts-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:800;line-height:1;}
+.pts-unit{font-size:16px;opacity:.8;padding-bottom:10px;font-weight:700;}
 .pts-col-right{text-align:right;}
-.pts-meta-sub{font-size:13px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;opacity:.85;}
+.pts-meta-sub{font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic;opacity:.9;}
 
 /* NÍVEL */
 .nivel-wrap{margin-bottom:16px;}
-.nivel-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
-.nivel-stars{display:flex;gap:6px;margin-bottom:6px;}
-.nivel-star{width:28px;height:28px;transition:all .4s;}
-.nivel-frase{font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;opacity:.9;margin-bottom:14px;}
+.nivel-frase{font-size:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;opacity:1;margin-bottom:14px;}
 
 /* BARRA PROGRESSO ESTILO PLACAR */
 .prox-premio-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
@@ -287,18 +284,12 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           </div>
         </div>
         <div class="pts-col-right">
-          <div class="pts-meta-sub" id="disp-meta-sub">para o seu presente especial Romance</div>
+          <div class="pts-meta-sub" id="disp-meta-sub">para o seu presente especial</div>
         </div>
       </div>
 
-      <!-- NÍVEL COM ESTRELAS -->
+      <!-- NÍVEL -->
       <div class="nivel-wrap">
-        <div class="nivel-label">Seu nível</div>
-        <div class="nivel-stars">
-          <svg class="nivel-star" id="star1" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
-          <svg class="nivel-star" id="star2" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
-          <svg class="nivel-star" id="star3" viewBox="0 0 24 24"><path d="M12 2l2.9 6.1L22 9.3l-5 5 1.2 7-6.2-3.4L5.8 21.3l1.2-7-5-5 7.1-1.2z" fill="rgba(255,255,255,0.2)"/></svg>
-        </div>
         <div class="nivel-frase" id="nivel-frase">Comece indicando sua primeira amiga!</div>
       </div>
 
@@ -789,76 +780,71 @@ function atualizarUI() {
   document.getElementById('disp-nome').textContent = nome;
   document.getElementById('disp-pts').textContent = p;
   document.getElementById('pts-topbar').textContent = p + ' pts';
-  document.getElementById('bar-fill').style.width = Math.min(100,(p/META)*100) + '%';
-  // ESTRELAS E FRASE MOTIVACIONAL
+
+  const OURO = '#FFD700';
+  const VAZIO = 'rgba(255,255,255,0.2)';
   const star1 = document.getElementById('star1');
   const star2 = document.getElementById('star2');
   const star3 = document.getElementById('star3');
   const frase = document.getElementById('nivel-frase');
-  const badge = document.getElementById('disp-meta-badge');
-
-  const OURO = '#FFD700';
-  const VAZIO = 'rgba(255,255,255,0.2)';
 
   if (p === 0) {
     if(star1) star1.querySelector('path').setAttribute('fill', VAZIO);
     if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
     if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Comece indicando sua primeira amiga!';
-    if(badge) badge.textContent = 'Faltam 50 pts';
   } else if (p < 50) {
     if(star1) star1.querySelector('path').setAttribute('fill', OURO);
     if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
     if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Falta pouco para resgatar seu presente!';
-    if(badge) badge.textContent = 'Faltam ' + (50 - p) + ' pts';
   } else if (p < 100) {
     if(star1) star1.querySelector('path').setAttribute('fill', OURO);
     if(star2) star2.querySelector('path').setAttribute('fill', OURO);
     if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Incrível! Você já pode resgatar a Sanduicheira!';
-    if(badge) badge.textContent = 'Faltam ' + (100 - p) + ' pts';
   } else if (p < 150) {
     if(star1) star1.querySelector('path').setAttribute('fill', OURO);
     if(star2) star2.querySelector('path').setAttribute('fill', OURO);
     if(star3) star3.querySelector('path').setAttribute('fill', OURO);
     if(frase) frase.textContent = 'Você está arrasando! Falta pouco para a Air Fryer!';
-    if(badge) badge.textContent = 'Faltam ' + (150 - p) + ' pts';
   } else {
     if(star1) star1.querySelector('path').setAttribute('fill', OURO);
     if(star2) star2.querySelector('path').setAttribute('fill', OURO);
     if(star3) star3.querySelector('path').setAttribute('fill', OURO);
     if(frase) frase.textContent = 'Parabéns! Você conquistou todos os prêmios!';
-    if(badge) badge.textContent = 'Meta atingida!';
   }
 
-  // Progressão visual dos prêmios
-  const b1 = document.getElementById('prog-b1');
-  const b2 = document.getElementById('prog-b2');
-  const b3 = document.getElementById('prog-b3');
-  const l1 = document.getElementById('prog-linha-1');
-  const l2 = document.getElementById('prog-linha-2');
+  // BARRA DE PROGRESSO POR PRÊMIO
+  let proxMeta, proxNome, baseAnterior;
+  if (p < 50)       { proxMeta = 50;  proxNome = 'Sanduicheira'; baseAnterior = 0; }
+  else if (p < 100) { proxMeta = 100; proxNome = 'Batedeira';    baseAnterior = 50; }
+  else if (p < 150) { proxMeta = 150; proxNome = 'Air Fryer';    baseAnterior = 100; }
+  else              { proxMeta = 150; proxNome = '';              baseAnterior = 150; }
 
-  // Bolinha 1 (50pts)
-  const bolinhas = document.querySelectorAll('.prog-bolinha');
-  if(bolinhas[0]) { bolinhas[0].classList.toggle('ativo', p > 0 && p < 50); bolinhas[0].classList.toggle('alcancado', p >= 50); }
-  if(b2) { b2.classList.toggle('ativo', p >= 50 && p < 100); b2.classList.toggle('alcancado', p >= 100); }
-  if(b3) { b3.classList.toggle('ativo', p >= 100 && p < 150); b3.classList.toggle('alcancado', p >= 150); }
-  if(l1) { l1.classList.toggle('ativo', p >= 50 && p < 100); l1.classList.toggle('alcancado', p >= 100); }
-  if(l2) { l2.classList.toggle('ativo', p >= 100 && p < 150); l2.classList.toggle('alcancado', p >= 150); }
+  const pct = p >= 150 ? 100 : Math.min(100, ((p - baseAnterior) / (proxMeta - baseAnterior)) * 100);
+  const barFill = document.getElementById('bar-fill');
+  if (barFill) barFill.style.width = pct + '%';
 
-  // Bloqueio dos cards
+  const proxLabel = document.getElementById('prox-label');
+  if (proxLabel) proxLabel.textContent = p >= 150 ? 'Você conquistou todos os prêmios!' : 'Próximo prêmio: ' + proxNome;
+
+  const barPts = document.getElementById('bar-pts-txt');
+  const barMeta = document.getElementById('bar-meta-txt');
+  if (barPts) barPts.textContent = p + ' pts';
+  if (barMeta) barMeta.textContent = p >= 150 ? '150 pts' : proxMeta + ' pts';
+
+  // Bloqueio dos cards de prêmio
   const c1 = document.getElementById('card-premio-1');
   const c2 = document.getElementById('card-premio-2');
   const c3 = document.getElementById('card-premio-3');
   const lk1 = document.getElementById('lock-1');
   const lk2 = document.getElementById('lock-2');
   const lk3 = document.getElementById('lock-3');
-
   if(c1) c1.classList.toggle('bloqueado', p < 50);
   if(c2) c2.classList.toggle('bloqueado', p < 100);
   if(c3) c3.classList.toggle('bloqueado', p < 150);
-  if(lk1) lk1.innerHTML = p < 50 ? '<span class="premio-lock-txt">Faltam '+(50-p)+' pts</span>' : '';
+  if(lk1) lk1.innerHTML = p < 50  ? '<span class="premio-lock-txt">Faltam '+(50-p)+' pts</span>'  : '';
   if(lk2) lk2.innerHTML = p < 100 ? '<span class="premio-lock-txt">Faltam '+(100-p)+' pts</span>' : '';
   if(lk3) lk3.innerHTML = p < 150 ? '<span class="premio-lock-txt">Faltam '+(150-p)+' pts</span>' : '';
 
