@@ -255,12 +255,9 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 <div id="screen-app" class="screen">
   <div class="topbar">
     <div class="tb-brand">
-      <div class="tb-icon">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 21C12 21 3 15 3 9C3 6.23858 5.23858 4 8 4C9.65685 4 11.1765 4.83165 12 6.10156C12.8235 4.83165 14.3431 4 16 4C18.7614 4 21 6.23858 21 9C21 15 12 21 12 21Z" fill="white"/>
-        </svg>
-      </div>
-      <span class="tb-name">Romance</span>
+      <img src="https://r7oliveira.github.io/romance-app/IMG_4878.jpeg" 
+           onerror="this.style.display='none'" 
+           style="height:32px;width:auto;object-fit:contain;" alt="Romance" />
     </div>
     <span class="tb-pts" id="pts-topbar">0 pts</span>
   </div>
@@ -783,35 +780,17 @@ function atualizarUI() {
 
   const OURO = '#FFD700';
   const VAZIO = 'rgba(255,255,255,0.2)';
-  const star1 = document.getElementById('star1');
-  const star2 = document.getElementById('star2');
-  const star3 = document.getElementById('star3');
   const frase = document.getElementById('nivel-frase');
 
   if (p === 0) {
-    if(star1) star1.querySelector('path').setAttribute('fill', VAZIO);
-    if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
-    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Comece indicando sua primeira amiga!';
   } else if (p < 50) {
-    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
-    if(star2) star2.querySelector('path').setAttribute('fill', VAZIO);
-    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Falta pouco para resgatar seu presente!';
   } else if (p < 100) {
-    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
-    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
-    if(star3) star3.querySelector('path').setAttribute('fill', VAZIO);
     if(frase) frase.textContent = 'Incrível! Você já pode resgatar a Sanduicheira!';
   } else if (p < 150) {
-    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
-    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
-    if(star3) star3.querySelector('path').setAttribute('fill', OURO);
     if(frase) frase.textContent = 'Você está arrasando! Falta pouco para a Air Fryer!';
   } else {
-    if(star1) star1.querySelector('path').setAttribute('fill', OURO);
-    if(star2) star2.querySelector('path').setAttribute('fill', OURO);
-    if(star3) star3.querySelector('path').setAttribute('fill', OURO);
     if(frase) frase.textContent = 'Parabéns! Você conquistou todos os prêmios!';
   }
 
