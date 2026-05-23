@@ -68,43 +68,35 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 /* SAUDAÇÃO FORA DO CARD */
 .saudacao-wrap{padding:8px 4px 16px;}
 .saudacao-ola{font-size:15px;color:var(--gray);font-weight:500;margin-bottom:2px;}
-.saudacao-nome{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:#FFD700;line-height:1;letter-spacing:-.5px;text-shadow:0 1px 8px rgba(0,0,0,0.08);}
+.saudacao-nome{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:var(--black);line-height:1;letter-spacing:-.5px;}
 
-/* PONTOS */
-.pts-card{background:linear-gradient(135deg,var(--pink) 0%,var(--pink-deep) 100%);border-radius:var(--radius);padding:24px 22px;color:white;margin-bottom:20px;position:relative;overflow:hidden;}
-.pts-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.07);}
-.pts-card::after{content:'';position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);}
-.pts-card-top{margin-bottom:18px;}
-.pts-greeting{font-size:14px;opacity:.75;margin-bottom:4px;font-weight:500;letter-spacing:.3px;}
-.pts-nome{font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:800;line-height:1;letter-spacing:-.5px;color:#FFD700;text-shadow:0 2px 12px rgba(0,0,0,0.18);}
-.pts-divider{height:1px;background:rgba(255,255,255,0.2);margin-bottom:18px;}
-.pts-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;}
-.pts-col{}
-.pts-label-sm{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;font-weight:700;}
-.pts-row{display:flex;align-items:flex-end;gap:5px;}
-.pts-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:800;line-height:1;}
-.pts-unit{font-size:16px;opacity:.8;padding-bottom:10px;font-weight:700;}
-.pts-col-right{text-align:right;}
-.pts-meta-sub{font-size:15px;font-family:'Cormorant Garamond',serif;font-weight:700;font-style:italic;opacity:.9;}
+/* PONTOS - ESTILO C */
+.pts-card{background:white;border-radius:var(--radius);padding:22px 20px;margin-bottom:20px;border:2px solid #FFD700;box-shadow:0 4px 24px rgba(255,215,0,0.15);}
+.pts-card::before{display:none;}
+.pts-card::after{display:none;}
+.pts-card-top{margin-bottom:10px;}
+.pts-label-sm{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.pts-row{display:flex;align-items:flex-end;gap:4px;margin-bottom:4px;}
+.pts-num{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:800;line-height:1;color:var(--pink);}
+.pts-unit{font-size:16px;font-weight:700;color:var(--pink);padding-bottom:10px;}
+
+/* NÍVEL */
+.nivel-frase{font-size:14px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;color:var(--gray);margin-bottom:10px;}
+.ind-counter{display:flex;align-items:center;gap:6px;font-size:12px;color:#bbb;font-weight:600;margin-bottom:14px;}
+
+/* BARRA ESTILO C - DOURADA */
+.prox-premio-label{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.bar-container{background:#f5f5f5;border-radius:99px;height:10px;overflow:hidden;margin-bottom:6px;}
+.bar-fill{height:100%;background:linear-gradient(90deg,#FFD700,#FFA500);border-radius:99px;transition:width 1.2s ease;}
+.bar-info{display:flex;justify-content:space-between;font-size:11px;color:#bbb;font-weight:600;}
 
 /* CARD PRÓXIMO PRÊMIO */
 .prox-card{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;}
 .prox-card-info{flex:1;}
-.prox-card-label{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:3px;}
-.prox-card-nome{font-size:18px;font-weight:800;margin-bottom:2px;}
-.prox-card-pts{font-size:12px;opacity:.8;}
+.prox-card-label{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:3px;}
+.prox-card-nome{font-size:18px;font-weight:800;color:var(--black);margin-bottom:2px;}
+.prox-card-pts{font-size:12px;color:var(--gray);}
 .prox-card-img{flex-shrink:0;}
-
-/* NÍVEL */
-.nivel-wrap{margin-bottom:16px;}
-.nivel-frase{font-size:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;opacity:1;margin-bottom:14px;}
-
-/* BARRA PROGRESSO ESTILO PLACAR */
-.prox-premio-label{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
-.bar-container{background:rgba(0,0,0,0.25);border-radius:6px;height:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.15);margin-bottom:6px;}
-.bar-fill{height:100%;background:linear-gradient(90deg,#FFD700,#fff176);border-radius:5px;transition:width 1.2s ease;position:relative;}
-.bar-fill::after{content:'';position:absolute;top:3px;left:6px;right:6px;height:4px;background:rgba(255,255,255,0.4);border-radius:99px;}
-.bar-info{display:flex;justify-content:space-between;font-size:11px;opacity:.75;}
 
 /* BOTAO WHATSAPP */
 .secao-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;}
@@ -135,7 +127,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .hist-nome{font-size:15px;font-weight:600;margin-bottom:3px;}
 .hist-data{font-size:12px;color:var(--gray);margin-bottom:5px;}
 .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
-.ind-counter{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:10px;margin-bottom:4px;}
 .badge-rep{background:#fee2e2;color:#dc2626;}
 .rank-eu{background:var(--pink-pale);border-radius:var(--radius-sm);}
 .badge-pend{background:var(--amber-bg);color:var(--amber);}
@@ -440,7 +431,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:4px;">Ranking do mês</div>
     <p style="font-size:14px;color:var(--gray);margin-bottom:18px;line-height:1.55;">As consultoras que mais indicaram novas revendedoras este mês.</p>
     <div class="card" id="lista-ranking"><div class="empty-state">Carregando...</div></div>
-    <div class="destaque-box"><strong>Desafio do mês:</strong> as 3 consultoras com mais cadastros confirmados ganham um brinde surpresa da representante.</div>
+    <div class="destaque-box"><strong>Desafio do mês:</strong> as 3 consultoras com mais cadastros confirmados ganham um brinde surpresa do representante.</div>
   </div>
 
   <nav class="bnav">
@@ -464,7 +455,17 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 </div>
 
 <!-- MODAIS -->
-<div class="overlay" id="m-link">
+<!-- MODAL NOTIFICAÇÃO DE PONTOS -->
+<div class="overlay" id="m-notif-pts">
+  <div class="modal">
+    <div class="modal-circle" style="background:#fff9e6;">
+      <span style="font-size:28px;">🎉</span>
+    </div>
+    <div class="modal-h">Parabéns!</div>
+    <p class="modal-p" id="notif-pts-txt">Você ganhou pontos! Uma indicação sua foi aprovada.</p>
+    <button class="btn-main" onclick="closeModal('m-notif-pts')">Eba! 🌟</button>
+  </div>
+</div>
   <div class="modal">
     <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="#D91A7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="modal-h">Link enviado</div>
