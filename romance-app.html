@@ -540,6 +540,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   </div>
 </div>
 
+<div class="overlay" id="m-boas-vindas">
+  <div class="modal">
+    <div class="modal-circle" style="background:var(--pink-soft);">🎉</div>
+    <div class="modal-h">Parabéns pela sua decisão!</div>
+    <p class="modal-p">Falta pouco para você ganhar uma renda extra! Preencha o cadastro abaixo e em breve entraremos em contato.</p>
+    <button class="btn-main" onclick="closeModal('m-boas-vindas')">Próximo</button>
+  </div>
+</div>
+
 <div class="overlay" id="m-resgate">
   <div class="modal">
     <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#D91A7A"/></svg></div>
@@ -622,6 +631,7 @@ function verificarRef() {
     refIndicadorId = refId;
     document.getElementById('cad-indicou').textContent = refIndicador;
     showScreen('screen-cadastro');
+    setTimeout(() => document.getElementById('m-boas-vindas').classList.add('show'), 400);
   }
 }
 
