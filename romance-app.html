@@ -664,11 +664,7 @@ window.confirmarCadastro = async function() {
       criadoEm: serverTimestamp()
     });
 
-    // Adiciona 10 pontos para quem indicou
-    await updateDoc(doc(db,'consultoras', refIndicadorId), {
-      pontos: increment(10),
-      indicacoes: increment(1)
-    });
+    // ⚠️ Pontos NÃO são somados aqui — só quando a representante aprovar!
 
     document.getElementById('m-cad-ok').classList.add('show');
     document.getElementById('cad-nome').value = '';
