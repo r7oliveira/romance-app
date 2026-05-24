@@ -374,7 +374,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       </svg>
       <div class="wbtn-texts">
         <span class="wbtn-titulo">Enviar link de cadastro pelo WhatsApp</span>
-        <span class="wbtn-sub">A amiga clica no link e preenche os dados dela mesma</span>
+        <span class="wbtn-sub">A amiga clica no link e preenche os dados</span>
       </div>
     </button>
 
@@ -385,14 +385,14 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="passo-num">1</div>
         <div class="passo-texto">
           <strong>Você envia o link</strong>
-          <p>Clica no botão verde acima. O WhatsApp abre com a mensagem pronta. Você só manda para a amiga.</p>
+          <p>O WhatsApp abre com a mensagem pronta. Você só manda para a sua indicação.</p>
         </div>
       </div>
       <div class="passo">
         <div class="passo-num">2</div>
         <div class="passo-texto">
           <strong>A amiga preenche o cadastro</strong>
-          <p>Ela clica no link, abre o formulário e preenche os dados dela mesma. Rápido e simples.</p>
+          <p>Ela clica no link, abre o formulário e preenche os dados. Rápido e simples.</p>
         </div>
       </div>
       <div class="passo">
@@ -485,7 +485,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <div class="page-hero-sub">As consultoras que mais indicaram novas revendedoras este mês.</div>
     </div>
     <div class="card" id="lista-ranking"><div class="empty-state">Carregando...</div></div>
-    <div class="destaque-box"><strong>Desafio do mês:</strong> as 3 consultoras com mais cadastros confirmados ganham um brinde surpresa do representante.</div>
+    <div class="destaque-box"><strong>Desafio do mês:</strong> a consultora com mais cadastros confirmados ganha um brinde surpresa do representante.</div>
   </div>
 
   <nav class="bnav">
@@ -535,7 +535,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   <div class="modal">
     <div class="modal-circle"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="#D91A7A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="modal-h">Cadastro enviado</div>
-    <p class="modal-p">Seu cadastro foi enviado para a representante. Em breve ela vai entrar em contato pelo WhatsApp para dar os próximos passos.</p>
+    <p class="modal-p">Seu cadastro foi enviado para o representante. Em breve ele vai entrar em contato pelo WhatsApp para dar os próximos passos.</p>
     <button class="btn-main" onclick="closeModal('m-cad-ok')">Fechar</button>
   </div>
 </div>
@@ -723,8 +723,7 @@ window.enviarLink = function() {
   const msg = encodeURIComponent(
     'Oi tudo! 😁🙋🏻‍♀️\n\n' +
     'Que acha de ter uma *renda extra*?\n\n' +
-    '☑️Você pode vender os produtos da *Romance*, e não vai precisar investir em nada!\n' +
-    'Eu já vendo e adoro os produtos deles!\n\n' +
+    '☑️Você pode vender os produtos da *Romance*, e não vai precisar investir em nada! Eu já vendo e adoro!\n\n' +
     'Faz seu cadastro agora aqui no link:\n' + link
   );
   window.open('https://wa.me/?text=' + msg, '_blank');
@@ -758,17 +757,18 @@ function ouvirIndicacoes() {
       lista.innerHTML = docs.map(d => {
         const i = d.data();
         const ini = (i.indicadaNome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-        const ok  = i.status === 'aprovada' || i.status === 'cadastrada';
+        const aprovada = i.status === 'aprovada';
         const rep = i.status === 'reprovada';
+        const ok = aprovada;
         const data = i.criadoEm?.toDate().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) || 'Agora';
         return `<div class="hist-row">
           <div class="hist-av">${ini}</div>
           <div class="hist-info">
             <div class="hist-nome">${i.indicadaNome}</div>
             <div class="hist-data">${data}${i.indicadaCidade ? ' · ' + i.indicadaCidade : ''}</div>
-            <span class="badge ${ok?'badge-ok':rep?'badge-rep':'badge-pend'}">${ok?'✓ Aprovada':rep?'✗ Reprovada':'⏳ Aguardando'}</span>
+            <span class="badge ${ok?'badge-ok':rep?'badge-rep':'badge-pend'}">${aprovada?'✓ Aprovada':rep?'✗ Reprovada':'⏳ Aguardando aprovação'}</span>
           </div>
-          <div class="hist-pts ${ok?'':'hist-pts-gray'}">${ok?'+10 pts':'0 pts'}</div>
+          <div class="hist-pts ${aprovada?'':'hist-pts-gray'}">${aprovada?'+10 pts':'0 pts'}</div>
         </div>`;
       }).join('');
     });
