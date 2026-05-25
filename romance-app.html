@@ -631,7 +631,7 @@ function verificarRef() {
     refIndicadorId = refId;
     document.getElementById('cad-indicou').textContent = refIndicador;
     showScreen('screen-cadastro');
-    setTimeout(() => { document.getElementById('m-boas-vindas').classList.add('show'); tocarSom('boas'); }, 400);
+    setTimeout(() => { document.getElementById('m-boas-vindas').classList.add('show'); tocarSom('boas'); }, 3000);
   }
 }
 
@@ -745,7 +745,7 @@ window.confirmarCadastro = async function() {
 
     // ⚠️ Pontos NÃO são somados aqui — só quando a representante aprovar!
 
-    tocarSom('cadastro'); document.getElementById('m-cad-ok').classList.add('show');
+    setTimeout(() => { tocarSom('cadastro'); document.getElementById('m-cad-ok').classList.add('show'); }, 3000);
     document.getElementById('cad-nome').value = '';
     document.getElementById('cad-tel').value = '';
     document.getElementById('cad-cidade').value = '';
@@ -861,7 +861,7 @@ function ouvirNotificacaoPontos() {
       const ganhou = novoPts - pontosAntes;
       const el = document.getElementById('notif-pts-txt');
       if (el) el.textContent = 'Você ganhou +' + ganhou + ' pts! Uma indicação sua foi aprovada. 🎉';
-      tocarSom('pontos'); document.getElementById('m-notif-pts').classList.add('show');
+      setTimeout(() => { tocarSom('pontos'); document.getElementById('m-notif-pts').classList.add('show'); }, 3000);
     }
     pontosAntes = novoPts;
   });
@@ -891,7 +891,7 @@ window.resgatar = async function(nome, custo) {
     atualizarUI();
     document.getElementById('m-resgate-txt').textContent =
       'Você resgatou: ' + nome + '. A representante vai entrar em contato pelo WhatsApp para combinar a entrega.';
-    tocarSom('resgate'); document.getElementById('m-resgate').classList.add('show');
+    setTimeout(() => { tocarSom('resgate'); document.getElementById('m-resgate').classList.add('show'); }, 3000);
   } catch(e) {
     alert('Erro ao solicitar resgate. Tente novamente.');
   } finally {
