@@ -379,7 +379,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     </button>
 
     <!-- COMO FUNCIONA -->
-    <div class="card">
+    <div class="card" id="sec-como-funciona">
       <div class="card-title">Como funciona</div>
       <div class="passo">
         <div class="passo-num">1</div>
@@ -558,6 +558,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   </div>
 </div>
 
+<div class="overlay" id="m-bem-vinda">
+  <div class="modal">
+    <div class="modal-circle" style="background:#fce4f3;font-size:28px;">🎉</div>
+    <div class="modal-h">Seja bem-vinda!</div>
+    <p class="modal-p">Vou te mostrar como funciona para participar e começar a ganhar prêmios!</p>
+    <button class="btn-main" onclick="closeModal('m-bem-vinda');verComoFunciona()">Ver como funciona →</button>
+  </div>
+</div>
+
 <div class="overlay" id="m-boas-vindas">
   <div class="modal">
     <div class="modal-circle" style="background:var(--pink-soft);">🎉</div>
@@ -687,6 +696,12 @@ function tocarSom(tipo) {
   } catch(e) {}
 }
 
+// Rola até "Como funciona"
+function verComoFunciona() {
+  const el = document.getElementById('sec-como-funciona');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // ========== LOGIN ==========
 window.entrar = async function() {
   const nome = document.getElementById('login-nome').value.trim();
@@ -711,6 +726,11 @@ window.entrar = async function() {
         criadoEm: firebase.firestore.FieldValue.serverTimestamp()
       });
       user = { id: tel, nome: nome, tel: tel, pontos: 0, indicacoes: 0 };
+      // Primeira vez — mostra boas-vindas após 2 segundos
+      setTimeout(() => {
+        tocarSom('boas');
+        document.getElementById('m-bem-vinda').classList.add('show');
+      }, 2000);
     }
 
     atualizarUI();
