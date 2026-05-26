@@ -964,7 +964,7 @@ function ouvirIndicacoes() {
       todasIndicacoesConsultora = snap.docs.map(d => ({id: d.id, ...d.data()}));
       // Toast de primeira indicação: mostra só se nunca indicou
       if (snap.empty) mostrarToastPrimeira();
-      else esconderToast(); // para o intervalo se indicou
+      else cancelarToast();
       atualizarBotaoCopo();
       // Atualiza pontos
       db.collection('consultoras').doc(user.id).get().then(d => {
@@ -1080,10 +1080,14 @@ function mostrarToastPrimeira() {
 }
 
 function esconderToast() {
+  // Apenas esconde visualmente — NÃO cancela o intervalo
   const toast = document.getElementById('toast-primeira-ind');
-  if (!toast) return;
-  toast.classList.remove('show');
-  // Para o intervalo quando a consultora fechar manualmente ou indicar
+  if (toast) toast.classList.remove('show');
+}
+
+function cancelarToast() {
+  // Cancela de vez — chamado só quando usuário fecha manualmente ou indica
+  esconderToast();
   if (_toastInterval) { clearInterval(_toastInterval); _toastInterval = null; }
 }
 
@@ -1093,9 +1097,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = document.getElementById('toast-close-btn');
   if (toast) toast.addEventListener('click', (e) => {
     if (e.target === closeBtn || closeBtn.contains(e.target)) {
-      esconderToast();
+      cancelarToast();
     } else {
-      esconderToast();
+      cancelarToast();
       setTimeout(() => document.querySelector('.btn-whats-link')?.click(), 300);
     }
   });
