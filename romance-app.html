@@ -199,17 +199,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .rank-nome{flex:1;font-size:15px;font-weight:600;}
 .rank-pts{font-size:14px;font-weight:700;color:var(--pink);}
 
-/* CONFETES */
-#confeti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;}
-#confeti-canvas.ativo{display:block;}
-
-/* MODAL PONTOS CELEBRATÓRIO */
-#m-notif-pts .modal{position:relative;overflow:hidden;}
-#m-notif-pts .modal-circle{font-size:36px;width:80px;height:80px;background:linear-gradient(135deg,#fff9e6,#fce4f3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 8px rgba(217,26,122,0.08),0 0 0 16px rgba(217,26,122,0.04);}
-.pts-ganhos-badge{display:inline-block;background:linear-gradient(135deg,var(--pink-deep),var(--pink));color:white;font-size:28px;font-weight:800;font-family:'Cormorant Garamond',serif;padding:8px 28px;border-radius:99px;margin:8px 0 16px;box-shadow:0 4px 20px rgba(217,26,122,0.35);}
-.modal-h-grande{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:800;text-align:center;margin-bottom:6px;}
-.pts-sub{font-size:13px;color:var(--gray);text-align:center;margin-bottom:8px;}
-
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:white;border-top:1px solid #efefef;display:flex;padding:10px 0 max(env(safe-area-inset-bottom),10px);z-index:200;box-shadow:0 -4px 24px rgba(0,0,0,0.06);}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 8px;}
@@ -253,11 +242,30 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
   </div>
   <div class="login-body">
-    <label class="fl">Seu nome completo</label>
-    <input class="fi" type="text" id="login-nome" placeholder="Ex: Maria da Silva" />
-    <label class="fl">Seu telefone (WhatsApp)</label>
-    <input class="fi" type="tel" id="login-tel" placeholder="(00) 00000-0000" />
+    <label class="fl">Seu CPF</label>
+    <input class="fi" type="text" id="login-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)" />
+    <div id="login-erro" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>
     <button class="btn-main" id="btn-entrar" onclick="entrar()">Entrar no programa</button>
+    <button class="btn-outline" id="btn-primeiro-acesso" onclick="abrirPrimeiroAcesso()" style="margin-top:10px;">Primeiro acesso? Cadastre-se aqui</button>
+  </div>
+</div>
+
+<!-- MODAL PRIMEIRO ACESSO -->
+<div class="overlay" id="m-primeiro-acesso">
+  <div class="modal" style="text-align:left;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;margin-bottom:6px;text-align:center;">Primeiro acesso</div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:18px;text-align:center;line-height:1.5;">Preencha seus dados para criar seu acesso ao app.</p>
+    <label class="fl">Nome completo</label>
+    <input class="fi" id="pa-nome" type="text" placeholder="Ex: Maria da Silva" />
+    <label class="fl">CPF</label>
+    <input class="fi" id="pa-cpf" type="text" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)" />
+    <label class="fl">Telefone (WhatsApp)</label>
+    <input class="fi" id="pa-tel" type="tel" placeholder="(00) 00000-0000" maxlength="15" oninput="mascaraTel(this)" />
+    <label class="fl">Cidade</label>
+    <input class="fi" id="pa-cidade" type="text" placeholder="Ex: São Paulo - SP" />
+    <div id="pa-erro" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none;"></div>
+    <button class="btn-main" id="btn-pa-confirmar" onclick="confirmarPrimeiroAcesso()">Criar meu acesso</button>
+    <button class="btn-outline" onclick="document.getElementById('m-primeiro-acesso').classList.remove('show')" style="margin-top:10px;">Cancelar</button>
   </div>
 </div>
 
@@ -551,21 +559,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 </div>
 
 <!-- MODAIS -->
-<!-- CANVAS DE CONFETES -->
-<canvas id="confeti-canvas"></canvas>
-
-<!-- MODAL NOTIFICAÇÃO DE PONTOS CELEBRATÓRIO -->
+<!-- MODAL NOTIFICAÇÃO DE PONTOS -->
 <div class="overlay" id="m-notif-pts">
   <div class="modal">
-    <div class="modal-circle">🎉</div>
-    <div class="modal-h-grande">Você foi aprovada!</div>
-    <div style="text-align:center;">
-      <div class="pts-ganhos-badge" id="badge-pts-ganhos">+10 pts</div>
+    <div class="modal-circle" style="background:#fff9e6;">
+      <span style="font-size:28px;">🎉</span>
     </div>
-    <p class="pts-sub" id="notif-pts-txt">Uma indicação sua foi aprovada pela representante!</p>
-    <button class="btn-main" onclick="fecharCelebracao()" style="background:linear-gradient(135deg,var(--pink-deep),var(--pink));font-size:17px;padding:18px;letter-spacing:.3px;">
-      Eba! Vou indicar mais! 🌟
-    </button>
+    <div class="modal-h">Parabéns!</div>
+    <p class="modal-p" id="notif-pts-txt">Você ganhou pontos! Uma indicação sua foi aprovada.</p>
+    <button class="btn-main" onclick="closeModal('m-notif-pts')">Eba! 🌟</button>
   </div>
 </div>
 
@@ -732,36 +734,96 @@ function verComoFunciona() {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ========== LOGIN ==========
+// ========== LOGIN POR CPF ==========
 window.entrar = async function() {
-  const nome = document.getElementById('login-nome').value.trim();
-  const tel  = document.getElementById('login-tel').value.trim().replace(/\D/g,'');
-  if (!nome || !tel) { alert('Preencha seu nome e telefone.'); return; }
+  const cpf = document.getElementById('login-cpf').value.trim().replace(/\D/g,'');
+  const erroEl = document.getElementById('login-erro');
+  erroEl.style.display = 'none';
+  if (!cpf || cpf.length < 11) { erroEl.textContent = 'Digite um CPF válido.'; erroEl.style.display = 'block'; return; }
 
-  loading(true, 'Entrando...');
+  loading(true, 'Verificando...');
   document.getElementById('btn-entrar').disabled = true;
 
   try {
-    const docRef = db.collection('consultoras').doc(tel);
-    const docSnap = await docRef.get();
+    // Busca consultora pelo CPF
+    const snap = await db.collection('consultoras').where('cpf', '==', cpf).get();
 
-    if (docSnap.exists) {
-      user = { id: tel, ...docSnap.data() };
-    } else {
-      await docRef.set({
-        nome: nome,
-        tel: tel,
-        pontos: 0,
-        indicacoes: 0,
-        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    if (!snap.empty) {
+      const docData = snap.docs[0];
+      user = { id: docData.id, ...docData.data() };
+      // Marca que acessou o app
+      await db.collection('consultoras').doc(docData.id).update({
+        acessouApp: true,
+        ultimoAcesso: firebase.firestore.FieldValue.serverTimestamp()
       });
-      user = { id: tel, nome: nome, tel: tel, pontos: 0, indicacoes: 0 };
-      // Primeira vez — mostra boas-vindas após 2 segundos
-      setTimeout(() => {
-        tocarSom('boas');
-        document.getElementById('m-bem-vinda').classList.add('show');
-      }, 2000);
+      user.acessouApp = true;
+      atualizarUI();
+      ouvirIndicacoes();
+      ouvirRanking();
+      ouvirNotificacaoPontos();
+      showScreen('screen-app');
+      resetNav(); colorNav(0);
+    } else {
+      erroEl.textContent = 'CPF não encontrado. Verifique ou faça seu primeiro acesso.';
+      erroEl.style.display = 'block';
     }
+  } catch(e) {
+    erroEl.textContent = 'Erro ao verificar. Tente novamente.';
+    erroEl.style.display = 'block';
+    console.error(e);
+  } finally {
+    loading(false);
+    document.getElementById('btn-entrar').disabled = false;
+  }
+}
+
+// ========== PRIMEIRO ACESSO ==========
+window.abrirPrimeiroAcesso = function() {
+  document.getElementById('pa-nome').value = '';
+  document.getElementById('pa-cpf').value = '';
+  document.getElementById('pa-tel').value = '';
+  document.getElementById('pa-cidade').value = '';
+  document.getElementById('pa-erro').style.display = 'none';
+  document.getElementById('m-primeiro-acesso').classList.add('show');
+}
+
+window.confirmarPrimeiroAcesso = async function() {
+  const nome    = document.getElementById('pa-nome').value.trim();
+  const cpf     = document.getElementById('pa-cpf').value.trim().replace(/\D/g,'');
+  const tel     = document.getElementById('pa-tel').value.trim().replace(/\D/g,'');
+  const cidade  = document.getElementById('pa-cidade').value.trim();
+  const erroEl  = document.getElementById('pa-erro');
+  erroEl.style.display = 'none';
+
+  if (!nome || !cpf || !tel || !cidade) { erroEl.textContent = 'Preencha todos os campos.'; erroEl.style.display = 'block'; return; }
+  if (cpf.length < 11) { erroEl.textContent = 'CPF inválido.'; erroEl.style.display = 'block'; return; }
+
+  loading(true, 'Criando acesso...');
+  document.getElementById('btn-pa-confirmar').disabled = true;
+
+  try {
+    // Verifica se CPF já existe
+    const snap = await db.collection('consultoras').where('cpf', '==', cpf).get();
+    if (!snap.empty) {
+      erroEl.textContent = 'Este CPF já está cadastrado. Use a tela de login.';
+      erroEl.style.display = 'block';
+      loading(false);
+      document.getElementById('btn-pa-confirmar').disabled = false;
+      return;
+    }
+
+    // Cria consultora sem indicação (já vende, primeiro acesso no app)
+    const novaRef = await db.collection('consultoras').add({
+      nome, cpf, tel, cidade,
+      pontos: 0, indicacoes: 0,
+      primeiroAcessoApp: true,  // marca que veio pelo app direto
+      acessouApp: true,
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+      ultimoAcesso: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    user = { id: novaRef.id, nome, cpf, tel, cidade, pontos: 0, indicacoes: 0, acessouApp: true };
+    document.getElementById('m-primeiro-acesso').classList.remove('show');
 
     atualizarUI();
     ouvirIndicacoes();
@@ -770,12 +832,18 @@ window.entrar = async function() {
     showScreen('screen-app');
     resetNav(); colorNav(0);
 
+    setTimeout(() => {
+      tocarSom('boas');
+      document.getElementById('m-bem-vinda').classList.add('show');
+    }, 1500);
+
   } catch(e) {
-    alert('Erro: ' + (e.message || e.code || JSON.stringify(e)));
-    console.error('ERRO LOGIN:', e);
+    erroEl.textContent = 'Erro ao criar acesso. Tente novamente.';
+    erroEl.style.display = 'block';
+    console.error(e);
   } finally {
     loading(false);
-    document.getElementById('btn-entrar').disabled = false;
+    document.getElementById('btn-pa-confirmar').disabled = false;
   }
 }
 
@@ -931,97 +999,13 @@ function ouvirNotificacaoPontos() {
     const novoPts = doc.data()?.pontos || 0;
     if (pontosAntes !== null && novoPts > pontosAntes) {
       const ganhou = novoPts - pontosAntes;
-      const badge = document.getElementById('badge-pts-ganhos');
       const el = document.getElementById('notif-pts-txt');
-      if (badge) badge.textContent = '+' + ganhou + ' pts';
-      if (el) el.textContent = 'Uma indicação sua foi aprovada pela representante. Continue indicando!';
-      setTimeout(() => {
-        tocarSom('pontos');
-        document.getElementById('m-notif-pts').classList.add('show');
-        iniciarConfetes();
-      }, 3000);
+      if (el) el.textContent = 'Você ganhou +' + ganhou + ' pts! Uma indicação sua foi aprovada. 🎉';
+      setTimeout(() => { tocarSom('pontos'); document.getElementById('m-notif-pts').classList.add('show'); }, 3000);
     }
     pontosAntes = novoPts;
   });
 }
-
-// ========== CONFETES ==========
-let _confetiRAF = null;
-let _confetiTimeout = null;
-
-function iniciarConfetes() {
-  const canvas = document.getElementById('confeti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvas.classList.add('ativo');
-
-  const cores = ['#D91A7A','#a8115e','#FFD700','#f7d6eb','#ff6eb4','#fff','#ff3d9a','#ffe066','#c0f0c0'];
-  const particulas = Array.from({length: 160}, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height - canvas.height,
-    r: Math.random() * 7 + 3,
-    d: Math.random() * 160,
-    cor: cores[Math.floor(Math.random() * cores.length)],
-    tilt: Math.floor(Math.random() * 10) - 10,
-    tiltAngle: 0,
-    tiltInc: (Math.random() * 0.07) + 0.05,
-    tipo: Math.random() > 0.5 ? 'circulo' : 'rect',
-    largura: Math.random() * 8 + 4,
-    altura: Math.random() * 5 + 3,
-    rot: Math.random() * Math.PI * 2,
-    rotInc: (Math.random() - 0.5) * 0.1,
-    vel: Math.random() * 3 + 1.5,
-  }));
-
-  let angulo = 0;
-  function frame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    angulo += 0.01;
-    particulas.forEach(p => {
-      p.tiltAngle += p.tiltInc;
-      p.y += (Math.cos(angulo + p.d) + p.vel);
-      p.x += Math.sin(angulo) * 1.2;
-      p.tilt = Math.sin(p.tiltAngle) * 12;
-      p.rot += p.rotInc;
-      ctx.save();
-      ctx.translate(p.x + p.r, p.y + p.r);
-      ctx.rotate(p.rot);
-      ctx.beginPath();
-      ctx.fillStyle = p.cor;
-      if (p.tipo === 'circulo') {
-        ctx.arc(0, 0, p.r, 0, Math.PI * 2);
-      } else {
-        ctx.rect(-p.largura/2, -p.altura/2, p.largura, p.altura);
-      }
-      ctx.fill();
-      ctx.restore();
-      if (p.y > canvas.height + 20) {
-        p.y = -20;
-        p.x = Math.random() * canvas.width;
-      }
-    });
-    _confetiRAF = requestAnimationFrame(frame);
-  }
-  if (_confetiRAF) cancelAnimationFrame(_confetiRAF);
-  frame();
-  // Para após 5 segundos
-  if (_confetiTimeout) clearTimeout(_confetiTimeout);
-  _confetiTimeout = setTimeout(pararConfetes, 5000);
-}
-
-function pararConfetes() {
-  if (_confetiRAF) { cancelAnimationFrame(_confetiRAF); _confetiRAF = null; }
-  const canvas = document.getElementById('confeti-canvas');
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.classList.remove('ativo');
-}
-
-window.fecharCelebracao = function() {
-  pararConfetes();
-  closeModal('m-notif-pts');
-};
 // Resgatar copo (apenas 1 vez, na primeira indicação aprovada)
 window.resgatarCopo = async function() {
   if (!user) return;
