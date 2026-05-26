@@ -940,6 +940,7 @@ function ouvirIndicacoes() {
       todasIndicacoesConsultora = snap.docs.map(d => ({id: d.id, ...d.data()}));
       // Toast de primeira indicação: mostra só se nunca indicou
       if (snap.empty) mostrarToastPrimeira();
+      else esconderToast(); // para o intervalo se indicou
       atualizarBotaoCopo();
       // Atualiza pontos
       db.collection('consultoras').doc(user.id).get().then(d => {
@@ -1014,24 +1015,56 @@ function ouvirRanking() {
 }
 
 // ========== TOAST PRIMEIRA INDICAÇÃO ==========
-let _toastMostrado = false;
+let _toastInterval = null;
+
+function tocarSomToast() {
+  // Som de notificação distinto: dois tons suaves agudos
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notas = [880, 1100];
+    notas.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.18);
+      gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + i * 0.18 + 0.04);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.18 + 0.22);
+      osc.start(ctx.currentTime + i * 0.18);
+      osc.stop(ctx.currentTime + i * 0.18 + 0.25);
+    });
+  } catch(e) {}
+}
+
 function mostrarToastPrimeira() {
-  if (_toastMostrado) return;
-  _toastMostrado = true;
   const toast = document.getElementById('toast-primeira-ind');
   if (!toast) return;
-  // Aparece após 2s
-  setTimeout(() => {
+
+  function exibir() {
     toast.classList.add('show');
-    // Some automaticamente após 5s
-    setTimeout(() => esconderToast(), 5000);
-  }, 2000);
+    tocarSomToast();
+    // Some após 15s
+    setTimeout(() => toast.classList.remove('show'), 15000);
+  }
+
+  // Primeira exibição após 15s
+  setTimeout(() => {
+    exibir();
+    // Repete a cada 1 minuto enquanto não indicar
+    _toastInterval = setInterval(exibir, 60000);
+  }, 15000);
 }
+
 function esconderToast() {
   const toast = document.getElementById('toast-primeira-ind');
   if (!toast) return;
   toast.classList.remove('show');
+  // Para o intervalo quando a consultora fechar manualmente ou indicar
+  if (_toastInterval) { clearInterval(_toastInterval); _toastInterval = null; }
 }
+
 // Clicar no toast leva ao botão WhatsApp
 document.addEventListener('DOMContentLoaded', () => {
   const toast = document.getElementById('toast-primeira-ind');
