@@ -735,6 +735,16 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 <!-- CANVAS CONFETE -->
 <canvas id="confete-canvas"></canvas>
 
+<!-- TOAST PRÊMIO DESBLOQUEADO -->
+<div class="toast-aniversario" id="toast-premio" style="background:linear-gradient(135deg,#7c3aed,#D91A7A);">
+  <div class="toast-aniv-icon" id="toast-premio-icon">🎁</div>
+  <div class="toast-aniv-texto">
+    <div class="toast-aniv-titulo" id="toast-premio-titulo">Prêmio desbloqueado!</div>
+    <div class="toast-aniv-sub" id="toast-premio-sub">Acesse Prêmios para resgatar</div>
+  </div>
+  <button class="toast-aniv-close" onclick="document.getElementById('toast-premio').classList.remove('show')">✕</button>
+</div>
+
 <!-- TOAST ANIVERSÁRIO -->
 <div class="toast-aniversario" id="toast-aniversario">
   <div class="toast-aniv-icon">🎂</div>
@@ -1267,9 +1277,70 @@ function ouvirNotificacaoPontos() {
         tocarSomAprovacao();
         document.getElementById('m-notif-pts').classList.add('show');
       }, 1500);
+
+      // Verifica se cruzou meta de prêmio
+      const metas = [
+        { pts: 10,  nome: 'Copo Personalizado',  icon: '🥤' },
+        { pts: 30,  nome: 'Sacola Estrelas',      icon: '⭐' },
+        { pts: 50,  nome: 'Sanduicheira',         icon: '🥪' },
+        { pts: 100, nome: 'Batedeira',            icon: '🍰' },
+        { pts: 150, nome: 'Air Fryer',            icon: '🍟' },
+      ];
+      const premioDesbloqueado = metas.find(m => pontosAntes < m.pts && novoPts >= m.pts);
+      if (premioDesbloqueado) {
+        setTimeout(() => mostrarToastPremio(premioDesbloqueado), 4000);
+      }
     }
     pontosAntes = novoPts;
   });
+}
+
+function mostrarToastPremio(premio) {
+  const toast = document.getElementById('toast-premio');
+  const titulo = document.getElementById('toast-premio-titulo');
+  const sub = document.getElementById('toast-premio-sub');
+  const icon = document.getElementById('toast-premio-icon');
+  if (!toast) return;
+  if (titulo) titulo.textContent = `🎉 ${premio.nome} desbloqueada!`;
+  if (sub) sub.textContent = 'Acesse Prêmios para resgatar agora!';
+  if (icon) icon.textContent = premio.icon;
+  toast.classList.add('show');
+  tocarSomPremio();
+  lancarConfete();
+  setTimeout(() => {
+    toast.classList.remove('show');
+    pararConfete();
+  }, 6000);
+}
+
+function tocarSomPremio() {
+  try {
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200, 100, 600]);
+  } catch(e) {}
+  try {
+    const ctx = _getAudioContext();
+    if (!ctx) return;
+    // Fanfarra: dó mi sol dó dó
+    const notas = [
+      [523.25, 0,    0.2],
+      [659.25, 0.2,  0.2],
+      [783.99, 0.4,  0.2],
+      [1046.5, 0.6,  0.4],
+      [1046.5, 1.1,  0.6],
+    ];
+    notas.forEach(([freq, t, dur]) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      const now = ctx.currentTime + t;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.35, now + 0.03);
+      gain.gain.linearRampToValueAtTime(0, now + dur);
+      osc.start(now); osc.stop(now + dur + 0.05);
+    });
+  } catch(e) {}
 }
 
 function tocarSomAprovacao() {
