@@ -128,6 +128,17 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .feed-input::placeholder{color:#bbb;}
 .feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
+/* TOAST ANIVERSÁRIO */
+.toast-aniversario{position:fixed;bottom:90px;left:16px;right:16px;max-width:398px;margin:0 auto;background:linear-gradient(135deg,#1a0612,#6b0d3a);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(169,17,94,0.4);z-index:9998;transform:translateY(120px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;pointer-events:none;}
+.toast-aniversario.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.toast-aniv-icon{width:44px;height:44px;min-width:44px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.toast-aniv-texto{flex:1;}
+.toast-aniv-titulo{font-size:14px;font-weight:800;color:white;line-height:1.3;margin-bottom:2px;}
+.toast-aniv-sub{font-size:11px;color:rgba(255,255,255,0.7);font-weight:500;}
+.toast-aniv-close{width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);border-radius:50%;cursor:pointer;font-size:13px;color:white;flex-shrink:0;border:none;}
+/* CONFETE */
+#confete-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;display:none;}
+
 /* TOAST PRIMEIRA INDICAÇÃO */
 .toast-primeira{position:fixed;bottom:90px;left:16px;right:16px;max-width:398px;margin:0 auto;background:#1a0612;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.28);z-index:9999;transform:translateY(120px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;pointer-events:none;}
 .toast-primeira.show{transform:translateY(0);opacity:1;pointer-events:auto;}
@@ -702,6 +713,19 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   </div>
 </div>
 
+<!-- CANVAS CONFETE -->
+<canvas id="confete-canvas"></canvas>
+
+<!-- TOAST ANIVERSÁRIO -->
+<div class="toast-aniversario" id="toast-aniversario">
+  <div class="toast-aniv-icon">🎂</div>
+  <div class="toast-aniv-texto">
+    <div class="toast-aniv-titulo" id="toast-aniv-titulo">Feliz Aniversário! 🎉</div>
+    <div class="toast-aniv-sub">A Romance celebra com você esse dia especial!</div>
+  </div>
+  <button class="toast-aniv-close" onclick="fecharToastAniv()">✕</button>
+</div>
+
 <!-- TOAST PRIMEIRA INDICAÇÃO -->
 <div class="toast-primeira" id="toast-primeira-ind">
   <div class="toast-icon">🎁</div>
@@ -908,6 +932,7 @@ window.entrar = async function() {
       ouvirRanking();
       ouvirNotificacaoPontos();
       ouvirFeed();
+      verificarAniversario();
       showScreen('screen-app');
       resetNav(); colorNav(0);
     } else {
@@ -1219,10 +1244,43 @@ function ouvirNotificacaoPontos() {
       const ganhou = novoPts - pontosAntes;
       const el = document.getElementById('notif-pts-txt');
       if (el) el.textContent = 'Você ganhou +' + ganhou + ' pts! Uma indicação sua foi aprovada. 🎉';
-      setTimeout(() => { tocarSom('pontos'); document.getElementById('m-notif-pts').classList.add('show'); }, 3000);
+      setTimeout(() => {
+        tocarSomAprovacao();
+        document.getElementById('m-notif-pts').classList.add('show');
+      }, 1500);
     }
     pontosAntes = novoPts;
   });
+}
+
+function tocarSomAprovacao() {
+  // Vibração celebratória
+  try {
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 300, 100, 400]);
+  } catch(e) {}
+  // Som especial: acorde ascendente festivo
+  try {
+    const ctx = _getAudioContext();
+    if (!ctx) return;
+    const notas = [
+      [523.25, 0,    0.3],  // dó
+      [659.25, 0.15, 0.3],  // mi
+      [783.99, 0.3,  0.3],  // sol
+      [1046.5, 0.5,  0.6],  // dó alto — sustentado
+    ];
+    notas.forEach(([freq, t, dur]) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const now = ctx.currentTime + t;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.3, now + 0.04);
+      gain.gain.linearRampToValueAtTime(0, now + dur);
+      osc.start(now); osc.stop(now + dur + 0.05);
+    });
+  } catch(e) {}
 }
 // Resgatar copo (apenas 1 vez, na primeira indicação aprovada)
 window.resgatarCopo = async function() {
@@ -1627,6 +1685,94 @@ window.goPage = function(id, el, idx) {
   _origGoPage(id, el, idx);
   const fab = document.getElementById('feed-fab');
   if (fab) fab.classList.toggle('show', id === 'feed');
+}
+
+// ========== ANIVERSÁRIO ==========
+function verificarAniversario() {
+  if (!user?.nascimento) return;
+  const hoje = new Date();
+  const parts = user.nascimento.split('/');
+  if (parts.length < 2) return;
+  const diaAniv = parseInt(parts[0]);
+  const mesAniv = parseInt(parts[1]);
+  if (hoje.getDate() === diaAniv && (hoje.getMonth() + 1) === mesAniv) {
+    setTimeout(() => {
+      const nome = user.nome.split(' ')[0];
+      document.getElementById('toast-aniv-titulo').textContent = `Feliz Aniversário, ${nome}! 🎉`;
+      document.getElementById('toast-aniversario').classList.add('show');
+      tocarSomAniversario();
+      lancarConfete();
+      setTimeout(() => fecharToastAniv(), 8000);
+    }, 3000);
+  }
+}
+
+function fecharToastAniv() {
+  document.getElementById('toast-aniversario').classList.remove('show');
+  pararConfete();
+}
+
+function tocarSomAniversario() {
+  try {
+    const ctx = _getAudioContext();
+    if (!ctx) return;
+    // Melodia de parabéns: sol sol lá sol dó si
+    const notas = [[392,0],[392,.4],[440,.8],[392,1.3],[523.25,1.8],[493.88,2.4]];
+    notas.forEach(([freq, t]) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const now = ctx.currentTime + t;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+      gain.gain.linearRampToValueAtTime(0, now + 0.35);
+      osc.start(now); osc.stop(now + 0.38);
+    });
+    if (navigator.vibrate) navigator.vibrate([200,100,200,100,400]);
+  } catch(e) {}
+}
+
+let _confeteFrame = null;
+function lancarConfete() {
+  const canvas = document.getElementById('confete-canvas');
+  canvas.style.display = 'block';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const cores = ['#D91A7A','#FFD700','#ff6b9d','#fff','#a855f7','#3b82f6'];
+  const particulas = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * -canvas.height,
+    r: Math.random() * 7 + 3,
+    cor: cores[Math.floor(Math.random() * cores.length)],
+    vx: (Math.random() - 0.5) * 3,
+    vy: Math.random() * 3 + 2,
+    angulo: Math.random() * 360,
+    rot: (Math.random() - 0.5) * 6
+  }));
+  function animar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particulas.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angulo * Math.PI / 180);
+      ctx.fillStyle = p.cor;
+      ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * 1.6);
+      ctx.restore();
+      p.x += p.vx; p.y += p.vy; p.angulo += p.rot;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+    });
+    _confeteFrame = requestAnimationFrame(animar);
+  }
+  animar();
+}
+
+function pararConfete() {
+  if (_confeteFrame) cancelAnimationFrame(_confeteFrame);
+  const canvas = document.getElementById('confete-canvas');
+  canvas.style.display = 'none';
 }
 
 // ========== INIT ==========
