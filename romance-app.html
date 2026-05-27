@@ -91,18 +91,22 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 /* FEED */
 .feed-fab{position:fixed;bottom:80px;right:18px;width:52px;height:52px;background:var(--pink);border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(217,26,122,0.4);cursor:pointer;z-index:190;border:none;}
 .feed-fab.show{display:flex;}
-.feed-post{background:white;border-radius:var(--radius);margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden;}
-.feed-post-header{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;}
-.feed-av{width:38px;height:38px;min-width:38px;border-radius:50%;background:var(--pink-soft);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--pink);}
-.feed-av.rep{background:var(--black);color:white;}
+.feed-post{background:white;margin-bottom:1px;overflow:hidden;border-bottom:1px solid #f0f0f0;}
+.feed-post-header{display:flex;align-items:center;gap:10px;padding:12px 14px 10px;}
+.feed-av{width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366);padding:2px;display:flex;align-items:center;justify-content:center;}
+.feed-av-inner{width:100%;height:100%;border-radius:50%;background:var(--pink-soft);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;color:var(--pink);border:2px solid white;}
+.feed-av.rep .feed-av-inner{background:var(--black);color:white;}
 .feed-badge-rep{display:inline-block;font-size:9px;font-weight:700;background:var(--black);color:white;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle;letter-spacing:.4px;}
-.feed-tempo{font-size:11px;color:#bbb;margin-top:1px;}
-.feed-texto{font-size:14px;color:#333;line-height:1.6;padding:0 14px 12px;}
-.feed-midia{width:100%;max-height:320px;object-fit:cover;display:block;}
-.feed-midia-video{width:100%;max-height:320px;display:block;background:#000;}
-.feed-acoes{display:flex;align-items:center;gap:0;padding:4px 8px 10px;border-top:1px solid #f5f5f5;}
-.feed-btn{display:flex;align-items:center;gap:5px;background:none;border:none;padding:8px 10px;font-size:13px;font-weight:600;color:#888;cursor:pointer;font-family:'Outfit',sans-serif;border-radius:8px;}
+.feed-autor{font-size:13px;font-weight:700;color:var(--black);}
+.feed-tempo{font-size:11px;color:#aaa;margin-top:0;}
+.feed-midia{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.feed-midia-video{width:100%;aspect-ratio:1/1;display:block;background:#000;object-fit:cover;}
+.feed-acoes{display:flex;align-items:center;gap:2px;padding:8px 10px 4px;}
+.feed-btn{display:flex;align-items:center;gap:4px;background:none;border:none;padding:6px 8px;font-size:13px;font-weight:600;color:#222;cursor:pointer;font-family:'Outfit',sans-serif;}
 .feed-btn.curtido{color:var(--pink);}
+.feed-curtidas-txt{font-size:13px;font-weight:700;color:var(--black);padding:0 14px 4px;}
+.feed-texto{font-size:13px;color:#222;line-height:1.5;padding:2px 14px 12px;}
+.feed-texto strong{font-weight:700;}
 .feed-curtidas{font-size:12px;color:#bbb;padding:0 6px;}
 .post-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;align-items:flex-end;justify-content:center;}
 .post-overlay.show{display:flex;}
@@ -114,6 +118,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .post-midia-preview.show{display:block;}
 .post-midia-btns{display:flex;gap:10px;margin-top:10px;}
 .post-midia-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#f5f5f5;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;color:var(--black);}
+/* COMENTÁRIOS */
+.feed-comentarios{padding:0 14px 8px;}
+.feed-comentario{font-size:13px;color:#222;margin-bottom:4px;line-height:1.4;}
+.feed-comentario strong{font-weight:700;}
+.feed-input-wrap{display:flex;align-items:center;gap:8px;padding:8px 14px 12px;border-top:1px solid #f0f0f0;}
+.feed-input-av{width:28px;height:28px;min-width:28px;border-radius:50%;background:var(--pink-soft);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--pink);}
+.feed-input{flex:1;border:none;outline:none;font-size:13px;font-family:'Outfit',sans-serif;color:#222;background:transparent;}
+.feed-input::placeholder{color:#bbb;}
+.feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
 /* TOAST PRIMEIRA INDICAÇÃO */
 .toast-primeira{position:fixed;bottom:90px;left:16px;right:16px;max-width:398px;margin:0 auto;background:#1a0612;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.28);z-index:9999;transform:translateY(120px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;pointer-events:none;}
@@ -1552,26 +1565,60 @@ function ouvirFeed() {
       const midia = p.midia ? (p.midiaTipo === 'video'
         ? `<video class="feed-midia-video" src="${p.midia}" controls playsinline></video>`
         : `<img class="feed-midia" src="${p.midia}" loading="lazy"/>`) : '';
+      const comentarios = (p.comentarios||[]).slice(-2).map(c =>
+        `<div class="feed-comentario"><strong>${c.autorNome.split(' ')[0]}</strong> ${c.texto}</div>`
+      ).join('');
+      const userIni = (user.nome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
       return `<div class="feed-post">
         <div class="feed-post-header">
-          <div class="feed-av ${isRep?'rep':''}">${ini}</div>
-          <div>
+          <div class="feed-av ${isRep?'rep':''}"><div class="feed-av-inner">${ini}</div></div>
+          <div style="flex:1;margin-left:2px;">
             <div class="feed-autor">${p.autorNome||'—'}${isRep?'<span class="feed-badge-rep">REP</span>':''}</div>
-            <div class="feed-tempo">${tempoRelativo(p.criadoEm)}</div>
           </div>
+          <div style="font-size:11px;color:#aaa;">${tempoRelativo(p.criadoEm)}</div>
         </div>
-        ${p.texto ? `<div class="feed-texto">${p.texto}</div>` : ''}
         ${midia}
         <div class="feed-acoes">
           <button class="feed-btn ${jaurtiu?'curtido':''}" onclick="curtirPost('${d.id}',this)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="${jaurtiu?'#D91A7A':'none'}" stroke="${jaurtiu?'#D91A7A':'#888'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            <span>${p.curtidas||0}</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="${jaurtiu?'#D91A7A':'none'}" stroke="${jaurtiu?'#D91A7A':'#222'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
-
+          <button class="feed-btn" onclick="focarComentario('inp-${d.id}')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+        ${(p.curtidas||0) > 0 ? `<div class="feed-curtidas-txt">${p.curtidas} curtida${p.curtidas>1?'s':''}</div>` : ''}
+        ${p.texto ? `<div class="feed-texto"><strong>${p.autorNome.split(' ')[0]}</strong> ${p.texto}</div>` : ''}
+        ${comentarios ? `<div class="feed-comentarios">${comentarios}</div>` : ''}
+        <div class="feed-input-wrap">
+          <div class="feed-input-av">${userIni}</div>
+          <input class="feed-input" id="inp-${d.id}" placeholder="Adicionar comentário..." />
+          <button class="feed-publicar-btn" onclick="comentar('${d.id}', 'inp-${d.id}')">Publicar</button>
         </div>
       </div>`;
     }).join('');
   });
+}
+
+window.focarComentario = function(inputId) {
+  const el = document.getElementById(inputId);
+  if (el) el.focus();
+}
+
+window.comentar = async function(postId, inputId) {
+  const inp = document.getElementById(inputId);
+  const texto = inp?.value?.trim();
+  if (!texto) return;
+  inp.value = '';
+  try {
+    await db.collection('feed').doc(postId).update({
+      comentarios: firebase.firestore.FieldValue.arrayUnion({
+        autorId: user.id,
+        autorNome: user.nome,
+        texto,
+        criadoEm: new Date().toISOString()
+      })
+    });
+  } catch(e) { console.error(e); }
 }
 
 // Mostrar/esconder FAB conforme página
