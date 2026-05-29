@@ -1541,21 +1541,15 @@ function atualizarUI() {
 
   // CARD PRÓXIMO PRÊMIO COM IMAGEM
   let proxMeta, proxNome, baseAnterior;
-  const aprovadas = (todasIndicacoesConsultora || []).filter(i => i.status === 'aprovada').length;
 
-  if (aprovadas === 0)  { proxMeta = 1;   proxNome = 'Copo Personalizado'; baseAnterior = 0; }
-  else if (p < 30)      { proxMeta = 30;  proxNome = 'Sacola Estrelas';    baseAnterior = 10; }
-  else if (p < 50)      { proxMeta = 50;  proxNome = 'Sanduicheira';       baseAnterior = 30; }
-  else if (p < 100)     { proxMeta = 100; proxNome = 'Batedeira';          baseAnterior = 50; }
-  else if (p < 150)     { proxMeta = 150; proxNome = 'Air Fryer';          baseAnterior = 100; }
-  else                  { proxMeta = 150; proxNome = 'Todos resgatados!';  baseAnterior = 150; }
+  if (p < 10)       { proxMeta = 10;  proxNome = 'Copo Personalizado'; baseAnterior = 0; }
+  else if (p < 30)  { proxMeta = 30;  proxNome = 'Sacola Estrelas';    baseAnterior = 10; }
+  else if (p < 50)  { proxMeta = 50;  proxNome = 'Sanduicheira';       baseAnterior = 30; }
+  else if (p < 100) { proxMeta = 100; proxNome = 'Batedeira';          baseAnterior = 50; }
+  else if (p < 150) { proxMeta = 150; proxNome = 'Air Fryer';          baseAnterior = 100; }
+  else              { proxMeta = 150; proxNome = 'Todos resgatados!';  baseAnterior = 150; }
 
-  let pct;
-  if (aprovadas === 0) {
-    pct = 0;
-  } else {
-    pct = p >= 150 ? 100 : Math.min(100, ((p - baseAnterior) / (proxMeta - baseAnterior)) * 100);
-  }
+  const pct = p >= 150 ? 100 : Math.min(100, ((p - baseAnterior) / (proxMeta - baseAnterior)) * 100);
   const barFill = document.getElementById('bar-fill');
   if (barFill) barFill.style.width = pct + '%';
 
@@ -1564,23 +1558,23 @@ function atualizarUI() {
 
   const proxPtsTxt = document.getElementById('prox-pts-txt');
   if (proxPtsTxt) {
-    if (aprovadas === 0)  proxPtsTxt.textContent = '🎁 Faça sua 1ª indicação!';
-    else if (p >= 150)    proxPtsTxt.textContent = 'Todos conquistados!';
-    else                  proxPtsTxt.textContent = 'Faltam ' + (proxMeta - p) + ' pts';
+    if (p < 10)        proxPtsTxt.textContent = '🎁 Faça sua 1ª indicação!';
+    else if (p >= 150) proxPtsTxt.textContent = 'Todos conquistados!';
+    else               proxPtsTxt.textContent = 'Faltam ' + (proxMeta - p) + ' pts';
   }
 
   const barPts = document.getElementById('bar-pts-txt');
   const barMeta = document.getElementById('bar-meta-txt');
-  if (barPts)  barPts.textContent  = aprovadas === 0 ? '0 indicações' : p + ' pts';
-  if (barMeta) barMeta.textContent = aprovadas === 0 ? '1ª indicação' : proxMeta + ' pts';
+  if (barPts)  barPts.textContent  = p < 10 ? '0 indicações' : p + ' pts';
+  if (barMeta) barMeta.textContent = p < 10 ? '1ª indicação' : proxMeta + ' pts';
 
   // Mostrar imagem correta
   const imgCopo = document.getElementById('prox-img-copo');
   const imgSand = document.getElementById('prox-img-sand');
   const imgBat  = document.getElementById('prox-img-bat');
   const imgAir  = document.getElementById('prox-img-air');
-  if (imgCopo) imgCopo.style.display = aprovadas === 0 ? 'block' : 'none';
-  if (imgSand) imgSand.style.display = (aprovadas > 0 && p >= 10 && p < 50)  ? 'block' : 'none';
+  if (imgCopo) imgCopo.style.display = p < 10 ? 'block' : 'none';
+  if (imgSand) imgSand.style.display = (p >= 10 && p < 50)  ? 'block' : 'none';
   if (imgBat)  imgBat.style.display  = (p >= 50 && p < 100) ? 'block' : 'none';
   if (imgAir)  imgAir.style.display  = p >= 100 ? 'block' : 'none';
 
