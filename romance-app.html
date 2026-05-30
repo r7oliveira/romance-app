@@ -860,6 +860,12 @@ function verificarRef() {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get('ref');
   const refId = params.get('refId');
+  const repId = params.get('repId');
+  const repNome = params.get('repNome');
+  if (repId) {
+    window._repId = decodeURIComponent(repId);
+    window._repNome = decodeURIComponent(repNome || '');
+  }
   if (ref && refId) {
     refIndicador = decodeURIComponent(ref);
     refIndicadorId = refId;
@@ -1017,7 +1023,8 @@ window.confirmarPrimeiroAcesso = async function() {
     const novaRef = await db.collection('consultoras').add({
       nome, cpf, tel, cidade,
       pontos: 0, indicacoes: 0,
-      primeiroAcessoApp: true,  // marca que veio pelo app direto
+      representanteId: window._repId || '',
+      primeiroAcessoApp: true,
       acessouApp: true,
       criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
       ultimoAcesso: firebase.firestore.FieldValue.serverTimestamp()
@@ -1066,6 +1073,7 @@ window.confirmarCadastro = async function() {
     const novaRef = await addDoc(collection(db,'consultoras'), {
       nome, tel, cidade, cpf, nascimento,
       pontos: 0, indicacoes: 0,
+      representanteId: window._repId || '',
       criadoEm: serverTimestamp()
     });
 
@@ -1077,6 +1085,7 @@ window.confirmarCadastro = async function() {
       indicadaNome: nome,
       indicadaTel: tel,
       indicadaCidade: cidade,
+      representanteId: window._repId || '',
       status: 'cadastrada',
       criadoEm: serverTimestamp()
     });
@@ -1101,7 +1110,8 @@ window.confirmarCadastro = async function() {
 // ========== ENVIAR LINK WHATSAPP ==========
 window.enviarLink = function() {
   const base = window.location.href.split('?')[0];
-  const link = base + '?ref=' + encodeURIComponent(user.nome) + '&refId=' + user.id;
+  const repId = user.representanteId ? '&repId=' + encodeURIComponent(user.representanteId) : '';
+  const link = base + '?ref=' + encodeURIComponent(user.nome) + '&refId=' + user.id + repId;
   const msg = encodeURIComponent(
     'Oi tudo! 😁🙋🏻‍♀️\n\n' +
     'Que acha de ter uma *renda extra*?\n\n' +
