@@ -491,7 +491,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <div class="passo">
         <div class="passo-num">3</div>
         <div class="passo-texto">
-          <strong>Você ganha 10 pontos</strong>
+          <strong>Você ganha pontos</strong>
           <p>Assim que ela finalizar o cadastro, e o mesmo for aprovado, os pontos aparecem na sua conta automaticamente.</p>
         </div>
       </div>
@@ -1541,8 +1541,11 @@ function atualizarUI() {
   const VAZIO = 'rgba(255,255,255,0.2)';
   const frase = document.getElementById('nivel-frase');
 
+  const metasResgate = [10, 30, 50, 100, 150];
   if (p === 0) {
     if(frase) frase.textContent = 'Comece indicando sua primeira amiga!';
+  } else if (metasResgate.includes(p)) {
+    if(frase) frase.textContent = 'Você ganhou um presente! Vá no botão resgatar! 🎉';
   } else if (p < 50) {
     if(frase) frase.textContent = 'Falta pouco para resgatar seu presente!';
   } else if (p < 100) {
