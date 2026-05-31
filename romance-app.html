@@ -2079,27 +2079,27 @@ window.carregarMeta = function() {
         const pix = (a.pagamentoPix || 0).toFixed(2).replace('.', ',');
         const din = (a.pagamentoDinheiro || 0).toFixed(2).replace('.', ',');
         const total = (a.totalPago || 0).toFixed(2).replace('.', ',');
-        return \`
+        return `
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <div style="font-size:12px;font-weight:700;color:var(--gray);">\${i === 0 ? '🟢 ÚLTIMO ACERTO' : 'ACERTO'} · \${dataStr}</div>
+              <div style="font-size:12px;font-weight:700;color:var(--gray);">${i === 0 ? '🟢 ÚLTIMO ACERTO' : 'ACERTO'} · ${dataStr}</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
               <div style="background:#f7f7f7;border-radius:10px;padding:10px;">
                 <div style="font-size:11px;color:var(--gray);font-weight:600;margin-bottom:2px;">Valor vendido</div>
-                <div style="font-size:17px;font-weight:800;color:var(--black);">R$ \${v}</div>
+                <div style="font-size:17px;font-weight:800;color:var(--black);">R$ ${v}</div>
               </div>
               <div style="background:var(--pink-pale);border-radius:10px;padding:10px;border:1px solid var(--pink-soft);">
                 <div style="font-size:11px;color:var(--pink-deep);font-weight:600;margin-bottom:2px;">Meta gerada</div>
-                <div style="font-size:17px;font-weight:800;color:var(--pink);">R$ \${m}</div>
+                <div style="font-size:17px;font-weight:800;color:var(--pink);">R$ ${m}</div>
               </div>
             </div>
             <div style="font-size:12px;color:var(--gray);border-top:1px solid #f0f0f0;padding-top:8px;display:flex;gap:12px;">
-              <span>💳 Pix: <strong>R$ \${pix}</strong></span>
-              <span>💵 Dinheiro: <strong>R$ \${din}</strong></span>
-              <span>= <strong>R$ \${total}</strong></span>
+              <span>💳 Pix: <strong>R$ ${pix}</strong></span>
+              <span>💵 Dinheiro: <strong>R$ ${din}</strong></span>
+              <span>= <strong>R$ ${total}</strong></span>
             </div>
-          </div>\`;
+          </div>`;
       }).join('');
     })
     .catch(e => {
