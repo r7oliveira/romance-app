@@ -642,8 +642,8 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       </div>
     </div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">HISTÓRICO DE ACERTOS</div>
-    <div id="meta-historico"><div class="empty-state">Carregando...</div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;padding:0 2px;">HISTÓRICO DE ACERTOS</div>
+    <div id="meta-historico"><div class="empty-state">Abra esta aba para carregar o histórico.</div></div>
   </div>
 
   <!-- RANKING -->
@@ -795,6 +795,16 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     <div class="toast-aniv-sub">A Romance celebra com você esse dia especial!</div>
   </div>
   <button class="toast-aniv-close" onclick="fecharToastAniv()">✕</button>
+</div>
+
+<!-- TOAST NOVA META -->
+<div class="toast-aniversario" id="toast-nova-meta" style="background:linear-gradient(135deg,#0d4a1a,#1a7a3a);">
+  <div class="toast-aniv-icon">🎯</div>
+  <div class="toast-aniv-texto">
+    <div class="toast-aniv-titulo">Nova meta registrada!</div>
+    <div class="toast-aniv-sub" id="toast-meta-sub">Veja na aba Meta 💜</div>
+  </div>
+  <button class="toast-aniv-close" onclick="document.getElementById('toast-nova-meta').classList.remove('show')">✕</button>
 </div>
 
 <!-- TOAST PRIMEIRA INDICAÇÃO -->
@@ -1319,8 +1329,23 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========== NOTIFICAÇÃO DE PONTOS APROVADOS ==========
 let pontosAntes = null;
 function ouvirNotificacaoPontos() {
+  let metaAntes = null;
   db.collection('consultoras').doc(user.id).onSnapshot(doc => {
-    const novoPts = doc.data()?.pontos || 0;
+    const data = doc.data() || {};
+    const novoPts = data.pontos || 0;
+    const novaMeta = data.proximaMeta || null;
+
+    // Notificação de nova meta
+    if (metaAntes !== null && novaMeta && novaMeta !== metaAntes) {
+      const sub = document.getElementById('toast-meta-sub');
+      if (sub) sub.textContent = 'Sua nova meta é R$ ' + parseFloat(novaMeta).toFixed(2).replace('.', ',') + ' 🎯';
+      setTimeout(() => {
+        const t = document.getElementById('toast-nova-meta');
+        if (t) { t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 6000); }
+      }, 800);
+    }
+    metaAntes = novaMeta;
+
     if (pontosAntes !== null && novoPts > pontosAntes) {
       const ganhou = novoPts - pontosAntes;
       const el = document.getElementById('notif-pts-txt');
@@ -2006,6 +2031,8 @@ window.carregarMeta = function() {
   if (!user || !user.id) return;
 
   // Busca acertos da consultora ordenados por data
+  // Nota: requer índice composto no Firestore (consultorId + data)
+  // Se der erro de índice, o link para criá-lo aparece no console
   db.collection('acertos')
     .where('consultorId', '==', user.id)
     .orderBy('data', 'desc')
@@ -2032,11 +2059,15 @@ window.carregarMeta = function() {
       document.getElementById('meta-sem-dados').style.display = 'none';
       document.getElementById('meta-barra-wrap').style.display = 'block';
 
-      // Barra de progresso (mostra progresso em relação à meta)
+      // Barra de progresso: mostra último vendido em relação à meta
+      // A barra representa: "você vendeu X, a meta é Y"
+      // Sempre começa em 0 e vai até a meta — o ponto atual é o último vendido
       const pct = Math.min(100, Math.round((vendido / meta) * 100));
-      document.getElementById('meta-barra-fill').style.width = pct + '%';
-      document.getElementById('meta-pct-label').textContent = pct + '%';
-      document.getElementById('meta-base-label').textContent = 'R$ ' + vendido.toFixed(2).replace('.', ',');
+      setTimeout(() => {
+        document.getElementById('meta-barra-fill').style.width = pct + '%';
+      }, 100);
+      document.getElementById('meta-pct-label').textContent = 'Último: ' + pct + '% da meta';
+      document.getElementById('meta-base-label').textContent = 'R$ 0';
       document.getElementById('meta-topo-label').textContent = 'Meta: R$ ' + meta.toFixed(2).replace('.', ',');
 
       // Histórico
@@ -2072,7 +2103,11 @@ window.carregarMeta = function() {
       }).join('');
     })
     .catch(e => {
-      document.getElementById('meta-historico').innerHTML = '<div class="empty-state">Erro ao carregar histórico.</div>';
+      console.error('Erro carregarMeta:', e);
+      const msg = e.code === 'failed-precondition'
+        ? 'Índice do banco ainda sendo criado. Tente em alguns minutos.'
+        : 'Erro ao carregar histórico.';
+      document.getElementById('meta-historico').innerHTML = '<div class="empty-state">' + msg + '</div>';
     });
 };
 
