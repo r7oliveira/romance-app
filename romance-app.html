@@ -608,6 +608,44 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
   </div>
 
+  <!-- META -->
+  <div class="page" id="page-meta">
+    <div class="page-hero">
+      <div class="page-hero-titulo">🎯 Minha Meta</div>
+      <div class="page-hero-sub">Acompanhe sua meta de vendas para o próximo atendimento.</div>
+    </div>
+
+    <!-- Card meta atual -->
+    <div class="card" id="meta-card-atual" style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">PRÓXIMA META DE VENDAS</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:4px;">
+        <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:800;color:var(--pink);line-height:1;">—</div>
+      </div>
+      <div id="meta-ultimo-vendido" style="font-size:13px;color:var(--gray);margin-bottom:16px;">Nenhum acerto registrado ainda.</div>
+
+      <div id="meta-barra-wrap" style="display:none;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:6px;">
+          <span>Último vendido</span>
+          <span id="meta-pct-label">0%</span>
+        </div>
+        <div style="background:#f0f0f0;border-radius:99px;height:10px;overflow:hidden;margin-bottom:6px;">
+          <div id="meta-barra-fill" style="height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--pink));border-radius:99px;width:0%;transition:width .6s ease;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;">
+          <span id="meta-base-label" style="color:var(--gray);">R$ 0,00</span>
+          <span id="meta-topo-label" style="color:var(--pink);font-weight:700;">Meta: R$ 0,00</span>
+        </div>
+      </div>
+
+      <div id="meta-sem-dados" style="background:var(--pink-pale);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:var(--pink-deep);font-weight:600;">
+        Aguarde seu representante registrar o próximo acerto 💜
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">HISTÓRICO DE ACERTOS</div>
+    <div id="meta-historico"><div class="empty-state">Carregando...</div></div>
+  </div>
+
   <!-- RANKING -->
   <div class="page" id="page-ranking">
     <div class="page-hero">
@@ -641,11 +679,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#bbb" id="ni2"/></svg>
       <span class="bnav-lbl">Prêmios</span>
     </div>
-    <div class="bnav-item" onclick="goPage('ranking',this,3)">
+    <div class="bnav-item" onclick="goPage('meta',this,3);carregarMeta()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#bbb" id="ni5"/></svg>
+      <span class="bnav-lbl">Meta</span>
+    </div>
+    <div class="bnav-item" onclick="goPage('ranking',this,4)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="14" width="5" height="7" rx="1" fill="#bbb" id="ni3a"/><rect x="9.5" y="9" width="5" height="12" rx="1" fill="#bbb" id="ni3b"/><rect x="17" y="4" width="5" height="17" rx="1" fill="#bbb" id="ni3c"/></svg>
       <span class="bnav-lbl">Ranking</span>
     </div>
-    <div class="bnav-item" onclick="goPage('feed',this,4)">
+    <div class="bnav-item" onclick="goPage('feed',this,5)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" fill="#bbb" id="ni4"/></svg>
       <span class="bnav-lbl">Feed</span>
     </div>
@@ -1618,8 +1660,8 @@ function atualizarUI() {
 }
 
 // ========== NAV ==========
-const PAGES = ['inicio','historico','premios','ranking','feed'];
-const ICONS = [['ni0'],['ni1'],['ni2'],['ni3a','ni3b','ni3c'],['ni4']];
+const PAGES = ['inicio','historico','premios','meta','ranking','feed'];
+const ICONS = [['ni0'],['ni1'],['ni2'],['ni5'],['ni3a','ni3b','ni3c'],['ni4']];
 
 window.goPage = function(id, el, idx) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1958,6 +2000,82 @@ window.mascaraData = function(el) {
   else if(v.length > 2) v = v.slice(0,2) + '/' + v.slice(2);
   el.value = v;
 }
+
+// ===== ABA META =====
+window.carregarMeta = function() {
+  if (!user || !user.id) return;
+
+  // Busca acertos da consultora ordenados por data
+  db.collection('acertos')
+    .where('consultorId', '==', user.id)
+    .orderBy('data', 'desc')
+    .get()
+    .then(snap => {
+      if (snap.empty) {
+        // Sem acertos
+        document.getElementById('meta-valor-display').textContent = '—';
+        document.getElementById('meta-ultimo-vendido').textContent = 'Nenhum acerto registrado ainda.';
+        document.getElementById('meta-barra-wrap').style.display = 'none';
+        document.getElementById('meta-sem-dados').style.display = 'block';
+        document.getElementById('meta-historico').innerHTML = '<div class="empty-state">Nenhum acerto registrado ainda.</div>';
+        return;
+      }
+
+      const acertos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const ultimo = acertos[0];
+      const meta = ultimo.proximaMeta || 0;
+      const vendido = ultimo.valorVendido || 0;
+
+      // Atualiza card principal
+      document.getElementById('meta-valor-display').textContent = 'R$ ' + meta.toFixed(2).replace('.', ',');
+      document.getElementById('meta-ultimo-vendido').textContent = 'Baseado no último vendido: R$ ' + vendido.toFixed(2).replace('.', ',');
+      document.getElementById('meta-sem-dados').style.display = 'none';
+      document.getElementById('meta-barra-wrap').style.display = 'block';
+
+      // Barra de progresso (mostra progresso em relação à meta)
+      const pct = Math.min(100, Math.round((vendido / meta) * 100));
+      document.getElementById('meta-barra-fill').style.width = pct + '%';
+      document.getElementById('meta-pct-label').textContent = pct + '%';
+      document.getElementById('meta-base-label').textContent = 'R$ ' + vendido.toFixed(2).replace('.', ',');
+      document.getElementById('meta-topo-label').textContent = 'Meta: R$ ' + meta.toFixed(2).replace('.', ',');
+
+      // Histórico
+      const hist = document.getElementById('meta-historico');
+      hist.innerHTML = acertos.map((a, i) => {
+        const dataStr = a.data?.toDate ? a.data.toDate().toLocaleDateString('pt-BR') : '—';
+        const v = (a.valorVendido || 0).toFixed(2).replace('.', ',');
+        const m = (a.proximaMeta || 0).toFixed(2).replace('.', ',');
+        const pix = (a.pagamentoPix || 0).toFixed(2).replace('.', ',');
+        const din = (a.pagamentoDinheiro || 0).toFixed(2).replace('.', ',');
+        const total = (a.totalPago || 0).toFixed(2).replace('.', ',');
+        return \`
+          <div class="card" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:12px;font-weight:700;color:var(--gray);">\${i === 0 ? '🟢 ÚLTIMO ACERTO' : 'ACERTO'} · \${dataStr}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+              <div style="background:#f7f7f7;border-radius:10px;padding:10px;">
+                <div style="font-size:11px;color:var(--gray);font-weight:600;margin-bottom:2px;">Valor vendido</div>
+                <div style="font-size:17px;font-weight:800;color:var(--black);">R$ \${v}</div>
+              </div>
+              <div style="background:var(--pink-pale);border-radius:10px;padding:10px;border:1px solid var(--pink-soft);">
+                <div style="font-size:11px;color:var(--pink-deep);font-weight:600;margin-bottom:2px;">Meta gerada</div>
+                <div style="font-size:17px;font-weight:800;color:var(--pink);">R$ \${m}</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--gray);border-top:1px solid #f0f0f0;padding-top:8px;display:flex;gap:12px;">
+              <span>💳 Pix: <strong>R$ \${pix}</strong></span>
+              <span>💵 Dinheiro: <strong>R$ \${din}</strong></span>
+              <span>= <strong>R$ \${total}</strong></span>
+            </div>
+          </div>\`;
+      }).join('');
+    })
+    .catch(e => {
+      document.getElementById('meta-historico').innerHTML = '<div class="empty-state">Erro ao carregar histórico.</div>';
+    });
+};
+
 </script>
 </body>
 </html>
