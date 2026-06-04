@@ -1497,18 +1497,21 @@ function atualizarBotaoSacola() {
   if (!btn) return;
   const p = user.pontos || 0;
   const faltam = Math.max(0, 30 - p);
+  const card = document.getElementById('card-premio-sacola');
   if (faltam > 0) {
     btn.disabled = true;
     btn.textContent = `🔒 Faltam ${faltam} pts para a Sacola Estrelas`;
     btn.style.background = '#ccc';
     btn.style.cursor = 'not-allowed';
     if (lock) lock.innerHTML = `<span style="font-size:12px;color:#aaa;">Você tem ${p}/30 pontos</span>`;
+    if (card) { card.classList.add('bloqueado'); card.style.border = '1.5px solid #eee'; }
   } else {
     btn.disabled = false;
     btn.textContent = 'Quero minha Sacola Estrelas →';
     btn.style.background = 'linear-gradient(135deg,#FFD700,#FFA500)';
     btn.style.cursor = 'pointer';
     if (lock) lock.textContent = '';
+    if (card) { card.classList.remove('bloqueado'); card.style.border = '2px solid #FFD700'; }
   }
 }
 
