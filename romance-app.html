@@ -129,6 +129,35 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
 /* TOAST ANIVERSÁRIO */
+/* ===== MODAL PERFIL ===== */
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:none;align-items:flex-end;justify-content:center;}
+.modal-wrap.show{display:flex;}
+.modal-box{background:white;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:24px 20px 36px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-title{font-size:17px;font-weight:700;color:#222;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.modal-close{margin-left:auto;background:none;border:none;font-size:22px;color:#999;cursor:pointer;line-height:1;}
+.perfil-linha{display:flex;flex-direction:column;gap:4px;margin-bottom:16px;}
+.perfil-label{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;}
+.perfil-valor{font-size:15px;font-weight:600;color:#333;}
+
+/* ===== MENU LATERAL ===== */
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:300;pointer-events:none;transition:background .3s;}
+.menu-overlay.open{background:rgba(0,0,0,0.45);pointer-events:auto;}
+.menu-lateral{position:fixed;top:0;left:-320px;width:300px;height:100%;background:white;z-index:301;transition:left .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,0.15);display:flex;flex-direction:column;overflow-y:auto;}
+.menu-lateral.open{left:0;}
+.menu-header{background:linear-gradient(135deg,var(--pink-deep),var(--pink));padding:40px 20px 24px;display:flex;align-items:center;gap:14px;}
+.menu-avatar{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;flex-shrink:0;}
+.menu-user-nome{font-size:17px;font-weight:700;color:white;line-height:1.2;}
+.menu-user-sub{font-size:12px;color:rgba(255,255,255,0.8);margin-top:2px;}
+.menu-item{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;border-bottom:1px solid #f5f5f5;transition:background .15s;}
+.menu-item:active{background:#f9f9f9;}
+.menu-item-icon{font-size:20px;width:28px;text-align:center;}
+.menu-item-label{font-size:15px;font-weight:600;color:#333;}
+.menu-item-sub{font-size:12px;color:var(--gray);margin-top:1px;}
+.menu-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.2);border:none;color:white;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.menu-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;flex-direction:column;gap:5px;justify-content:center;}
+.menu-btn span{display:block;width:22px;height:2px;background:#333;border-radius:2px;transition:all .3s;}
+
 .toast-aniversario{position:fixed;bottom:90px;left:16px;right:16px;max-width:398px;margin:0 auto;background:linear-gradient(135deg,#1a0612,#6b0d3a);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(169,17,94,0.4);z-index:9998;transform:translateY(120px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;pointer-events:none;}
 .toast-aniversario.show{transform:translateY(0);opacity:1;pointer-events:auto;}
 .toast-aniv-icon{width:44px;height:44px;min-width:44px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
@@ -406,9 +435,54 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
 <!-- APP -->
 <div id="screen-app" class="screen">
+  <!-- MENU OVERLAY -->
+  <div class="menu-overlay" id="menu-overlay" onclick="fecharMenu()"></div>
+
+  <!-- MENU LATERAL -->
+  <div class="menu-lateral" id="menu-lateral">
+    <div class="menu-header" style="position:relative;">
+      <button class="menu-close" onclick="fecharMenu()">✕</button>
+      <div class="menu-avatar" id="menu-avatar">C</div>
+      <div>
+        <div class="menu-user-nome" id="menu-nome">Consultora</div>
+        <div class="menu-user-sub" id="menu-pts-sub">0 pontos</div>
+      </div>
+    </div>
+
+    <div class="menu-item" onclick="abrirMenuHistorico()">
+      <div class="menu-item-icon">📋</div>
+      <div>
+        <div class="menu-item-label">Histórico</div>
+        <div class="menu-item-sub">Suas indicações anteriores</div>
+      </div>
+    </div>
+
+    <div class="menu-item" onclick="abrirMenuPerfil()">
+      <div class="menu-item-icon">👤</div>
+      <div>
+        <div class="menu-item-label">Meu Perfil</div>
+        <div class="menu-item-sub">Seus dados pessoais</div>
+      </div>
+    </div>
+
+    <div class="menu-item" onclick="abrirMenuComoFunciona()">
+      <div class="menu-item-icon">❓</div>
+      <div>
+        <div class="menu-item-label">Como Funciona</div>
+        <div class="menu-item-sub">Entenda o programa</div>
+      </div>
+    </div>
+
+  </div>
+
   <div class="topbar">
-    <div class="tb-brand">
-      <div class="tb-title">APP<small>Consultora</small></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="menu-btn" onclick="abrirMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="tb-brand">
+        <div class="tb-title">APP<small>Consultora</small></div>
+      </div>
     </div>
     <span class="tb-pts" id="pts-topbar">0 pts</span>
   </div>
@@ -654,27 +728,84 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.5523 20.5523 21 20 21H15V16H9V21H4C3.44772 21 3 20.5523 3 20V12Z" fill="#bbb" id="ni0"/></svg>
       <span class="bnav-lbl">Início</span>
     </div>
-    <div class="bnav-item" onclick="goPage('historico',this,1)">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" fill="#bbb" id="ni1"/><path d="M7 9H17M7 13H13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-      <span class="bnav-lbl">Histórico</span>
-    </div>
-    <div class="bnav-item" onclick="goPage('premios',this,2)">
+    <div class="bnav-item" onclick="goPage('premios',this,1)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#bbb" id="ni2"/></svg>
       <span class="bnav-lbl">Prêmios</span>
     </div>
-    <div class="bnav-item" onclick="goPage('meta',this,3);carregarMeta()">
+    <div class="bnav-item" onclick="goPage('meta',this,2);carregarMeta()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#bbb" id="ni5"/></svg>
       <span class="bnav-lbl">Meta</span>
     </div>
-    <div class="bnav-item" onclick="goPage('ranking',this,4)">
+    <div class="bnav-item" onclick="goPage('ranking',this,3)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="14" width="5" height="7" rx="1" fill="#bbb" id="ni3a"/><rect x="9.5" y="9" width="5" height="12" rx="1" fill="#bbb" id="ni3b"/><rect x="17" y="4" width="5" height="17" rx="1" fill="#bbb" id="ni3c"/></svg>
       <span class="bnav-lbl">Ranking</span>
     </div>
-    <div class="bnav-item" onclick="goPage('feed',this,5)">
+    <div class="bnav-item" onclick="goPage('feed',this,4)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" fill="#bbb" id="ni4"/></svg>
       <span class="bnav-lbl">Feed</span>
     </div>
   </nav>
+</div>
+
+<!-- MODAL PERFIL -->
+<div class="modal-wrap" id="m-perfil">
+  <div class="modal-box">
+    <div class="modal-title">
+      👤 Meu Perfil
+      <button class="modal-close" onclick="fecharModalPerfil()">✕</button>
+    </div>
+    <div class="perfil-linha">
+      <div class="perfil-label">Nome</div>
+      <div class="perfil-valor" id="perfil-nome">—</div>
+    </div>
+    <div class="perfil-linha">
+      <div class="perfil-label">Telefone</div>
+      <div class="perfil-valor" id="perfil-tel">—</div>
+    </div>
+    <div class="perfil-linha">
+      <div class="perfil-label">Cidade</div>
+      <div class="perfil-valor" id="perfil-cidade">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL COMO FUNCIONA -->
+<div class="modal-wrap" id="m-como-funciona">
+  <div class="modal-box" style="max-height:80vh;overflow-y:auto;">
+    <div class="modal-title">
+      ❓ Como Funciona
+      <button class="modal-close" onclick="fecharModalComoFunciona()">✕</button>
+    </div>
+
+    <div class="perfil-linha">
+      <div class="perfil-label">1. Indique clientes</div>
+      <div class="perfil-valor" style="font-weight:400;font-size:14px;line-height:1.5;color:#555;">
+        Compartilhe seu link exclusivo com pessoas interessadas nos produtos Romance.
+      </div>
+    </div>
+
+    <div class="perfil-linha">
+      <div class="perfil-label">2. Cliente compra</div>
+      <div class="perfil-valor" style="font-weight:400;font-size:14px;line-height:1.5;color:#555;">
+        Quando a pessoa indicada fizer uma compra, você acumula pontos automaticamente.
+      </div>
+    </div>
+
+    <div class="perfil-linha">
+      <div class="perfil-label">3. Ganhe prêmios</div>
+      <div class="perfil-valor" style="font-weight:400;font-size:14px;line-height:1.5;color:#555;">
+        Com pontos suficientes você desbloqueia prêmios exclusivos como sacola, sanduicheira, batedeira e mais!
+      </div>
+    </div>
+
+    <div class="perfil-linha">
+      <div class="perfil-label">Pontuação</div>
+      <div class="perfil-valor" style="font-weight:400;font-size:14px;line-height:1.5;color:#555;">
+        Cada indicação que resultar em compra gera pontos para você. Fique de olho no ranking! 🏆
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- FAB NOVO POST -->
@@ -1671,8 +1802,8 @@ function atualizarUI() {
 }
 
 // ========== NAV ==========
-const PAGES = ['inicio','historico','premios','meta','ranking','feed'];
-const ICONS = [['ni0'],['ni1'],['ni2'],['ni5'],['ni3a','ni3b','ni3c'],['ni4']];
+const PAGES = ['inicio','premios','meta','ranking','feed'];
+const ICONS = [['ni0'],['ni2'],['ni5'],['ni3a','ni3b','ni3c'],['ni4']];
 
 window.goPage = function(id, el, idx) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -2082,6 +2213,66 @@ window.carregarMeta = function() {
         : 'Erro ao carregar histórico.';
       document.getElementById('meta-historico').innerHTML = '<div class="empty-state">' + msg + '</div>';
     });
+};
+
+
+// ===== MENU LATERAL =====
+window.abrirMenu = function() {
+  document.getElementById('menu-lateral').classList.add('open');
+  document.getElementById('menu-overlay').classList.add('open');
+  // Atualiza info do usuário
+  if (user) {
+    const inicial = (user.nome || 'C')[0].toUpperCase();
+    const el = document.getElementById('menu-avatar');
+    if (el) el.textContent = inicial;
+    const nome = document.getElementById('menu-nome');
+    if (nome) nome.textContent = user.nome || 'Consultora';
+    const sub = document.getElementById('menu-pts-sub');
+    if (sub) sub.textContent = (user.pontos || 0) + ' pontos';
+  }
+};
+
+window.fecharMenu = function() {
+  document.getElementById('menu-lateral').classList.remove('open');
+  document.getElementById('menu-overlay').classList.remove('open');
+};
+
+window.abrirMenuHistorico = function() {
+  fecharMenu();
+  // Abre a página histórico diretamente (sem bnav)
+  PAGES.forEach((_,i)=>document.getElementById('page-'+PAGES[i]).classList.remove('active'));
+  document.getElementById('page-historico').classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  updateIcons(-1);
+};
+
+window.abrirMenuPerfil = function() {
+  fecharMenu();
+  // Preenche dados da consultora
+  if (user) {
+    const el = n => document.getElementById(n);
+    if (el('perfil-nome'))   el('perfil-nome').textContent   = user.nome   || '—';
+    if (el('perfil-tel'))    el('perfil-tel').textContent    = user.tel    || '—';
+    if (el('perfil-cidade')) el('perfil-cidade').textContent = user.cidade || '—';
+  }
+  const m = document.getElementById('m-perfil');
+  if (m) m.classList.add('show');
+};
+
+window.fecharModalPerfil = function() {
+  const m = document.getElementById('m-perfil');
+  if (m) m.classList.remove('show');
+};
+
+window.abrirMenuComoFunciona = function() {
+  fecharMenu();
+  const m = document.getElementById('m-como-funciona');
+  if (m) m.classList.add('show');
+};
+
+window.fecharModalComoFunciona = function() {
+  const m = document.getElementById('m-como-funciona');
+  if (m) m.classList.remove('show');
 };
 
 </script>
