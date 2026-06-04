@@ -140,6 +140,9 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .cursos-cat-badge{background:#f3f4f6;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:#555;letter-spacing:.4px;text-transform:uppercase;flex-shrink:0;}
 .cursos-cat-titulo{font-size:15px;font-weight:700;color:#1a1a1a;flex:1;line-height:1.2;}
 .cursos-cat-sub{font-size:13px;color:#999;font-weight:400;white-space:nowrap;}
+.cursos-cat-count{font-size:11px;font-weight:600;color:#fff;background:var(--pink);border-radius:20px;padding:2px 8px;white-space:nowrap;flex-shrink:0;}
+.curso-badge-novo{font-size:10px;font-weight:700;color:#fff;background:var(--pink);border-radius:6px;padding:2px 6px;margin-left:8px;letter-spacing:.3px;}
+.curso-item.ativo{border-left:3px solid var(--pink);background:#fff5f8;border-radius:0;}
 .cursos-cat-arrow{width:28px;height:28px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;transition:transform .25s;flex-shrink:0;}
 .cursos-cat-arrow svg{transition:transform .25s;}
 .cursos-cat-arrow.open svg{transform:rotate(90deg);}
@@ -621,6 +624,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           
           <div class="cursos-cat-titulo">SOU NOVA AQUI</div>
           <div class="cursos-cat-sub">jornada inicial</div>
+          <div class="cursos-cat-count">5 aulas</div>
           <div class="cursos-cat-arrow" id="arrow-cat-nova"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-nova">
@@ -668,13 +672,14 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           
           <div class="cursos-cat-titulo">APLICATIVO</div>
           <div class="cursos-cat-sub">nossos aplicativos</div>
+          <div class="cursos-cat-count">4 aulas</div>
           <div class="cursos-cat-arrow" id="arrow-cat-app"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-app">
                     <div class="curso-item" onclick="toggleVideo('baixar-app')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M8 12l4 4 4-4" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
-              <div class="curso-titulo">Como baixar o aplicativo Romance</div>
+              <div class="curso-titulo">Como baixar o aplicativo Romance<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
@@ -684,7 +689,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="curso-item" onclick="toggleVideo('login-app')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="18" r="1" fill="#c2185b"/></svg></div>
             <div class="curso-info">
-              <div class="curso-titulo">Como fazer o login no app Romance</div>
+              <div class="curso-titulo">Como fazer o login no app Romance<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
@@ -694,7 +699,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="curso-item" onclick="toggleVideo('minha-nota')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
-              <div class="curso-titulo">Como achar minha nota</div>
+              <div class="curso-titulo">Como achar minha nota<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
@@ -704,7 +709,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="curso-item" onclick="toggleVideo('divulgar-fotos')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="12" r="3.5" stroke="#c2185b" stroke-width="1.5"/><path d="M9 4l1.5-2h3L15 4" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
-              <div class="curso-titulo">Como divulgar as fotos dos produtos</div>
+              <div class="curso-titulo">Como divulgar as fotos dos produtos<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
@@ -720,6 +725,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="cursos-cat-header" onclick="toggleCategoria('cat-vendas')">
           <div class="cursos-cat-titulo">VENDAS</div>
           <div class="cursos-cat-sub">dicas de vendas</div>
+          <div class="cursos-cat-count">em breve</div>
           <div class="cursos-cat-arrow" id="arrow-cat-vendas"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-vendas">
@@ -2450,16 +2456,20 @@ window.toggleVideo = function(id) {
   const box = document.getElementById('video-' + id);
   if (!box) return;
   const isOpen = box.classList.contains('open');
-  // Fecha todos os outros vídeos
+  // Fecha todos e remove destaque
   document.querySelectorAll('.curso-video').forEach(v => {
     v.classList.remove('open');
     const iframe = v.querySelector('iframe');
     if (iframe) iframe.src = '';
   });
+  document.querySelectorAll('.curso-item').forEach(i => i.classList.remove('ativo'));
   if (!isOpen) {
     box.classList.add('open');
     const iframe = box.querySelector('iframe');
     if (iframe) iframe.src = iframe.getAttribute('data-src');
+    // Destaca o item anterior ao video
+    const item = box.previousElementSibling;
+    if (item && item.classList.contains('curso-item')) item.classList.add('ativo');
   }
 };
 
