@@ -130,20 +130,23 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
 /* TOAST ANIVERSÁRIO */
 /* ===== CURSOS ===== */
-.cursos-categoria{background:white;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
-.cursos-cat-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;}
-.cursos-cat-icon{font-size:22px;width:32px;text-align:center;}
-.cursos-cat-titulo{font-size:15px;font-weight:700;color:#222;flex:1;}
-.cursos-cat-arrow{font-size:14px;color:#bbb;transition:transform .25s;}
-.cursos-cat-arrow.open{transform:rotate(90deg);}
-.cursos-lista{display:none;border-top:1px solid #f5f5f5;}
+.cursos-categoria{background:white;border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.08);}
+.cursos-cat-header{display:flex;align-items:center;gap:14px;padding:18px 18px;cursor:pointer;user-select:none;}
+.cursos-cat-badge{background:#f3f4f6;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:#555;letter-spacing:.4px;text-transform:uppercase;flex-shrink:0;}
+.cursos-cat-titulo{font-size:15px;font-weight:700;color:#1a1a1a;flex:1;}
+.cursos-cat-arrow{width:28px;height:28px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;transition:transform .25s;flex-shrink:0;}
+.cursos-cat-arrow svg{transition:transform .25s;}
+.cursos-cat-arrow.open svg{transform:rotate(90deg);}
+.cursos-lista{display:none;border-top:1px solid #f0f0f0;}
 .cursos-lista.open{display:block;}
-.curso-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #f9f9f9;cursor:pointer;}
+.curso-item{display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background .15s;}
+.curso-item:active{background:#fafafa;}
 .curso-item:last-child{border-bottom:none;}
-.curso-thumb{width:44px;height:44px;border-radius:10px;background:#fce4ec;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.curso-thumb{width:48px;height:48px;border-radius:12px;background:#fce4ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .curso-info{flex:1;}
-.curso-titulo{font-size:14px;font-weight:600;color:#333;line-height:1.3;}
-.curso-badge{font-size:11px;color:var(--pink);font-weight:600;margin-top:2px;}
+.curso-titulo{font-size:14px;font-weight:600;color:#1a1a1a;line-height:1.35;}
+.curso-play{display:flex;align-items:center;gap:5px;margin-top:5px;}
+.curso-play-label{font-size:12px;color:var(--pink);font-weight:600;}
 
 /* ===== MODAL PERFIL ===== */
 .modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:none;align-items:flex-end;justify-content:center;}
@@ -601,51 +604,51 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   <div class="page" id="page-cursos">
     <div class="page-hero">
       <div class="page-hero-titulo">Cursos</div>
-      <div class="page-hero-sub">Aprenda, cresça e venda mais!</div>
+      <div class="page-hero-sub">Aprenda, cresça e venda mais</div>
     </div>
     <div class="page-body">
 
       <!-- CATEGORIA: SOU NOVA AQUI -->
       <div class="cursos-categoria">
         <div class="cursos-cat-header" onclick="toggleCategoria('cat-nova')">
-          <div class="cursos-cat-icon">🆕</div>
+          <div class="cursos-cat-badge">Início</div>
           <div class="cursos-cat-titulo">Sou nova aqui</div>
-          <div class="cursos-cat-arrow" id="arrow-cat-nova">▶</div>
+          <div class="cursos-cat-arrow" id="arrow-cat-nova"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-nova">
           <div class="curso-item" onclick="abrirCurso('sou-nova-intro')">
-            <div class="curso-thumb">🎬</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="#c2185b" stroke-width="1.8"/><path d="M2 9h20M2 15h20M7 5v14M17 5v14" stroke="#c2185b" stroke-width="1.5"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">O que você vai encontrar aqui</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('ganho-romance')">
-            <div class="curso-thumb">💰</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#c2185b" stroke-width="1.8"/><path d="M12 7v10M9.5 9.5C9.5 8.67 10.67 8 12 8s2.5.67 2.5 1.5S13.33 11 12 11s-2.5.67-2.5 1.5S10.67 14 12 14s2.5-.67 2.5-1.5" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Quanto eu ganho na Romance?</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('ganho-favorita')">
-            <div class="curso-thumb">💸</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#c2185b" stroke-width="1.8"/><path d="M12 7v10M9.5 9.5C9.5 8.67 10.67 8 12 8s2.5.67 2.5 1.5S13.33 11 12 11s-2.5.67-2.5 1.5S10.67 14 12 14s2.5-.67 2.5-1.5" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Quanto eu ganho na Favorita?</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('pedido-romance')">
-            <div class="curso-thumb">🛍️</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><path d="M16 10a4 4 0 01-8 0" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como fazer meu pedido Romance?</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('pedido-favorita')">
-            <div class="curso-thumb">🛒</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="20.5" r="1.5" fill="#c2185b"/><circle cx="18" cy="20.5" r="1.5" fill="#c2185b"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como fazer meu pedido Favorita?</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
         </div>
@@ -654,30 +657,30 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <!-- CATEGORIA: APP ROMANCE -->
       <div class="cursos-categoria">
         <div class="cursos-cat-header" onclick="toggleCategoria('cat-app')">
-          <div class="cursos-cat-icon">📱</div>
+          <div class="cursos-cat-badge">App</div>
           <div class="cursos-cat-titulo">App Romance</div>
-          <div class="cursos-cat-arrow" id="arrow-cat-app">▶</div>
+          <div class="cursos-cat-arrow" id="arrow-cat-app"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-app">
           <div class="curso-item" onclick="abrirCurso('login-app')">
-            <div class="curso-thumb">🔑</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="18" r="1" fill="#c2185b"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como fazer o login no app Romance</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('minha-nota')">
-            <div class="curso-thumb">📄</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como achar minha nota</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
           <div class="curso-item" onclick="abrirCurso('divulgar-fotos')">
-            <div class="curso-thumb">📸</div>
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="12" r="3.5" stroke="#c2185b" stroke-width="1.5"/><path d="M9 4l1.5-2h3L15 4" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como divulgar as fotos dos produtos</div>
-              <div class="curso-badge">▶ Assistir vídeo</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
         </div>
