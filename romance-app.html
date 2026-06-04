@@ -617,26 +617,9 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
     <!-- Card meta atual -->
     <div class="card" id="meta-card-atual" style="margin-bottom:16px;">
-      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;">PRÓXIMA META DE VENDAS</div>
-      <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:4px;">
-        <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:800;color:var(--pink);line-height:1;">—</div>
-      </div>
-      <div id="meta-ultimo-vendido" style="font-size:13px;color:var(--gray);margin-bottom:16px;">Nenhum acerto registrado ainda.</div>
-
-      <div id="meta-barra-wrap" style="display:none;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:6px;">
-          <span>Último vendido</span>
-          <span id="meta-pct-label">0%</span>
-        </div>
-        <div style="background:#f0f0f0;border-radius:99px;height:10px;overflow:hidden;margin-bottom:6px;">
-          <div id="meta-barra-fill" style="height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--pink));border-radius:99px;width:0%;transition:width .6s ease;"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;">
-          <span id="meta-base-label" style="color:var(--gray);">R$ 0,00</span>
-          <span id="meta-topo-label" style="color:var(--pink);font-weight:700;">Meta: R$ 0,00</span>
-        </div>
-      </div>
-
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;">PRÓXIMA META DE VENDAS</div>
+      <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:var(--pink);line-height:1;margin-bottom:14px;">—</div>
+      <div id="meta-frase" style="font-size:14px;color:var(--gray);line-height:1.5;display:none;">Seu representante definiu essa meta para o próximo atendimento. 💪</div>
       <div id="meta-sem-dados" style="background:var(--pink-pale);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:var(--pink-deep);font-weight:600;">
         Aguarde seu representante registrar o próximo acerto 💜
       </div>
@@ -2041,9 +2024,8 @@ window.carregarMeta = function() {
       if (snap.empty) {
         // Sem acertos
         document.getElementById('meta-valor-display').textContent = '—';
-        document.getElementById('meta-ultimo-vendido').textContent = 'Nenhum acerto registrado ainda.';
-        document.getElementById('meta-barra-wrap').style.display = 'none';
         document.getElementById('meta-sem-dados').style.display = 'block';
+        document.getElementById('meta-frase').style.display = 'none';
         document.getElementById('meta-historico').innerHTML = '<div class="empty-state">Nenhum acerto registrado ainda.</div>';
         return;
       }
@@ -2055,20 +2037,8 @@ window.carregarMeta = function() {
 
       // Atualiza card principal
       document.getElementById('meta-valor-display').textContent = 'R$ ' + meta.toFixed(2).replace('.', ',');
-      document.getElementById('meta-ultimo-vendido').textContent = 'Baseado no último vendido: R$ ' + vendido.toFixed(2).replace('.', ',');
       document.getElementById('meta-sem-dados').style.display = 'none';
-      document.getElementById('meta-barra-wrap').style.display = 'block';
-
-      // Barra de progresso: mostra último vendido em relação à meta
-      // A barra representa: "você vendeu X, a meta é Y"
-      // Sempre começa em 0 e vai até a meta — o ponto atual é o último vendido
-      const pct = Math.min(100, Math.round((vendido / meta) * 100));
-      setTimeout(() => {
-        document.getElementById('meta-barra-fill').style.width = pct + '%';
-      }, 100);
-      document.getElementById('meta-pct-label').textContent = 'Último: ' + pct + '% da meta';
-      document.getElementById('meta-base-label').textContent = 'R$ 0';
-      document.getElementById('meta-topo-label').textContent = 'Meta: R$ ' + meta.toFixed(2).replace('.', ',');
+      document.getElementById('meta-frase').style.display = 'block';
 
       // Histórico
       const hist = document.getElementById('meta-historico');
