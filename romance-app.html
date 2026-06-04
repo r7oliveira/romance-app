@@ -129,6 +129,22 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
 /* TOAST ANIVERSÁRIO */
+/* ===== CURSOS ===== */
+.cursos-categoria{background:white;border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+.cursos-cat-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;}
+.cursos-cat-icon{font-size:22px;width:32px;text-align:center;}
+.cursos-cat-titulo{font-size:15px;font-weight:700;color:#222;flex:1;}
+.cursos-cat-arrow{font-size:14px;color:#bbb;transition:transform .25s;}
+.cursos-cat-arrow.open{transform:rotate(90deg);}
+.cursos-lista{display:none;border-top:1px solid #f5f5f5;}
+.cursos-lista.open{display:block;}
+.curso-item{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #f9f9f9;cursor:pointer;}
+.curso-item:last-child{border-bottom:none;}
+.curso-thumb{width:44px;height:44px;border-radius:10px;background:#fce4ec;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.curso-info{flex:1;}
+.curso-titulo{font-size:14px;font-weight:600;color:#333;line-height:1.3;}
+.curso-badge{font-size:11px;color:var(--pink);font-weight:600;margin-top:2px;}
+
 /* ===== MODAL PERFIL ===== */
 .modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:400;display:none;align-items:flex-end;justify-content:center;}
 .modal-wrap.show{display:flex;}
@@ -465,6 +481,14 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       </div>
     </div>
 
+    <div class="menu-item" onclick="abrirMenuCursos()">
+      <div class="menu-item-icon">📚</div>
+      <div>
+        <div class="menu-item-label">Cursos</div>
+        <div class="menu-item-sub">Aprenda e cresça mais</div>
+      </div>
+    </div>
+
     <div class="menu-item" onclick="abrirMenuHistorico()">
       <div class="menu-item-icon">📋</div>
       <div>
@@ -571,6 +595,95 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       </div>
     </div>
     <div class="destaque-box"><strong>Simples assim:</strong> indique, acumule pontos e troque por prêmios!</div>
+  </div>
+
+  <!-- CURSOS -->
+  <div class="page" id="page-cursos">
+    <div class="page-hero">
+      <div class="page-hero-titulo">Cursos</div>
+      <div class="page-hero-sub">Aprenda, cresça e venda mais!</div>
+    </div>
+    <div class="page-body">
+
+      <!-- CATEGORIA: SOU NOVA AQUI -->
+      <div class="cursos-categoria">
+        <div class="cursos-cat-header" onclick="toggleCategoria('cat-nova')">
+          <div class="cursos-cat-icon">🆕</div>
+          <div class="cursos-cat-titulo">Sou nova aqui</div>
+          <div class="cursos-cat-arrow" id="arrow-cat-nova">▶</div>
+        </div>
+        <div class="cursos-lista" id="cat-nova">
+          <div class="curso-item" onclick="abrirCurso('sou-nova-intro')">
+            <div class="curso-thumb">🎬</div>
+            <div class="curso-info">
+              <div class="curso-titulo">O que você vai encontrar aqui</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('ganho-romance')">
+            <div class="curso-thumb">💰</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Quanto eu ganho na Romance?</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('ganho-favorita')">
+            <div class="curso-thumb">💸</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Quanto eu ganho na Favorita?</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('pedido-romance')">
+            <div class="curso-thumb">🛍️</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Como fazer meu pedido Romance?</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('pedido-favorita')">
+            <div class="curso-thumb">🛒</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Como fazer meu pedido Favorita?</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORIA: APP ROMANCE -->
+      <div class="cursos-categoria">
+        <div class="cursos-cat-header" onclick="toggleCategoria('cat-app')">
+          <div class="cursos-cat-icon">📱</div>
+          <div class="cursos-cat-titulo">App Romance</div>
+          <div class="cursos-cat-arrow" id="arrow-cat-app">▶</div>
+        </div>
+        <div class="cursos-lista" id="cat-app">
+          <div class="curso-item" onclick="abrirCurso('login-app')">
+            <div class="curso-thumb">🔑</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Como fazer o login no app Romance</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('minha-nota')">
+            <div class="curso-thumb">📄</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Como achar minha nota</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+          <div class="curso-item" onclick="abrirCurso('divulgar-fotos')">
+            <div class="curso-thumb">📸</div>
+            <div class="curso-info">
+              <div class="curso-titulo">Como divulgar as fotos dos produtos</div>
+              <div class="curso-badge">▶ Assistir vídeo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- HISTÓRICO -->
@@ -2278,6 +2391,28 @@ window.abrirMenuComoFunciona = function() {
 window.fecharModalComoFunciona = function() {
   const m = document.getElementById('m-como-funciona');
   if (m) m.classList.remove('show');
+};
+
+// ===== CURSOS =====
+window.abrirMenuCursos = function() {
+  fecharMenu();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-cursos').classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+};
+
+window.toggleCategoria = function(id) {
+  const lista = document.getElementById(id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!lista) return;
+  const isOpen = lista.classList.contains('open');
+  lista.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+};
+
+window.abrirCurso = function(id) {
+  // Placeholder — link do vídeo será adicionado futuramente
+  alert('Vídeo em breve! 🎬');
 };
 
 </script>
