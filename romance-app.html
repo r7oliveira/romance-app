@@ -129,6 +129,11 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
 /* TOAST ANIVERSÁRIO */
+/* ===== VIDEO PLAYER ===== */
+.curso-video{display:none;width:100%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;margin-top:10px;}
+.curso-video.open{display:block;}
+.curso-video iframe{width:100%;height:100%;border:none;}
+
 /* ===== CURSOS ===== */
 .cursos-categoria{background:white;border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.08);}
 .cursos-cat-header{display:flex;align-items:center;gap:14px;padding:18px 18px;cursor:pointer;user-select:none;}
@@ -666,33 +671,45 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="cursos-cat-arrow" id="arrow-cat-app"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-app">
-                    <div class="curso-item" onclick="window.open('https://youtube.com/shorts/B6vWIgoTWJA?si=qGgD5muNgmxbk5F9','_blank')">
+                    <div class="curso-item" onclick="toggleVideo('baixar-app')?si=qGgD5muNgmxbk5F9','_blank')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M8 12l4 4 4-4" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como baixar o aplicativo Romance</div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
-          <div class="curso-item" onclick="window.open('https://youtube.com/shorts/M7lIXgy-8pQ?si=nikDKkfnOUWtyNyi','_blank')">
+          <div class="curso-video" id="video-baixar-app">
+            <iframe src="" data-src="https://www.youtube.com/embed/B6vWIgoTWJA?rel=0" allowfullscreen></iframe>
+          </div>
+          <div class="curso-item" onclick="toggleVideo('login-app')?si=nikDKkfnOUWtyNyi','_blank')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="18" r="1" fill="#c2185b"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como fazer o login no app Romance</div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
-          <div class="curso-item" onclick="window.open('https://youtube.com/shorts/XrF8TmjeVZI?si=TnZ7bBSSeW1tSjyF','_blank')">
+          <div class="curso-video" id="video-login-app">
+            <iframe src="" data-src="https://www.youtube.com/embed/M7lIXgy-8pQ?rel=0" allowfullscreen></iframe>
+          </div>
+          <div class="curso-item" onclick="toggleVideo('minha-nota')?si=TnZ7bBSSeW1tSjyF','_blank')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como achar minha nota</div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
           </div>
-          <div class="curso-item" onclick="window.open('https://youtube.com/shorts/hpAtCaAs2Fo?si=ppc5sOVZ3rENfY_e','_blank')">
+          <div class="curso-video" id="video-minha-nota">
+            <iframe src="" data-src="https://www.youtube.com/embed/XrF8TmjeVZI?rel=0" allowfullscreen></iframe>
+          </div>
+          <div class="curso-item" onclick="toggleVideo('divulgar-fotos')?si=ppc5sOVZ3rENfY_e','_blank')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="12" r="3.5" stroke="#c2185b" stroke-width="1.5"/><path d="M9 4l1.5-2h3L15 4" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
             <div class="curso-info">
               <div class="curso-titulo">Como divulgar as fotos dos produtos</div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
+          </div>
+          <div class="curso-video" id="video-divulgar-fotos">
+            <iframe src="" data-src="https://www.youtube.com/embed/hpAtCaAs2Fo?rel=0" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -2426,6 +2443,24 @@ window.abrirMenuComoFunciona = function() {
 window.fecharModalComoFunciona = function() {
   const m = document.getElementById('m-como-funciona');
   if (m) m.classList.remove('show');
+};
+
+// ===== VIDEO PLAYER =====
+window.toggleVideo = function(id) {
+  const box = document.getElementById('video-' + id);
+  if (!box) return;
+  const isOpen = box.classList.contains('open');
+  // Fecha todos os outros vídeos
+  document.querySelectorAll('.curso-video').forEach(v => {
+    v.classList.remove('open');
+    const iframe = v.querySelector('iframe');
+    if (iframe) iframe.src = '';
+  });
+  if (!isOpen) {
+    box.classList.add('open');
+    const iframe = box.querySelector('iframe');
+    if (iframe) iframe.src = iframe.getAttribute('data-src');
+  }
 };
 
 // ===== CURSOS =====
