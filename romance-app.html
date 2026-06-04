@@ -133,7 +133,8 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .cursos-categoria{background:white;border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,0.08);}
 .cursos-cat-header{display:flex;align-items:center;gap:14px;padding:18px 18px;cursor:pointer;user-select:none;}
 .cursos-cat-badge{background:#f3f4f6;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;color:#555;letter-spacing:.4px;text-transform:uppercase;flex-shrink:0;}
-.cursos-cat-titulo{font-size:15px;font-weight:700;color:#1a1a1a;flex:1;}
+.cursos-cat-titulo{font-size:15px;font-weight:700;color:#1a1a1a;flex:1;line-height:1.2;}
+.cursos-cat-sub{font-size:11px;color:#999;font-weight:400;margin-top:1px;}
 .cursos-cat-arrow{width:28px;height:28px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;transition:transform .25s;flex-shrink:0;}
 .cursos-cat-arrow svg{transition:transform .25s;}
 .cursos-cat-arrow.open svg{transform:rotate(90deg);}
@@ -613,6 +614,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="cursos-cat-header" onclick="toggleCategoria('cat-nova')">
           
           <div class="cursos-cat-titulo">SOU NOVA AQUI</div>
+          <div class="cursos-cat-sub">jornada inicial</div>
           <div class="cursos-cat-arrow" id="arrow-cat-nova"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-nova">
@@ -659,6 +661,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
         <div class="cursos-cat-header" onclick="toggleCategoria('cat-app')">
           
           <div class="cursos-cat-titulo">APLICATIVO</div>
+          <div class="cursos-cat-sub">nossos aplicativos</div>
           <div class="cursos-cat-arrow" id="arrow-cat-app"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
         <div class="cursos-lista" id="cat-app">
@@ -681,6 +684,27 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
             <div class="curso-info">
               <div class="curso-titulo">Como divulgar as fotos dos produtos</div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- CATEGORIA: VENDAS -->
+      <div class="cursos-categoria">
+        <div class="cursos-cat-header" onclick="toggleCategoria('cat-vendas')">
+          <div>
+            <div class="cursos-cat-titulo">VENDAS</div>
+            <div class="cursos-cat-sub">dicas de vendas</div>
+          </div>
+          <div class="cursos-cat-arrow" id="arrow-cat-vendas"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="cursos-lista" id="cat-vendas">
+          <div class="curso-item" onclick="abrirCurso('vendas-em-breve')">
+            <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#c2185b" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+            <div class="curso-info">
+              <div class="curso-titulo">Novidades em breve</div>
+              <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Em breve</span></div>
             </div>
           </div>
         </div>
