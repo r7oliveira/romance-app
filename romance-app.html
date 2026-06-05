@@ -129,6 +129,20 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .feed-publicar-btn{font-size:13px;font-weight:700;color:var(--pink);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;}
 
 /* TOAST ANIVERSÁRIO */
+/* ===== TRANSIÇÕES DE PÁGINA ===== */
+.page{animation:none;}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.page.entrando{animation:fadeSlideIn .25s ease forwards;}
+
+/* ===== SPLASH SCREEN ===== */
+#splash{position:fixed;inset:0;background:linear-gradient(135deg,var(--pink-deep),var(--pink));z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease;}
+#splash.hide{opacity:0;pointer-events:none;}
+.splash-logo{font-size:36px;font-weight:900;color:white;letter-spacing:2px;margin-bottom:6px;}
+.splash-sub{font-size:13px;color:rgba(255,255,255,0.8);letter-spacing:3px;text-transform:uppercase;margin-bottom:40px;}
+.splash-loader{width:40px;height:4px;background:rgba(255,255,255,0.3);border-radius:4px;overflow:hidden;}
+.splash-loader-fill{height:100%;background:white;border-radius:4px;animation:loadBar 1.8s ease forwards;}
+@keyframes loadBar{from{width:0%;}to{width:100%;}}
+
 /* ===== VIDEO PLAYER ===== */
 .curso-video{display:none;width:100%;border-radius:12px;margin-top:10px;}
 .curso-video.open{display:block;}
@@ -493,7 +507,14 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
 <!-- APP -->
 <div id="screen-app" class="screen">
-  <!-- MENU OVERLAY -->
+  <!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-logo">Romance</div>
+  <div class="splash-sub">Consultora</div>
+  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
+
+<!-- MENU OVERLAY -->
   <div class="menu-overlay" id="menu-overlay" onclick="fecharMenu()"></div>
 
   <!-- MENU LATERAL -->
@@ -2273,6 +2294,14 @@ window.goPage = function(id, el, idx) {
   _origGoPage(id, el, idx);
   const fab = document.getElementById('feed-fab');
   if (fab) fab.classList.toggle('show', id === 'feed');
+  // Animação de entrada na página
+  const pg = document.getElementById('page-' + id);
+  if (pg) {
+    pg.classList.remove('entrando');
+    void pg.offsetWidth; // força reflow
+    pg.classList.add('entrando');
+    setTimeout(() => pg.classList.remove('entrando'), 300);
+  }
 }
 
 // ========== ANIVERSÁRIO ==========
@@ -2620,6 +2649,16 @@ function atualizarProgresso() {
     if (feitas === total) verificarCertificado(cat);
   });
 }
+
+// ===== SPLASH SCREEN =====
+(function() {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+  setTimeout(() => {
+    splash.classList.add('hide');
+    setTimeout(() => splash.style.display = 'none', 700);
+  }, 2000);
+})();
 
 // ===== AULAS ASSISTIDAS =====
 function carregarAssistidas() {
