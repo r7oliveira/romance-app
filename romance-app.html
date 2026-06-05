@@ -932,15 +932,16 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     </div>
 
     <!-- Card meta atual -->
-    <div class="card" id="meta-card-atual" style="margin-bottom:16px;">
-      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;">PRÓXIMA META DE VENDAS</div>
-      <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:var(--pink);line-height:1;margin-bottom:14px;">—</div>
-      <div id="meta-frase" style="font-size:14px;color:var(--gray);line-height:1.5;display:none;">Seu representante definiu essa meta para o próximo atendimento. 💪</div>
-      <div id="meta-sem-dados" style="background:var(--pink-pale);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:var(--pink-deep);font-weight:600;">
+    <div id="meta-card-atual" style="background:linear-gradient(135deg,var(--pink-deep),var(--pink));border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 8px 32px rgba(217,26,122,0.25);">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;">PRÓXIMA META DE VENDAS</div>
+      <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:white;line-height:1;margin-bottom:14px;">—</div>
+      <div id="meta-frase" style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;display:none;">Seu representante definiu essa meta para o próximo atendimento. 💪</div>
+      <div id="meta-sem-dados" style="background:rgba(255,255,255,0.2);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:white;font-weight:600;">
         Aguarde seu representante registrar o próximo acerto 💜
       </div>
     </div>
 
+    <div id="meta-grafico"></div>
     <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;padding:0 2px;">HISTÓRICO DE ACERTOS</div>
     <div id="meta-historico"><div class="empty-state">Abra esta aba para carregar o histórico.</div></div>
   </div>
@@ -2462,9 +2463,48 @@ window.carregarMeta = function() {
       const vendido = ultimo.valorVendido || 0;
 
       // Atualiza card principal
-      document.getElementById('meta-valor-display').textContent = 'R$ ' + meta.toFixed(2).replace('.', ',');
+      animateCount(document.getElementById('meta-valor-display'), meta, 'R$ ');
       document.getElementById('meta-sem-dados').style.display = 'none';
       document.getElementById('meta-frase').style.display = 'block';
+
+      // Badge meta batida
+      const totalPago = ultimo.totalPago || 0;
+      let badgeEl = document.getElementById('meta-badge-batida');
+      if (!badgeEl) {
+        badgeEl = document.createElement('div');
+        badgeEl.id = 'meta-badge-batida';
+        badgeEl.style.cssText = 'margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:white;';
+        document.getElementById('meta-card-atual').appendChild(badgeEl);
+      }
+      if (totalPago >= meta && meta > 0) {
+        badgeEl.textContent = '🏆 Meta batida! Parabéns!';
+        badgeEl.style.display = 'inline-flex';
+      } else {
+        badgeEl.style.display = 'none';
+      }
+
+      // Gráfico de evolução
+      const grafEl = document.getElementById('meta-grafico');
+      if (grafEl && acertos.length > 1) {
+        const maxVal = Math.max(...acertos.map(a => a.valorVendido || 0));
+        const barras = [...acertos].reverse().map(a => {
+          const val = a.valorVendido || 0;
+          const pct = maxVal > 0 ? Math.round((val / maxVal) * 100) : 0;
+          const dataStr = a.data?.toDate ? a.data.toDate().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit'}) : '—';
+          return `<div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;">
+            <div style="font-size:10px;font-weight:700;color:var(--pink);">R$${(val/1).toFixed(0)}</div>
+            <div style="width:100%;background:#f0f0f0;border-radius:6px;height:80px;display:flex;align-items:flex-end;overflow:hidden;">
+              <div style="width:100%;height:${pct}%;background:linear-gradient(180deg,var(--pink),var(--pink-deep));border-radius:6px;transition:height .5s ease;"></div>
+            </div>
+            <div style="font-size:9px;color:#999;text-align:center;">${dataStr}</div>
+          </div>`;
+        }).join('');
+        grafEl.innerHTML = `
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.5px;margin-bottom:12px;">EVOLUÇÃO DE VENDAS</div>
+            <div style="display:flex;gap:8px;align-items:flex-end;padding:4px 0;">${barras}</div>
+          </div>`;
+      }
 
       // Histórico
       const hist = document.getElementById('meta-historico');
@@ -2478,7 +2518,7 @@ window.carregarMeta = function() {
         return `
           <div class="card" style="margin-bottom:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <div style="font-size:12px;font-weight:700;color:var(--gray);">${i === 0 ? '🟢 ÚLTIMO ACERTO' : 'ACERTO'} · ${dataStr}</div>
+              <div style="font-size:12px;font-weight:700;color:var(--gray);">${i === 0 ? `<span style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:20px;padding:2px 10px 2px 6px;"><svg width='12' height='12' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='10' fill='#2e7d32'/><path d='M7 12l4 4 6-6' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg><span style='color:#1b5e20;font-size:11px;font-weight:800;letter-spacing:.5px;'>ÚLTIMO ACERTO</span></span>` : `<span style='font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;'>ACERTO</span>`} · ${dataStr}</div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
               <div style="background:#f7f7f7;border-radius:10px;padding:10px;">
@@ -2490,10 +2530,19 @@ window.carregarMeta = function() {
                 <div style="font-size:17px;font-weight:800;color:var(--pink);">R$ ${m}</div>
               </div>
             </div>
-            <div style="font-size:12px;color:var(--gray);border-top:1px solid #f0f0f0;padding-top:8px;display:flex;gap:12px;">
-              <span>💳 Pix: <strong>R$ ${pix}</strong></span>
-              <span>💵 Dinheiro: <strong>R$ ${din}</strong></span>
-              <span>= <strong>R$ ${total}</strong></span>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;border-top:1px solid #f0f0f0;padding-top:10px;">
+              <div style="background:#f0f7ff;border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:10px;font-weight:700;color:#1565c0;margin-bottom:3px;letter-spacing:.3px;">PIX</div>
+                <div style="font-size:14px;font-weight:800;color:#1565c0;">R$ ${pix}</div>
+              </div>
+              <div style="background:#f9f4e8;border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:10px;font-weight:700;color:#e65100;margin-bottom:3px;letter-spacing:.3px;">DINHEIRO</div>
+                <div style="font-size:14px;font-weight:800;color:#e65100;">R$ ${din}</div>
+              </div>
+              <div style="background:#f3e5f5;border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:10px;font-weight:700;color:#6a1b9a;margin-bottom:3px;letter-spacing:.3px;">TOTAL</div>
+                <div style="font-size:14px;font-weight:800;color:#6a1b9a;">R$ ${total}</div>
+              </div>
             </div>
           </div>`;
       }).join('');
@@ -2566,6 +2615,23 @@ window.fecharModalComoFunciona = function() {
   const m = document.getElementById('m-como-funciona');
   if (m) m.classList.remove('show');
 };
+
+// ===== ANIMAÇÃO CONTAGEM =====
+function animateCount(el, target, prefix) {
+  if (!el) return;
+  const duration = 1000;
+  const start = performance.now();
+  const update = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(target * ease);
+    el.textContent = prefix + current.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}).replace('.', 'X').replace(',', '.').replace('X', ',');
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = prefix + target.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}).replace('.', 'X').replace(',', '.').replace('X', ',');
+  };
+  requestAnimationFrame(update);
+}
 
 // ===== CERTIFICADO =====
 function getKeyAssistidas() { return 'aulas_assistidas_' + (user?.id || 'anonimo'); }
