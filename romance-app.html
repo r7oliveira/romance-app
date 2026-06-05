@@ -152,6 +152,8 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .cursos-progresso-txt{font-size:11px;color:#999;margin-bottom:5px;display:flex;justify-content:space-between;}
 .cursos-progresso-bar{height:4px;background:#f0f0f0;border-radius:4px;overflow:hidden;}
 .cursos-progresso-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--pink-deep));border-radius:4px;transition:width .4s ease;}
+@keyframes piscar{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.piscar{animation:piscar 1.2s ease-in-out infinite;}
 /* ===== CERTIFICADO ===== */
 .certificado-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
 .certificado-wrap.show{display:flex;}
@@ -2616,11 +2618,11 @@ window.toggleVideo = function(id) {
         btn.parentNode.insertBefore(counter, btn);
       }
       let secs = 30;
-      counter.textContent = '⏱ Assista pelo menos ' + secs + 's para marcar como assistida';
+      counter.innerHTML = '<span class="piscar">📺 Assista todo o vídeo e depois aperte em marcar como assistida</span>';
       window._timerAssistido = setInterval(() => {
         secs--;
         if (secs > 0) {
-          counter.textContent = '⏱ Assista pelo menos ' + secs + 's para marcar como assistida';
+          // mantém texto
         } else {
           clearInterval(window._timerAssistido);
           counter.style.display = 'none';
