@@ -143,6 +143,25 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 .cursos-cat-count{font-size:11px;font-weight:600;color:#fff;background:var(--pink);border-radius:20px;padding:2px 8px;white-space:nowrap;flex-shrink:0;}
 .curso-badge-novo{font-size:10px;font-weight:700;color:#fff;background:var(--pink);border-radius:6px;padding:2px 6px;margin-left:8px;letter-spacing:.3px;}
 .curso-item.ativo{border-left:3px solid var(--pink);background:#fff5f8;border-radius:0;}
+.curso-item.assistido .curso-thumb{background:#e8f5e9;}
+.curso-check{width:20px;height:20px;border-radius:50%;background:#4caf50;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:8px;}
+.curso-check svg{width:11px;height:11px;}
+.curso-item.assistido .curso-play-label{color:#4caf50;}
+.curso-item.assistido .curso-titulo{color:#999;}
+.cursos-progresso{padding:8px 18px 14px;}
+.cursos-progresso-txt{font-size:11px;color:#999;margin-bottom:5px;display:flex;justify-content:space-between;}
+.cursos-progresso-bar{height:4px;background:#f0f0f0;border-radius:4px;overflow:hidden;}
+.cursos-progresso-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--pink-deep));border-radius:4px;transition:width .4s ease;}
+/* ===== CERTIFICADO ===== */
+.certificado-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.certificado-wrap.show{display:flex;}
+.certificado-box{background:white;border-radius:24px;padding:32px 24px;text-align:center;max-width:340px;width:100%;animation:slideUp .3s ease;}
+.certificado-icon{font-size:52px;margin-bottom:12px;}
+.certificado-titulo{font-size:20px;font-weight:800;color:#1a1a1a;margin-bottom:6px;}
+.certificado-sub{font-size:14px;color:#777;line-height:1.5;margin-bottom:20px;}
+.certificado-nome{font-size:16px;font-weight:700;color:var(--pink);margin-bottom:4px;}
+.certificado-categoria{font-size:13px;color:#555;margin-bottom:24px;padding:10px 16px;background:#fce4ec;border-radius:10px;}
+.certificado-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--pink-deep));color:white;font-size:15px;font-weight:700;cursor:pointer;}
 .cursos-cat-arrow{width:28px;height:28px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;transition:transform .25s;flex-shrink:0;}
 .cursos-cat-arrow svg{transition:transform .25s;}
 .cursos-cat-arrow.open svg{transform:rotate(90deg);}
@@ -627,6 +646,13 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="cursos-cat-count">5 aulas</div>
           <div class="cursos-cat-arrow" id="arrow-cat-nova"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
+        <div class="cursos-progresso" id="prog-cat-nova">
+          <div class="cursos-progresso-txt">
+            <span id="prog-txt-cat-nova">0 de 5 assistidas</span>
+            <span id="prog-pct-cat-nova">0%</span>
+          </div>
+          <div class="cursos-progresso-bar"><div class="cursos-progresso-fill" id="prog-fill-cat-nova" style="width:0%"></div></div>
+        </div>
         <div class="cursos-lista" id="cat-nova">
           <div class="curso-item" onclick="abrirCurso('sou-nova-intro')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="#c2185b" stroke-width="1.8"/><path d="M2 9h20M2 15h20M7 5v14M17 5v14" stroke="#c2185b" stroke-width="1.5"/></svg></div>
@@ -675,6 +701,13 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
           <div class="cursos-cat-count">4 aulas</div>
           <div class="cursos-cat-arrow" id="arrow-cat-app"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
+        <div class="cursos-progresso" id="prog-cat-app">
+          <div class="cursos-progresso-txt">
+            <span id="prog-txt-cat-app">0 de 4 assistidas</span>
+            <span id="prog-pct-cat-app">0%</span>
+          </div>
+          <div class="cursos-progresso-bar"><div class="cursos-progresso-fill" id="prog-fill-cat-app" style="width:0%"></div></div>
+        </div>
         <div class="cursos-lista" id="cat-app">
                     <div class="curso-item" onclick="toggleVideo('baixar-app')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M8 12l4 4 4-4" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/></svg></div>
@@ -682,9 +715,11 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
               <div class="curso-titulo">Como baixar o aplicativo Romance<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
+            <div class="curso-check" id="check-baixar-app" style="display:none;"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           </div>
           <div class="curso-video" id="video-baixar-app">
             <iframe src="" data-src="https://www.youtube.com/embed/B6vWIgoTWJA?rel=0" allowfullscreen></iframe>
+            <button onclick="marcarAssistido('baixar-app')" id="btn-assistido-baixar-app" style="margin:10px 0 4px;width:100%;padding:10px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:700;cursor:pointer;">✓ Marcar como assistida</button>
           </div>
           <div class="curso-item" onclick="toggleVideo('login-app')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="18" r="1" fill="#c2185b"/></svg></div>
@@ -692,9 +727,11 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
               <div class="curso-titulo">Como fazer o login no app Romance<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
+            <div class="curso-check" id="check-login-app" style="display:none;"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           </div>
           <div class="curso-video" id="video-login-app">
             <iframe src="" data-src="https://www.youtube.com/embed/M7lIXgy-8pQ?rel=0" allowfullscreen></iframe>
+            <button onclick="marcarAssistido('login-app')" id="btn-assistido-login-app" style="margin:10px 0 4px;width:100%;padding:10px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:700;cursor:pointer;">✓ Marcar como assistida</button>
           </div>
           <div class="curso-item" onclick="toggleVideo('minha-nota')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#c2185b" stroke-width="1.8" stroke-linecap="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
@@ -702,9 +739,11 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
               <div class="curso-titulo">Como achar minha nota<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
+            <div class="curso-check" id="check-minha-nota" style="display:none;"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           </div>
           <div class="curso-video" id="video-minha-nota">
             <iframe src="" data-src="https://www.youtube.com/embed/XrF8TmjeVZI?rel=0" allowfullscreen></iframe>
+            <button onclick="marcarAssistido('minha-nota')" id="btn-assistido-minha-nota" style="margin:10px 0 4px;width:100%;padding:10px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:700;cursor:pointer;">✓ Marcar como assistida</button>
           </div>
           <div class="curso-item" onclick="toggleVideo('divulgar-fotos')">
             <div class="curso-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#c2185b" stroke-width="1.8"/><circle cx="12" cy="12" r="3.5" stroke="#c2185b" stroke-width="1.5"/><path d="M9 4l1.5-2h3L15 4" stroke="#c2185b" stroke-width="1.5" stroke-linecap="round"/></svg></div>
@@ -712,9 +751,11 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
               <div class="curso-titulo">Como divulgar as fotos dos produtos<span class="curso-badge-novo">NOVO</span></div>
               <div class="curso-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="var(--pink)"/></svg><span class="curso-play-label">Assistir vídeo</span></div>
             </div>
+            <div class="curso-check" id="check-divulgar-fotos" style="display:none;"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           </div>
           <div class="curso-video" id="video-divulgar-fotos">
             <iframe src="" data-src="https://www.youtube.com/embed/hpAtCaAs2Fo?rel=0" allowfullscreen></iframe>
+            <button onclick="marcarAssistido('divulgar-fotos')" id="btn-assistido-divulgar-fotos" style="margin:10px 0 4px;width:100%;padding:10px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:700;cursor:pointer;">✓ Marcar como assistida</button>
           </div>
         </div>
       </div>
@@ -914,6 +955,18 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <span class="bnav-lbl">Feed</span>
     </div>
   </nav>
+</div>
+
+<!-- MODAL CERTIFICADO -->
+<div class="certificado-wrap" id="m-certificado">
+  <div class="certificado-box">
+    <div class="certificado-icon">🏆</div>
+    <div class="certificado-titulo">Parabéns!</div>
+    <div class="certificado-sub">Você concluiu todas as aulas da categoria</div>
+    <div class="certificado-nome" id="cert-nome-consultora">—</div>
+    <div class="certificado-categoria" id="cert-categoria">—</div>
+    <button class="certificado-btn" onclick="fecharCertificado()">Continuar aprendendo 🎓</button>
+  </div>
 </div>
 
 <!-- MODAL PERFIL -->
@@ -1307,6 +1360,7 @@ window.entrar = async function() {
       ouvirRanking();
       ouvirNotificacaoPontos();
       ouvirFeed();
+      carregarAssistidas();
       verificarAniversario();
       showScreen('screen-app');
       resetNav(); colorNav(0);
@@ -2449,6 +2503,82 @@ window.abrirMenuComoFunciona = function() {
 window.fecharModalComoFunciona = function() {
   const m = document.getElementById('m-como-funciona');
   if (m) m.classList.remove('show');
+};
+
+// ===== CERTIFICADO =====
+const NOMES_CATEGORIAS = {
+  'cat-nova': 'Sou Nova Aqui — Jornada Inicial',
+  'cat-app':  'Aplicativo Romance',
+};
+
+function verificarCertificado(cat) {
+  const jaExibido = localStorage.getItem('cert_' + cat);
+  if (jaExibido) return;
+  localStorage.setItem('cert_' + cat, '1');
+  const nomeEl = document.getElementById('cert-nome-consultora');
+  const catEl  = document.getElementById('cert-categoria');
+  if (nomeEl) nomeEl.textContent = user?.nome || 'Consultora';
+  if (catEl)  catEl.textContent  = NOMES_CATEGORIAS[cat] || cat;
+  setTimeout(() => {
+    const m = document.getElementById('m-certificado');
+    if (m) m.classList.add('show');
+  }, 800);
+}
+
+window.fecharCertificado = function() {
+  const m = document.getElementById('m-certificado');
+  if (m) m.classList.remove('show');
+};
+
+// ===== PROGRESSO CURSOS =====
+const CATEGORIAS = {
+  'cat-nova': ['sou-nova-intro','ganho-romance','ganho-favorita','pedido-romance','pedido-favorita'],
+  'cat-app':  ['baixar-app','login-app','minha-nota','divulgar-fotos'],
+};
+
+function atualizarProgresso() {
+  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  Object.keys(CATEGORIAS).forEach(cat => {
+    const total = CATEGORIAS[cat].length;
+    const feitas = CATEGORIAS[cat].filter(id => assistidas.includes(id)).length;
+    const pct = Math.round((feitas / total) * 100);
+    const txt = document.getElementById('prog-txt-' + cat);
+    const pctEl = document.getElementById('prog-pct-' + cat);
+    const fill = document.getElementById('prog-fill-' + cat);
+    if (txt)  txt.textContent  = feitas + ' de ' + total + ' assistidas';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (fill) fill.style.width = pct + '%';
+    if (feitas === total) verificarCertificado(cat);
+  });
+}
+
+// ===== AULAS ASSISTIDAS =====
+function carregarAssistidas() {
+  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  assistidas.forEach(id => {
+    const item = document.querySelector(`[onclick="toggleVideo('${id}')"]`);
+    const check = document.getElementById('check-' + id);
+    const btn = document.getElementById('btn-assistido-' + id);
+    if (item) item.classList.add('assistido');
+    if (check) check.style.display = 'flex';
+    if (btn) { btn.textContent = '✓ Já assistida!'; btn.style.background = '#4caf50'; btn.style.color = '#fff'; btn.disabled = true; }
+  });
+  atualizarProgresso();
+}
+
+window.marcarAssistido = function(id) {
+  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  if (!assistidas.includes(id)) assistidas.push(id);
+  localStorage.setItem('aulas_assistidas', JSON.stringify(assistidas));
+
+  const item = document.querySelector(`[onclick="toggleVideo('${id}')"]`);
+  const check = document.getElementById('check-' + id);
+  const btn = document.getElementById('btn-assistido-' + id);
+  if (item) item.classList.add('assistido');
+  if (check) check.style.display = 'flex';
+  if (btn) { btn.textContent = '✓ Já assistida!'; btn.style.background = '#4caf50'; btn.style.color = '#fff'; btn.disabled = true; }
+
+  atualizarProgresso();
 };
 
 // ===== VIDEO PLAYER =====
