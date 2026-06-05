@@ -950,10 +950,24 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   <div class="page" id="page-ranking">
     <div class="page-hero">
       <div class="page-hero-titulo">Ranking do mês</div>
-      <div class="page-hero-sub">As consultoras que mais indicaram novas revendedoras este mês.</div>
+      <div class="page-hero-sub">Quem mais vendeu esse mês leva um brinde surpresa! 🏆</div>
     </div>
     <div class="card" id="lista-ranking"><div class="empty-state">Carregando...</div></div>
-    <div class="destaque-box"><strong>Desafio do mês:</strong> a consultora com mais cadastros confirmados ganha um brinde surpresa do representante.</div>
+
+    <!-- Card desafio com prazo -->
+    <div style="background:linear-gradient(135deg,#1a1a2e,#4a0030);border-radius:16px;padding:18px 20px;margin-top:4px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:20px;">🏆</span>
+        <div style="font-size:14px;font-weight:800;color:white;">Desafio do mês</div>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:12px;">
+        A consultora com o <strong style="color:#FFD700;">maior valor vendido</strong> até o último dia do mês ganha um brinde surpresa do representante!
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:.5px;">PRAZO</div>
+        <div style="font-size:14px;font-weight:800;color:#FFD700;" id="ranking-prazo">—</div>
+      </div>
+    </div>
   </div>
 
 
@@ -979,7 +993,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#bbb" id="ni5"/></svg>
       <span class="bnav-lbl">Meta</span>
     </div>
-    <div class="bnav-item" onclick="goPage('ranking',this,3)">
+    <div class="bnav-item" onclick="goPage('ranking',this,3);atualizarPrazoRanking()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="14" width="5" height="7" rx="1" fill="#bbb" id="ni3a"/><rect x="9.5" y="9" width="5" height="12" rx="1" fill="#bbb" id="ni3b"/><rect x="17" y="4" width="5" height="17" rx="1" fill="#bbb" id="ni3c"/></svg>
       <span class="bnav-lbl">Ranking</span>
     </div>
@@ -1623,6 +1637,16 @@ function ouvirIndicacoes() {
 }
 
 // ========== RANKING EM TEMPO REAL ==========
+function atualizarPrazoRanking() {
+  const el = document.getElementById('ranking-prazo');
+  if (!el) return;
+  const hoje = new Date();
+  const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+  const diasRestantes = Math.ceil((ultimoDia - hoje) / (1000 * 60 * 60 * 24));
+  const dataFmt = ultimoDia.toLocaleDateString('pt-BR', {day:'2-digit', month:'long'});
+  el.textContent = diasRestantes === 0 ? 'Hoje é o último dia! 🔥' : `${dataFmt} (${diasRestantes} dias)`;
+}
+
 function ouvirRanking() {
   db.collection('consultoras').onSnapshot((snap) => {
     const lista = document.getElementById('lista-ranking');
@@ -1630,11 +1654,11 @@ function ouvirRanking() {
 
     const docs = snap.docs
       .map(d => ({id: d.id, ...d.data()}))
-      .filter(c => (c.pontos || 0) > 0)
-      .sort((a,b) => (b.pontos||0) - (a.pontos||0));
+      .filter(c => (c.ultimoVendido || 0) > 0)
+      .sort((a,b) => (b.ultimoVendido||0) - (a.ultimoVendido||0));
 
     if (!docs.length) {
-      lista.innerHTML = '<div class="empty-state">Nenhuma consultora com pontos ainda.<br>Seja a primeira! 🏆</div>';
+      lista.innerHTML = '<div class="empty-state">Nenhuma consultora com vendas ainda.<br>Seja a primeira! 🏆</div>';
       return;
     }
 
@@ -1642,15 +1666,16 @@ function ouvirRanking() {
     lista.innerHTML = docs.slice(0,10).map((c,i) => {
       const ini = (c.nome||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
       const isEu = c.id === user.id;
-      const medal = medalhas[i] || (i+1);
+      const medal = medalhas[i] || `<span style="font-size:13px;font-weight:700;color:#aaa;">${i+1}º</span>`;
+      const valor = (c.ultimoVendido||0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
       return `<div class="rank-item ${isEu?'rank-eu':''}">
         <div class="rank-pos">${medal}</div>
         <div class="rank-av" style="${isEu?'background:var(--pink);color:white':''}">${ini}</div>
         <div style="flex:1">
           <div class="rank-nome">${c.nome}${isEu?' <span style="color:var(--pink);font-size:11px;font-weight:700">(você)</span>':''}</div>
-          <div style="font-size:11px;color:#aaa;">${c.indicacoes||0} indicações</div>
+          <div style="font-size:11px;color:#aaa;">último acerto</div>
         </div>
-        <div class="rank-pts">${c.pontos||0} pts</div>
+        <div class="rank-pts">R$ ${valor}</div>
       </div>`;
     }).join('');
   });
