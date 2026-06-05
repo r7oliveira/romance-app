@@ -957,7 +957,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     <!-- Card desafio com prazo -->
     <div style="background:linear-gradient(135deg,#1a1a2e,#4a0030);border-radius:16px;padding:18px 20px;margin-top:4px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:20px;">🏆</span>
         <div style="font-size:14px;font-weight:800;color:white;">Desafio do mês</div>
       </div>
       <div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:12px;">
@@ -1644,7 +1643,7 @@ function atualizarPrazoRanking() {
   const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
   const diasRestantes = Math.ceil((ultimoDia - hoje) / (1000 * 60 * 60 * 24));
   const dataFmt = ultimoDia.toLocaleDateString('pt-BR', {day:'2-digit', month:'long'});
-  el.textContent = diasRestantes === 0 ? 'Hoje é o último dia! 🔥' : `${dataFmt} (${diasRestantes} dias)`;
+  el.textContent = diasRestantes === 0 ? 'Hoje é o último dia! 🔥' : `${dataFmt} — falta ${diasRestantes} dia${diasRestantes > 1 ? 's' : ''}`;
 }
 
 function ouvirRanking() {
