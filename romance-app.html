@@ -368,6 +368,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-txt{font-size:14px;font-weight:600;color:var(--gray);}
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -984,7 +985,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     </div>
     <div class="cert-footer">
       <button class="cert-btn-fechar" onclick="fecharCertificado()">Fechar</button>
-      <button class="cert-btn-compartilhar" onclick="compartilharCertificado()">🎓 Compartilhar</button>
+      <button class="cert-btn-compartilhar" id="btn-salvar-cert" onclick="salvarCertificado()">💾 Salvar Certificado</button>
     </div>
   </div>
 </div>
