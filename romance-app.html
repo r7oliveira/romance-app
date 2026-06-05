@@ -155,15 +155,23 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 @keyframes piscar{0%,100%{opacity:1;}50%{opacity:0.3;}}
 .piscar{animation:piscar 1.2s ease-in-out infinite;}
 /* ===== CERTIFICADO ===== */
-.certificado-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+.certificado-wrap{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
 .certificado-wrap.show{display:flex;}
-.certificado-box{background:white;border-radius:24px;padding:32px 24px;text-align:center;max-width:340px;width:100%;animation:slideUp .3s ease;}
-.certificado-icon{font-size:52px;margin-bottom:12px;}
-.certificado-titulo{font-size:20px;font-weight:800;color:#1a1a1a;margin-bottom:6px;}
-.certificado-sub{font-size:14px;color:#777;line-height:1.5;margin-bottom:20px;}
-.certificado-nome{font-size:16px;font-weight:700;color:var(--pink);margin-bottom:4px;}
-.certificado-categoria{font-size:13px;color:#555;margin-bottom:24px;padding:10px 16px;background:#fce4ec;border-radius:10px;}
-.certificado-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--pink-deep));color:white;font-size:15px;font-weight:700;cursor:pointer;}
+.certificado-box{background:white;border-radius:24px;padding:0;max-width:340px;width:100%;animation:slideUp .3s ease;overflow:hidden;}
+.cert-header{background:linear-gradient(135deg,#b8860b,#FFD700,#b8860b);padding:24px 20px 16px;text-align:center;}
+.cert-header-icon{font-size:36px;margin-bottom:6px;}
+.cert-header-titulo{font-size:13px;font-weight:800;color:#5c3d00;letter-spacing:2px;text-transform:uppercase;}
+.cert-body{padding:20px 24px;border:3px solid #FFD700;margin:0 12px;border-radius:0 0 16px 16px;text-align:center;position:relative;}
+.cert-body::before{content:'';position:absolute;inset:4px;border:1px solid #f0c040;border-radius:12px;pointer-events:none;}
+.cert-subtitulo{font-size:11px;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.cert-nome{font-size:22px;font-weight:800;color:#1a1a1a;margin-bottom:4px;font-family:Georgia,serif;}
+.cert-texto{font-size:12px;color:#666;margin-bottom:12px;}
+.cert-modulo{font-size:13px;font-weight:700;color:#b8860b;background:#fff8e1;padding:8px 16px;border-radius:20px;display:inline-block;margin-bottom:12px;}
+.cert-logo{font-size:11px;font-weight:700;color:#c2185b;letter-spacing:1px;margin-bottom:4px;}
+.cert-data{font-size:11px;color:#bbb;}
+.cert-footer{padding:16px 20px;display:flex;gap:10px;}
+.cert-btn-fechar{flex:1;padding:12px;border:2px solid #eee;border-radius:12px;background:white;color:#666;font-size:13px;font-weight:600;cursor:pointer;}
+.cert-btn-compartilhar{flex:2;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#FFD700,#b8860b);color:#5c3d00;font-size:13px;font-weight:700;cursor:pointer;}
 .cursos-cat-arrow{width:28px;height:28px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;transition:transform .25s;flex-shrink:0;}
 .cursos-cat-arrow svg{transition:transform .25s;}
 .cursos-cat-arrow.open svg{transform:rotate(90deg);}
@@ -962,12 +970,22 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 <!-- MODAL CERTIFICADO -->
 <div class="certificado-wrap" id="m-certificado">
   <div class="certificado-box">
-    <div class="certificado-icon">🏆</div>
-    <div class="certificado-titulo">Parabéns!</div>
-    <div class="certificado-sub">Você concluiu todas as aulas da categoria</div>
-    <div class="certificado-nome" id="cert-nome-consultora">—</div>
-    <div class="certificado-categoria" id="cert-categoria">—</div>
-    <button class="certificado-btn" onclick="fecharCertificado()">Continuar aprendendo 🎓</button>
+    <div class="cert-header">
+      <div class="cert-header-icon">🏆</div>
+      <div class="cert-header-titulo">Certificado de Conclusão</div>
+    </div>
+    <div class="cert-body">
+      <div class="cert-subtitulo">Certificamos que</div>
+      <div class="cert-nome" id="cert-nome-consultora">—</div>
+      <div class="cert-texto">concluiu com sucesso o módulo</div>
+      <div class="cert-modulo" id="cert-categoria">—</div>
+      <div class="cert-logo">ROMANCE & FAVORITA</div>
+      <div class="cert-data" id="cert-data">—</div>
+    </div>
+    <div class="cert-footer">
+      <button class="cert-btn-fechar" onclick="fecharCertificado()">Fechar</button>
+      <button class="cert-btn-compartilhar" onclick="compartilharCertificado()">🎓 Compartilhar</button>
+    </div>
   </div>
 </div>
 
@@ -2519,8 +2537,12 @@ function verificarCertificado(cat) {
   localStorage.setItem('cert_' + cat, '1');
   const nomeEl = document.getElementById('cert-nome-consultora');
   const catEl  = document.getElementById('cert-categoria');
+  const dataEl = document.getElementById('cert-data');
+  const hoje = new Date();
+  const dataFmt = hoje.toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
   if (nomeEl) nomeEl.textContent = user?.nome || 'Consultora';
   if (catEl)  catEl.textContent  = NOMES_CATEGORIAS[cat] || cat;
+  if (dataEl) dataEl.textContent = dataFmt;
   setTimeout(() => {
     const m = document.getElementById('m-certificado');
     if (m) m.classList.add('show');
@@ -2530,6 +2552,22 @@ function verificarCertificado(cat) {
 window.fecharCertificado = function() {
   const m = document.getElementById('m-certificado');
   if (m) m.classList.remove('show');
+};
+
+window.compartilharCertificado = function() {
+  const nome = document.getElementById('cert-nome-consultora')?.textContent || 'Consultora';
+  const cat  = document.getElementById('cert-categoria')?.textContent || '';
+  const data = document.getElementById('cert-data')?.textContent || '';
+  const texto = `🏆 Certificado de Conclusão
+
+Certifico que ${nome} concluiu com sucesso o módulo "${cat}" — Romance & Favorita
+
+📅 ${data}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Certificado Romance & Favorita', text: texto });
+  } else {
+    navigator.clipboard.writeText(texto).then(() => alert('Certificado copiado! Cole onde quiser 🎓'));
+  }
 };
 
 // ===== PROGRESSO CURSOS =====
