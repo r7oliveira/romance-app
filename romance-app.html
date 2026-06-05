@@ -1239,6 +1239,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 <!-- FIREBASE SDK COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyD7FjlCtIZNL7YT6DU7P5FBM2AI7Qx2z1o",
@@ -1403,6 +1404,17 @@ window.entrar = async function() {
       ouvirNotificacaoPontos();
       ouvirFeed();
       carregarAssistidas();
+      // Pede permissão de notificação
+      if ('Notification' in window && Notification.permission === 'default') {
+        setTimeout(() => {
+          Notification.requestPermission().then(perm => {
+            console.log('Notificação:', perm);
+            if (perm === 'granted') obterTokenFCM();
+          });
+        }, 3000);
+      } else if ('Notification' in window && Notification.permission === 'granted') {
+        obterTokenFCM();
+      }
       verificarAniversario();
       showScreen('screen-app');
       resetNav(); colorNav(0);
@@ -2647,6 +2659,44 @@ function atualizarProgresso() {
     if (pctEl) pctEl.textContent = pct + '%';
     if (fill) fill.style.width = pct + '%';
     if (feitas === total) verificarCertificado(cat);
+  });
+}
+
+// ===== FIREBASE MESSAGING =====
+const VAPID_KEY = 'BJtW0Nu23ieXnGJYJWwZH-YMSKw7JhO1uE5mrv2jvNWAFdmKDVvrTQQDcByh6BFWIWUUwZY9Zw_fuKbFJNbW_SA';
+let messaging = null;
+try {
+  messaging = firebase.messaging();
+  messaging.onMessage(payload => {
+    const { title, body } = payload.notification || {};
+    if (title) {
+      // Toast de notificação in-app
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;max-width:300px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);';
+      t.textContent = (title || '') + (body ? ' — ' + body : '');
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 4000);
+    }
+  });
+} catch(e) { console.log('Messaging não disponível:', e); }
+
+async function obterTokenFCM() {
+  if (!messaging) return;
+  try {
+    const token = await messaging.getToken({ vapidKey: VAPID_KEY });
+    if (token && user?.id) {
+      await db.collection('consultoras').doc(user.id).update({ fcmToken: token });
+      console.log('Token FCM salvo!');
+    }
+  } catch(e) { console.log('Erro token FCM:', e); }
+}
+
+// ===== SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/romance-app/service-worker.js')
+      .then(reg => console.log('SW registrado:', reg.scope))
+      .catch(err => console.log('SW erro:', err));
   });
 }
 
