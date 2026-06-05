@@ -2557,7 +2557,33 @@ window.fecharCertificado = function() {
   if (m) m.classList.remove('show');
 };
 
-window.compartilharCertificado = function() {
+window.salvarCertificado = function() {
+  const btn = document.getElementById('btn-salvar-cert');
+  const box = document.querySelector('.certificado-box');
+  if (!box) return;
+  if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
+  const footer = document.querySelector('.cert-footer');
+  if (footer) footer.style.display = 'none';
+  html2canvas(box, { scale: 2, backgroundColor: '#ffffff', useCORS: true }).then(async canvas => {
+    if (footer) footer.style.display = 'flex';
+    if (btn) { btn.textContent = '💾 Salvar Certificado'; btn.disabled = false; }
+    canvas.toBlob(async blob => {
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'certificado.png', {type:'image/png'})] })) {
+        await navigator.share({ files: [new File([blob], 'certificado.png', {type:'image/png'})], title: 'Certificado Romance & Favorita' });
+      } else {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => alert('Pressione e segure a imagem para salvar! 📸'), 500);
+      }
+    }, 'image/png');
+  }).catch(() => {
+    if (footer) footer.style.display = 'flex';
+    if (btn) { btn.textContent = '💾 Salvar Certificado'; btn.disabled = false; }
+    alert('Tire um print da tela para salvar o certificado! 📸');
+  });
+};
+
+window._compartilharCertificadoLegado = function() {
   const nome = document.getElementById('cert-nome-consultora')?.textContent || 'Consultora';
   const cat  = document.getElementById('cert-categoria')?.textContent || '';
   const data = document.getElementById('cert-data')?.textContent || '';
