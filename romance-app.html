@@ -2526,15 +2526,17 @@ window.fecharModalComoFunciona = function() {
 };
 
 // ===== CERTIFICADO =====
+function getKeyAssistidas() { return 'aulas_assistidas_' + (user?.id || 'anonimo'); }
+function getKeyCert(cat)    { return 'cert_' + cat + '_' + (user?.id || 'anonimo'); }
 const NOMES_CATEGORIAS = {
   'cat-nova': 'Sou Nova Aqui — Jornada Inicial',
   'cat-app':  'Aplicativo Romance',
 };
 
 function verificarCertificado(cat) {
-  const jaExibido = localStorage.getItem('cert_' + cat);
+  const jaExibido = localStorage.getItem(getKeyCert(cat));
   if (jaExibido) return;
-  localStorage.setItem('cert_' + cat, '1');
+  localStorage.setItem(getKeyCert(cat), '1');
   const nomeEl = document.getElementById('cert-nome-consultora');
   const catEl  = document.getElementById('cert-categoria');
   const dataEl = document.getElementById('cert-data');
@@ -2577,7 +2579,7 @@ const CATEGORIAS = {
 };
 
 function atualizarProgresso() {
-  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  const assistidas = JSON.parse(localStorage.getItem(getKeyAssistidas()) || '[]');
   Object.keys(CATEGORIAS).forEach(cat => {
     const total = CATEGORIAS[cat].length;
     const feitas = CATEGORIAS[cat].filter(id => assistidas.includes(id)).length;
@@ -2594,7 +2596,7 @@ function atualizarProgresso() {
 
 // ===== AULAS ASSISTIDAS =====
 function carregarAssistidas() {
-  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  const assistidas = JSON.parse(localStorage.getItem(getKeyAssistidas()) || '[]');
   assistidas.forEach(id => {
     const item = document.querySelector(`[onclick="toggleVideo('${id}')"]`);
     const check = document.getElementById('check-' + id);
@@ -2607,9 +2609,9 @@ function carregarAssistidas() {
 }
 
 window.marcarAssistido = function(id) {
-  const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+  const assistidas = JSON.parse(localStorage.getItem(getKeyAssistidas()) || '[]');
   if (!assistidas.includes(id)) assistidas.push(id);
-  localStorage.setItem('aulas_assistidas', JSON.stringify(assistidas));
+  localStorage.setItem(getKeyAssistidas(), JSON.stringify(assistidas));
 
   const item = document.querySelector(`[onclick="toggleVideo('${id}')"]`);
   const check = document.getElementById('check-' + id);
@@ -2644,7 +2646,7 @@ window.toggleVideo = function(id) {
     if (item && item.classList.contains('curso-item')) item.classList.add('ativo');
     // Esconde botão marcar e mostra contador
     const btn = document.getElementById('btn-assistido-' + id);
-    const assistidas = JSON.parse(localStorage.getItem('aulas_assistidas') || '[]');
+    const assistidas = JSON.parse(localStorage.getItem(getKeyAssistidas()) || '[]');
     if (btn && !assistidas.includes(id)) {
       btn.style.display = 'none';
       // Cria contador se não existir
