@@ -927,15 +927,15 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
   <!-- META -->
   <div class="page" id="page-meta">
     <div class="page-hero">
-      <div class="page-hero-titulo">🎯 Minha Meta</div>
-      <div class="page-hero-sub">Acompanhe sua meta de vendas para o próximo atendimento.</div>
+      <div class="page-hero-titulo">🎯 Meu Objetivo</div>
+      <div class="page-hero-sub">Acompanhe seu objetivo de vendas para o próximo atendimento.</div>
     </div>
 
     <!-- Card meta atual -->
     <div id="meta-card-atual" style="background:linear-gradient(135deg,var(--pink-deep),var(--pink));border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 8px 32px rgba(217,26,122,0.25);">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;">PRÓXIMA META DE VENDAS</div>
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;">PRÓXIMO OBJETIVO DE VENDAS</div>
       <div id="meta-valor-display" style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:800;color:white;line-height:1;margin-bottom:14px;">—</div>
-      <div id="meta-frase" style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;display:none;">Seu representante definiu essa meta para o próximo atendimento. 💪</div>
+      <div id="meta-frase" style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;display:none;">Seu representante definiu esse objetivo para o próximo atendimento. 💪</div>
       <div id="meta-sem-dados" style="background:rgba(255,255,255,0.2);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:white;font-weight:600;">
         Aguarde seu representante registrar o próximo acerto 💜
       </div>
@@ -957,7 +957,7 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     </div>
     <div class="bnav-item bnav-disabled" style="opacity:0.5;cursor:not-allowed;pointer-events:none;position:relative;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#bbb" id="ni5"/></svg>
-      <span class="bnav-lbl">Meta</span>
+      <span class="bnav-lbl">Objetivo</span>
       <span style="position:absolute;top:-2px;right:2px;background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 5px;border-radius:99px;letter-spacing:0.3px;white-space:nowrap;">em breve</span>
     </div>
   </nav>
@@ -1153,8 +1153,8 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 <div class="toast-aniversario" id="toast-nova-meta" style="background:linear-gradient(135deg,#0d4a1a,#1a7a3a);">
   <div class="toast-aniv-icon">🎯</div>
   <div class="toast-aniv-texto">
-    <div class="toast-aniv-titulo">Nova meta registrada!</div>
-    <div class="toast-aniv-sub" id="toast-meta-sub">Veja na aba Meta 💜</div>
+    <div class="toast-aniv-titulo">Novo objetivo registrado!</div>
+    <div class="toast-aniv-sub" id="toast-meta-sub">Veja na aba Objetivo 💜</div>
   </div>
   <button class="toast-aniv-close" onclick="document.getElementById('toast-nova-meta').classList.remove('show')">✕</button>
 </div>
@@ -2452,7 +2452,7 @@ window.carregarMeta = function() {
         document.getElementById('meta-card-atual').appendChild(badgeEl);
       }
       if (totalPago >= meta && meta > 0) {
-        badgeEl.textContent = '🏆 Meta batida! Parabéns!';
+        badgeEl.textContent = '🏆 Objetivo batido! Parabéns!';
         badgeEl.style.display = 'inline-flex';
       } else {
         badgeEl.style.display = 'none';
@@ -2501,7 +2501,7 @@ window.carregarMeta = function() {
                 <div style="font-size:17px;font-weight:800;color:var(--black);">R$ ${v}</div>
               </div>
               <div style="background:var(--pink-pale);border-radius:10px;padding:10px;border:1px solid var(--pink-soft);">
-                <div style="font-size:11px;color:var(--pink-deep);font-weight:600;margin-bottom:2px;">Meta gerada</div>
+                <div style="font-size:11px;color:var(--pink-deep);font-weight:600;margin-bottom:2px;">Objetivo gerado</div>
                 <div style="font-size:17px;font-weight:800;color:var(--pink);">R$ ${m}</div>
               </div>
             </div>
