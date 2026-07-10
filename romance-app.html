@@ -946,39 +946,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     <div id="meta-historico"><div class="empty-state">Abra esta aba para carregar o histórico.</div></div>
   </div>
 
-  <!-- RANKING -->
-  <div class="page" id="page-ranking">
-    <div class="page-hero">
-      <div class="page-hero-titulo">Ranking do mês</div>
-      <div class="page-hero-sub">Quem mais vendeu esse mês leva um brinde surpresa! 🏆</div>
-    </div>
-    <div class="card" id="lista-ranking"><div class="empty-state">Carregando...</div></div>
-
-    <!-- Card desafio com prazo -->
-    <div style="background:linear-gradient(135deg,#1a1a2e,#4a0030);border-radius:16px;padding:18px 20px;margin-top:4px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <div style="font-size:14px;font-weight:800;color:white;">Desafio do mês</div>
-      </div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:12px;">
-        A consultora com o <strong style="color:#FFD700;">maior valor vendido</strong> até o último dia do mês ganha um brinde surpresa do representante!
-      </div>
-      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:.5px;">PRAZO</div>
-        <div style="font-size:14px;font-weight:800;color:#FFD700;" id="ranking-prazo">—</div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- FEED -->
-  <div class="page" id="page-feed">
-    <div class="page-hero">
-      <div class="page-hero-titulo">💬 Feed</div>
-      <div class="page-hero-sub">Novidades, dicas e conquistas da comunidade Romance.</div>
-    </div>
-    <div id="lista-feed"><div class="empty-state">Carregando...</div></div>
-  </div>
-
   <nav class="bnav">
     <div class="bnav-item active" onclick="goPage('inicio',this,0)">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12V20C21 20.5523 20.5523 21 20 21H15V16H9V21H4C3.44772 21 3 20.5523 3 20V12Z" fill="#bbb" id="ni0"/></svg>
@@ -991,16 +958,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
     <div class="bnav-item bnav-disabled" style="opacity:0.5;cursor:not-allowed;pointer-events:none;position:relative;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm0 3a4 4 0 100 8 4 4 0 000-8zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#bbb" id="ni5"/></svg>
       <span class="bnav-lbl">Meta</span>
-      <span style="position:absolute;top:-2px;right:2px;background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 5px;border-radius:99px;letter-spacing:0.3px;white-space:nowrap;">em breve</span>
-    </div>
-    <div class="bnav-item bnav-disabled" style="opacity:0.5;cursor:not-allowed;pointer-events:none;position:relative;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="14" width="5" height="7" rx="1" fill="#bbb" id="ni3a"/><rect x="9.5" y="9" width="5" height="12" rx="1" fill="#bbb" id="ni3b"/><rect x="17" y="4" width="5" height="17" rx="1" fill="#bbb" id="ni3c"/></svg>
-      <span class="bnav-lbl">Ranking</span>
-      <span style="position:absolute;top:-2px;right:2px;background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 5px;border-radius:99px;letter-spacing:0.3px;white-space:nowrap;">em breve</span>
-    </div>
-    <div class="bnav-item bnav-disabled" style="opacity:0.5;cursor:not-allowed;pointer-events:none;position:relative;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" fill="#bbb" id="ni4"/></svg>
-      <span class="bnav-lbl">Feed</span>
       <span style="position:absolute;top:-2px;right:2px;background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 5px;border-radius:99px;letter-spacing:0.3px;white-space:nowrap;">em breve</span>
     </div>
   </nav>
@@ -1093,11 +1050,6 @@ body{font-family:'Outfit',sans-serif;background:#f7f7f7;color:var(--black);min-h
 
   </div>
 </div>
-
-<!-- FAB NOVO POST -->
-<button class="feed-fab" id="feed-fab" onclick="abrirNovoPost()">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
-</button>
 
 <!-- MODAL NOVO POST -->
 <div class="post-overlay" id="m-novo-post">
@@ -1417,9 +1369,7 @@ window.entrar = async function() {
       _getAudioContext(); // desbloqueia áudio no toque do login
       atualizarUI();
       ouvirIndicacoes();
-      ouvirRanking();
       ouvirNotificacaoPontos();
-      ouvirFeed();
       carregarAssistidas();
       // Pede permissão de notificação
       if ('Notification' in window && Notification.permission === 'default') {
@@ -1500,9 +1450,7 @@ window.confirmarPrimeiroAcesso = async function() {
 
     atualizarUI();
     ouvirIndicacoes();
-    ouvirRanking();
     ouvirNotificacaoPontos();
-    ouvirFeed();
     showScreen('screen-app');
     resetNav(); colorNav(0);
 
@@ -2114,8 +2062,8 @@ function atualizarUI() {
 }
 
 // ========== NAV ==========
-const PAGES = ['inicio','premios','meta','ranking','feed'];
-const ICONS = [['ni0'],['ni2'],['ni5'],['ni3a','ni3b','ni3c'],['ni4']];
+const PAGES = ['inicio','premios','meta'];
+const ICONS = [['ni0'],['ni2'],['ni5']];
 
 window.goPage = function(id, el, idx) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
